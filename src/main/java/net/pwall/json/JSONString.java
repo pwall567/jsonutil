@@ -4,7 +4,10 @@
 
 package net.pwall.json;
 
+import java.io.IOException;
 import java.util.Objects;
+
+import net.pwall.util.Strings;
 
 /**
  * A JSON string value.
@@ -40,7 +43,21 @@ public class JSONString implements JSONValue, CharSequence {
 
     @Override
     public String toJSON() {
-        return toString(value);
+        StringBuilder sb = new StringBuilder();
+        try {
+            appendJSON(sb);
+        }
+        catch (IOException e) {
+            // can't happen - StringBuilder does not throw IOException
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public void appendJSON(Appendable a) throws IOException {
+        a.append('"');
+        Strings.appendEscaped(a, value, JSON.charMapper);
+        a.append('"');
     }
 
     @Override
@@ -56,39 +73,6 @@ public class JSONString implements JSONValue, CharSequence {
     @Override
     public boolean equals(Object other) {
         return other instanceof JSONString && value.equals(((JSONString)other).value);
-    }
-
-    public static String toString(CharSequence cs) {
-        if (cs == null)
-            return "null";
-        StringBuilder sb = new StringBuilder();
-        sb.append('"');
-        for (int i = 0; i < cs.length(); i++) {
-            char ch = cs.charAt(i);
-            if (ch == '"')
-                sb.append("\\\"");
-            else if (ch == '\\')
-                sb.append("\\\\");
-            else if (ch >= ' ' && ch < 0x7F)
-                sb.append(ch);
-            else if (ch == 8)
-                sb.append("\\b");
-            else if (ch == 9)
-                sb.append("\\t");
-            else if (ch == 0xA)
-                sb.append("\\n");
-            else if (ch == 0xC)
-                sb.append("\\f");
-            else if (ch == 0xD)
-                sb.append("\\r");
-            else {
-                sb.append("\\u");
-                for (int j = 12; j >= 0; j -= 4)
-                    sb.append("0123456789abcdef".charAt((ch >>> j) & 0xF));
-            }
-        }
-        sb.append('"');
-        return sb.toString();
     }
 
 }

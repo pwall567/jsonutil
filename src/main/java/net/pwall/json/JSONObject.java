@@ -4,6 +4,7 @@
 
 package net.pwall.json;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+
+import net.pwall.util.Strings;
 
 /**
  * A JSON object.
@@ -93,21 +96,33 @@ public class JSONObject implements JSONValue, Iterable<String> {
     @Override
     public String toJSON() {
         StringBuilder sb = new StringBuilder();
-        sb.append('{');
+        try {
+            appendJSON(sb);
+        }
+        catch (IOException e) {
+            // can't happen - StringBuilder does not throw IOException
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public void appendJSON(Appendable a) throws IOException {
+        a.append('{');
         if (list.size() > 0) {
             int i = 0;
             for (;;) {
                 Entry entry = list.get(i++);
-                sb.append(JSONString.toString(entry.getKey()));
-                sb.append(':');
-                sb.append(JSON.toJSON(entry.getValue()));
+                a.append('"');
+                Strings.appendEscaped(a, entry.getKey(), JSON.charMapper);
+                a.append('"');
+                a.append(':');
+                JSON.appendJSON(a, entry.getValue());
                 if (i >= list.size())
                     break;
-                sb.append(',');
+                a.append(',');
             }
         }
-        sb.append('}');
-        return sb.toString();
+        a.append('}');
     }
 
     @Override

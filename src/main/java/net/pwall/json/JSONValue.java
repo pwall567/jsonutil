@@ -4,6 +4,8 @@
 
 package net.pwall.json;
 
+import java.io.IOException;
+
 /**
  * Interface for JSON values.
  *
@@ -17,5 +19,14 @@ public interface JSONValue {
      * @return  the JSON representation for this value
      */
     String toJSON();
+
+    /**
+     * Append the appropriate external representation for this JSON value to a given
+     * {@link Appendable}.
+     *
+     * @param   a   the {@link Appendable}
+     * @throws  IOException     if thrown by the {@link Appendable}
+     */
+    void appendJSON(Appendable a) throws IOException;
 
 }

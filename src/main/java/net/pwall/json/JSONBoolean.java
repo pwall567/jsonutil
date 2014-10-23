@@ -4,6 +4,7 @@
 
 package net.pwall.json;
 
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -37,6 +38,11 @@ public class JSONBoolean implements JSONValue {
     @Override
     public String toJSON() {
         return value ? "true" : "false";
+    }
+
+    @Override
+    public void appendJSON(Appendable a) throws IOException {
+        a.append(toJSON());
     }
 
     @Override

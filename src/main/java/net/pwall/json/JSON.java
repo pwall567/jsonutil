@@ -255,4 +255,20 @@ public class JSON {
         return value == null ? "null" : value.toJSON();
     }
 
+    /**
+     * Convenience method to append the JSON string for a value to an {@link Appendable}, for
+     * cases where the value may be {@code null}.
+     *
+     * @param   a       the {@link Appendable}
+     * @param   value   the {@link JSONValue}
+     * @return  the JSON string for this value
+     * @throws  IOException if thrown by the {@link Appendable}
+     */
+    public static void appendJSON(Appendable a, JSONValue value) throws IOException {
+        if (value == null)
+            a.append("null");
+        else
+            value.appendJSON(a);
+    }
+
 }

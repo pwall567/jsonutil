@@ -4,6 +4,7 @@
 
 package net.pwall.json;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -81,18 +82,28 @@ public class JSONArray implements JSONValue, Iterable<JSONValue> {
     @Override
     public String toJSON() {
         StringBuilder sb = new StringBuilder();
-        sb.append('[');
+        try {
+            appendJSON(sb);
+        }
+        catch (IOException e) {
+            // can't happen - StringBuilder does not throw IOException
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public void appendJSON(Appendable a) throws IOException {
+        a.append('[');
         if (list.size() > 0) {
             int i = 0;
             for (;;) {
-                sb.append(JSON.toJSON(list.get(i++)));
+                JSON.appendJSON(a, list.get(i++));
                 if (i >= list.size())
                     break;
-                sb.append(',');
+                a.append(',');
             }
         }
-        sb.append(']');
-        return sb.toString();
+        a.append(']');
     }
 
     @Override

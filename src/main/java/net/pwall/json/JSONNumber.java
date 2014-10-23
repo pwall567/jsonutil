@@ -4,6 +4,7 @@
 
 package net.pwall.json;
 
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -82,6 +83,11 @@ public class JSONNumber extends Number implements JSONValue {
     @Override
     public String toJSON() {
         return value.toString();
+    }
+
+    @Override
+    public void appendJSON(Appendable a) throws IOException {
+        a.append(value.toString());
     }
 
     @Override
