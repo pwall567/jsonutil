@@ -16,7 +16,7 @@ import org.junit.Test;
 public class TestObject {
 
     @Test
-    public void test() {
+    public void testOutput() {
         JSONObject object = new JSONObject();
         assertEquals("{}", object.toJSON());
         object.putValue("first", 1);
@@ -34,6 +34,8 @@ public class TestObject {
 
         JSONString str = new JSONString("\"\\\u1234");
         assertEquals("\"\\\"\\\\\\u1234\"", str.toJSON());
+
+        assertEquals("null", JSON.toJSON(null));
     }
 
     @Test
@@ -56,6 +58,8 @@ public class TestObject {
 
         JSONString str = new JSONString("\"\\\u1234");
         assertEquals(JSON.parse("\"\\\"\\\\\\u1234\""), str);
+
+        assertEquals(JSON.parse("null"), null);
     }
 
 }
