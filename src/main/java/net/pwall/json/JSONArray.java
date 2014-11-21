@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  * A JSON array.
@@ -72,6 +73,7 @@ public class JSONArray implements JSONValue, Iterable<JSONValue> {
      * ({@link String}, {@link StringBuilder} etc.).
      *
      * @param   cs      the {@link CharSequence}
+     * @throws  NullPointerException if the value is {@code null}
      */
     public void addValue(CharSequence cs) {
         list.add(new JSONString(cs));
@@ -117,6 +119,7 @@ public class JSONArray implements JSONValue, Iterable<JSONValue> {
      * Add a {@link JSONNumber} to the JSON array representing the supplied {@link Number}.
      *
      * @param   value   the value
+     * @throws  NullPointerException if the value is {@code null}
      */
     public void addValue(Number value) {
         list.add(new JSONNumber(value));
@@ -128,16 +131,17 @@ public class JSONArray implements JSONValue, Iterable<JSONValue> {
      * @param   value   the value
      */
     public void addValue(boolean value) {
-        list.add(new JSONBoolean(value));
+        list.add(JSONBoolean.valueOf(value));
     }
 
     /**
      * Add a {@link JSONBoolean} to the JSON array representing the supplied {@link Boolean}.
      *
      * @param   value   the value
+     * @throws  NullPointerException if the value is {@code null}
      */
     public void addValue(Boolean value) {
-        list.add(new JSONBoolean(value));
+        list.add(JSONBoolean.valueOf(Objects.requireNonNull(value).booleanValue()));
     }
 
     /**

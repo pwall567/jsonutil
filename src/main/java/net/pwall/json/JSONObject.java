@@ -50,7 +50,7 @@ public class JSONObject implements JSONValue, Iterable<String> {
     }
 
     public void putValue(String key, int value) {
-        put(key, new JSONNumber(value));
+        put(key, value == 0 ? JSONNumber.ZERO : new JSONNumber(value));
     }
 
     public void putValue(String key, long value) {
@@ -70,11 +70,11 @@ public class JSONObject implements JSONValue, Iterable<String> {
     }
 
     public void putValue(String key, boolean value) {
-        put(key, new JSONBoolean(value));
+        put(key, JSONBoolean.valueOf(value));
     }
 
     public void putValue(String key, Boolean value) {
-        put(key, new JSONBoolean(value));
+        put(key, JSONBoolean.valueOf(Objects.requireNonNull(value).booleanValue()));
     }
 
     public void remove(String key) {
