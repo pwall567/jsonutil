@@ -15,6 +15,8 @@ import java.util.Objects;
 @SuppressWarnings("serial")
 public class JSONNumber extends Number implements JSONValue {
 
+    public static final JSONNumber ZERO = new JSONNumber(0);
+
     private Number value;
 
     public JSONNumber(int value) {

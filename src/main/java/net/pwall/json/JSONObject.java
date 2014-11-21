@@ -85,7 +85,7 @@ public class JSONObject implements JSONValue, Iterable<String> {
 
     /**
      * Get an {@link Iterator} over the names (keys) of the members of the object.
-     * 
+     *
      * @return  an {@link Iterator}
      */
     @Override
@@ -114,8 +114,7 @@ public class JSONObject implements JSONValue, Iterable<String> {
                 Entry entry = list.get(i++);
                 a.append('"');
                 Strings.appendEscaped(a, entry.getKey(), JSON.charMapper);
-                a.append('"');
-                a.append(':');
+                a.append('"').append(':');
                 JSON.appendJSON(a, entry.getValue());
                 if (i >= list.size())
                     break;

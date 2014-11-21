@@ -14,8 +14,10 @@ import java.util.Objects;
  */
 public class JSONBoolean implements JSONValue {
 
-    public static JSONBoolean FALSE = new JSONBoolean(false);
-    public static JSONBoolean TRUE = new JSONBoolean(true);
+    /** Constant {@code JSONBoolean} value for FALSE */
+    public static final JSONBoolean FALSE = new JSONBoolean(false);
+    /** Constant {@code JSONBoolean} value for TRUE */
+    public static final JSONBoolean TRUE = new JSONBoolean(true);
 
     private boolean value;
 

@@ -12,7 +12,8 @@ import net.pwall.util.ParseText;
 import net.pwall.util.Strings;
 
 /**
- * JSON utilities.
+ * JSON utilities.  Includes code for parsing JSON; the code for outputting JSON objects is in
+ * the individual classes for the JSON data types.
  *
  * @author Peter Wall
  */
@@ -26,7 +27,7 @@ public class JSON {
      * @see     Strings#escapeUTF16(CharSequence, CharMapper)
      * @see     Strings#escapeUTF16(String, CharMapper)
      */
-    public static CharMapper charMapper = new CharMapper() {
+    public static final CharMapper charMapper = new CharMapper() {
         @Override
         public String map(int codePoint) {
             if (codePoint == '"')
@@ -44,14 +45,11 @@ public class JSON {
             if (codePoint == 0x09)
                 return "\\t";
             if (codePoint < 0x20 || codePoint >= 0x7F) {
-                StringBuilder sb = new StringBuilder();
+                StringBuilder sb = new StringBuilder("\\u");
                 try {
-                    if (Character.isBmpCodePoint(codePoint)) {
-                        sb.append("\\u");
+                    if (Character.isBmpCodePoint(codePoint))
                         Strings.appendHex(sb, (char)codePoint);
-                    }
                     else {
-                        sb.append("\\u");
                         Strings.appendHex(sb, Character.highSurrogate(codePoint));
                         sb.append("\\u");
                         Strings.appendHex(sb, Character.lowSurrogate(codePoint));
@@ -73,7 +71,7 @@ public class JSON {
      * @see     Strings#unescape(String, CharUnmapper)
      * @see     ParseText#unescape(CharUnmapper, char)
      */
-    public static CharUnmapper charUnmapper = new CharUnmapper() {
+    public static final CharUnmapper charUnmapper = new CharUnmapper() {
         @Override
         public boolean isEscape(CharSequence s, int offset) {
             return s.charAt(offset) == '\\';
@@ -123,6 +121,12 @@ public class JSON {
             throw new IllegalArgumentException("Invalid JSON character sequence");
         }
     };
+
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private JSON() {
+    }
 
     /**
      * Parse a {@link CharSequence} (e.g. a {@link String}) as a JSON value.
@@ -216,6 +220,8 @@ public class JSON {
             if (floating)
                 return new JSONNumber(Double.parseDouble(p.getString(start, p.getIndex())));
             long result = Long.parseLong(p.getString(start, p.getIndex()));
+            if (result == 0L)
+                return JSONNumber.ZERO;
             if (result >= Integer.MIN_VALUE && result <= Integer.MAX_VALUE)
                 return new JSONNumber((int)result);
             return new JSONNumber(result);
