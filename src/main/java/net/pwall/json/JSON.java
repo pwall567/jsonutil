@@ -242,6 +242,7 @@ public class JSON {
      *
      * @param   p   the {@link ParseText}
      * @return  the string
+     * @throws  IllegalArgumentException if the string is not valid, or not properly terminated
      */
     private static String decodeString(ParseText p) {
         String s = p.unescape(charUnmapper, '"');
