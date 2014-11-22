@@ -1,5 +1,26 @@
 /*
  * @(#) JSONArray.java
+ *
+ * jsonutil JSON Utility Library
+ * Copyright (c) 2014 Peter Wall
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 package net.pwall.json;
@@ -32,10 +53,11 @@ public class JSONArray implements JSONValue, Iterable<JSONValue> {
      * Construct a JSON array by copying another JSON array.
      *
      * @param   array   the source {@code JSONArray}
+     * @throws  NullPointerException if the collection is {@code null}
      */
     public JSONArray(JSONValue[] array) {
         list = new ArrayList<>();
-        for (JSONValue item : array)
+        for (JSONValue item : Objects.requireNonNull(array))
             list.add(item);
     }
 
@@ -43,6 +65,7 @@ public class JSONArray implements JSONValue, Iterable<JSONValue> {
      * Construct a JSON array from a {@link Collection} of JSON values.
      *
      * @param   collection  the source {@link Collection}
+     * @throws  NullPointerException if the collection is {@code null}
      */
     public JSONArray(Collection<JSONValue> collection) {
         list = new ArrayList<>(collection);
