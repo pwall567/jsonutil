@@ -41,7 +41,7 @@ public class JSONNumber extends Number implements JSONValue {
     private Number value;
 
     public JSONNumber(int value) {
-        this.value = new Integer(value);
+        this.value = Integer.valueOf(value);
     }
 
     public JSONNumber(long value) {
