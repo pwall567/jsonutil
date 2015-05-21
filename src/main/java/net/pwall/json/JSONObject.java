@@ -27,10 +27,8 @@ package net.pwall.json;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -44,26 +42,26 @@ import net.pwall.util.Strings;
 public class JSONObject implements JSONValue, Iterable<String> {
 
     private List<Entry> list;
-    private Map<String, Integer> map;
 
     public JSONObject() {
         list = new ArrayList<>();
-        map = new HashMap<>();
     }
 
     public JSONValue get(String key) {
-        Integer index = map.get(Objects.requireNonNull(key));
-        return index == null ? null : list.get(index).getValue();
+        int index = findIndex(Objects.requireNonNull(key));
+        return index < 0 ? null : list.get(index).getValue();
+    }
+
+    public boolean containsKey(String key) {
+        return findIndex(Objects.requireNonNull(key)) >= 0;
     }
 
     public void put(String key, JSONValue value) {
-        Integer index = map.get(Objects.requireNonNull(key));
-        if (index != null)
+        int index = findIndex(Objects.requireNonNull(key));
+        if (index >= 0)
             list.get(index).setValue(value);
-        else {
-            map.put(key, list.size());
+        else
             list.add(new Entry(key, value));
-        }
     }
 
     public void putValue(String key, CharSequence cs) {
@@ -103,9 +101,16 @@ public class JSONObject implements JSONValue, Iterable<String> {
     }
 
     public void remove(String key) {
-        Integer index = map.remove(Objects.requireNonNull(key));
-        if (index != null)
-            list.remove(index.intValue());
+        int index = findIndex(Objects.requireNonNull(key));
+        if (index >= 0)
+            list.remove(index);
+    }
+
+    private int findIndex(String key) {
+        for (int i = 0, n = list.size(); i < n; i++)
+            if (list.get(i).key.equals(key))
+                return i;
+        return -1;
     }
 
     /**
