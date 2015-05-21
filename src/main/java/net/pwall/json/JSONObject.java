@@ -108,7 +108,7 @@ public class JSONObject implements JSONValue, Iterable<String> {
 
     private int findIndex(String key) {
         for (int i = 0, n = list.size(); i < n; i++)
-            if (list.get(i).key.equals(key))
+            if (list.get(i).getKey().equals(key))
                 return i;
         return -1;
     }
@@ -138,7 +138,8 @@ public class JSONObject implements JSONValue, Iterable<String> {
     @Override
     public void appendJSON(Appendable a) throws IOException {
         a.append('{');
-        if (list.size() > 0) {
+        int n = list.size();
+        if (n > 0) {
             int i = 0;
             for (;;) {
                 Entry entry = list.get(i++);
@@ -146,7 +147,7 @@ public class JSONObject implements JSONValue, Iterable<String> {
                 Strings.appendEscaped(a, entry.getKey(), JSON.charMapper);
                 a.append('"').append(':');
                 JSON.appendJSON(a, entry.getValue());
-                if (i >= list.size())
+                if (i >= n)
                     break;
                 a.append(',');
             }
