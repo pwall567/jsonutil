@@ -238,9 +238,16 @@ public class JSON {
                 if (!p.matchDec())
                     throw new IllegalArgumentException("Illegal JSON number");
             }
+            int end = p.getIndex();
             if (floating)
-                return new JSONNumber(Double.parseDouble(p.getString(start, p.getIndex())));
-            long result = Long.parseLong(p.getString(start, p.getIndex()));
+                return new JSONNumber(Double.parseDouble(p.getString(start, end)));
+            if (end - start < 10) {
+                int result = Integer.parseInt(p.getString(start, end));
+                if (result == 0)
+                    return JSONNumber.ZERO;
+                return new JSONNumber(result);
+            }
+            long result = Long.parseLong(p.getString(start, end));
             if (result == 0L)
                 return JSONNumber.ZERO;
             if (result >= Integer.MIN_VALUE && result <= Integer.MAX_VALUE)
