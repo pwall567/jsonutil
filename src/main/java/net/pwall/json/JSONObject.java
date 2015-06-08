@@ -2,7 +2,7 @@
  * @(#) JSONObject.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014 Peter Wall
+ * Copyright (c) 2014, 2015 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,11 +26,16 @@
 package net.pwall.json;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.AbstractSet;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Set;
 
 import net.pwall.util.Strings;
 
@@ -39,78 +44,353 @@ import net.pwall.util.Strings;
  *
  * @author Peter Wall
  */
-public class JSONObject implements JSONValue, Iterable<String> {
+public class JSONObject implements JSONValue, Map<String, JSONValue>, Iterable<String> {
+
+    private static final long serialVersionUID = 4424892153019501302L;
 
     private List<Entry> list;
 
+    /**
+     * Construct an empty {@code JSONObject}.
+     */
     public JSONObject() {
         list = new ArrayList<>();
     }
 
-    public JSONValue get(String key) {
+    /**
+     * Construct a {@code JSONObject}, copying the contents of another object.
+     *
+     * @param   other   the other {@code JSONObject}
+     */
+    public JSONObject(JSONObject other) {
+        list = new ArrayList<>(other.list);
+    }
+
+    public JSONObject putValue(String key, CharSequence cs) {
+        put(key, new JSONString(cs));
+        return this;
+    }
+
+    /**
+     * Add a {@link JSONNumber} to the {@code JSONObject} representing the supplied {@code int}.
+     *
+     * @param   key     the key to use when storing the value
+     * @param   value   the value
+     * @return          {@code this} (for chaining)
+     */
+    public JSONObject putValue(String key, int value) {
+        put(key, JSONNumber.valueOf(value));
+        return this;
+    }
+
+    /**
+     * Add a {@link JSONNumber} to the {@code JSONObject} representing the supplied
+     * {@code long}.
+     *
+     * @param   key     the key to use when storing the value
+     * @param   value   the value
+     * @return          {@code this} (for chaining)
+     */
+    public JSONObject putValue(String key, long value) {
+        put(key, JSONNumber.valueOf(value));
+        return this;
+    }
+
+    /**
+     * Add a {@link JSONNumber} to the {@code JSONObject} representing the supplied
+     * {@code float}.
+     *
+     * @param   key     the key to use when storing the value
+     * @param   value   the value
+     * @return          {@code this} (for chaining)
+     */
+    public JSONObject putValue(String key, float value) {
+        put(key, JSONNumber.valueOf(value));
+        return this;
+    }
+
+    /**
+     * Add a {@link JSONNumber} to the {@code JSONObject} representing the supplied
+     * {@code double}.
+     *
+     * @param   key     the key to use when storing the value
+     * @param   value   the value
+     * @return          {@code this} (for chaining)
+     */
+    public JSONObject putValue(String key, double value) {
+        put(key, JSONNumber.valueOf(value));
+        return this;
+    }
+
+    /**
+     * Add a {@link JSONNumber} to the {@code JSONObject} representing the supplied
+     * {@link Number}.
+     *
+     * @param   key     the key to use when storing the value
+     * @param   value   the value
+     * @return          {@code this} (for chaining)
+     */
+    public JSONObject putValue(String key, Number value) {
+        put(key, new JSONNumber(value));
+        return this;
+    }
+
+    /**
+     * Add a {@link JSONNumber} to the {@code JSONObject} representing the supplied
+     * {@code boolean}.
+     *
+     * @param   key     the key to use when storing the value
+     * @param   value   the value
+     * @return          {@code this} (for chaining)
+     */
+    public JSONObject putValue(String key, boolean value) {
+        put(key, JSONBoolean.valueOf(value));
+        return this;
+    }
+
+    /**
+     * Add a {@link JSONNumber} to the {@code JSONObject} representing the supplied
+     * {@link Boolean}.
+     *
+     * @param   key     the key to use when storing the value
+     * @param   value   the value
+     * @return          {@code this} (for chaining)
+     */
+    public JSONObject putValue(String key, Boolean value) {
+        put(key, JSONBoolean.valueOf(Objects.requireNonNull(value).booleanValue()));
+        return this;
+    }
+
+    /**
+     * Add a {@code null} to the {@code JSONObject}.
+     *
+     * @param   key     the key to use when storing the value
+     * @return          {@code this} (for chaining)
+     */
+    public JSONObject putNull(String key) {
+        put(key, null);
+        return this;
+    }
+
+    /**
+     * Get a value from the {@code JSONObject} as a {@link String}.
+     *
+     * @param   key     the key of the value
+     * @return          the value, or an empty string if not found
+     * @throws  IllegalStateException if the value is found but is not a string
+     */
+    public String getString(String key) {
+        return JSON.getString(get(key));
+    }
+
+    /**
+     * Get a value from the {@code JSONObject} as an {@code int}.
+     *
+     * @param   key     the key of the value
+     * @return          the value, or {@code 0} if not found
+     * @throws  IllegalStateException if the value is found but is not a number
+     */
+    public int getInt(String key) {
+        return JSON.getInt(get(key));
+    }
+
+    /**
+     * Get a value from the {@code JSONObject} as a {@code long}.
+     *
+     * @param   key     the key of the value
+     * @return          the value, or {@code 0} if not found
+     * @throws  IllegalStateException if the value is found but is not a number
+     */
+    public long getLong(String key) {
+        return JSON.getLong(get(key));
+    }
+
+    /**
+     * Get a value from the {@code JSONObject} as a {@code float}.
+     *
+     * @param   key     the key of the value
+     * @return          the value, or {@code 0} if not found
+     * @throws  IllegalStateException if the value is found but is not a number
+     */
+    public float getFloat(String key) {
+        return JSON.getFloat(get(key));
+    }
+
+    /**
+     * Get a value from the {@code JSONObject} as a {@code double}.
+     *
+     * @param   key     the key of the value
+     * @return          the value, or {@code 0} if not found
+     * @throws  IllegalStateException if the value is found but is not a number
+     */
+    public double getDouble(String key) {
+        return JSON.getDouble(get(key));
+    }
+
+    /**
+     * Get a value from the {@code JSONObject} as a {@code boolean}.
+     *
+     * @param   key     the key of the value
+     * @return          the value, or {@code false} if not found
+     * @throws  IllegalStateException if the value is found but is not a number
+     */
+    public boolean getBoolean(String key) {
+        return JSON.getBoolean(get(key));
+    }
+
+    /**
+     * Get a value from the {@code JSONObject}.
+     *
+     * @param   key     the key of the value
+     * @return          the value, or {@code null} if not found
+     * @see     Map#get(Object)
+     */
+    @Override
+    public JSONValue get(Object key) {
         int index = findIndex(Objects.requireNonNull(key));
         return index < 0 ? null : list.get(index).getValue();
     }
 
-    public boolean containsKey(String key) {
+    /**
+     * Test whether the {@code JSONObject} contains a specified key.
+     *
+     * @param   key     the key to test for
+     * @return          {@code true} if the key is found
+     * @see     Map#containsKey(Object)
+     */
+    @Override
+    public boolean containsKey(Object key) {
         return findIndex(Objects.requireNonNull(key)) >= 0;
     }
 
-    public void put(String key, JSONValue value) {
+    /**
+     * Store a value in the {@code JSONObject} with the specified key.
+     * 
+     * @param   key     the key
+     * @param   value   the value
+     * @return          the previous value stored with that key, or {@code null} if no previous
+     *                  value
+     * @see     Map#put(Object, Object)
+     */
+    @Override
+    public JSONValue put(String key, JSONValue value) {
         int index = findIndex(Objects.requireNonNull(key));
-        if (index >= 0)
+        if (index >= 0) {
+            JSONValue oldValue = list.get(index).getValue();
             list.get(index).setValue(value);
-        else
-            list.add(new Entry(key, value));
+            return oldValue;
+        }
+        list.add(new Entry(key, value));
+        return null;
     }
 
-    public void putValue(String key, CharSequence cs) {
-        put(key, new JSONString(cs));
-    }
-
-    public void putValue(String key, int value) {
-        put(key, value == 0 ? JSONNumber.ZERO : new JSONNumber(value));
-    }
-
-    public void putValue(String key, long value) {
-        put(key, new JSONNumber(value));
-    }
-
-    public void putValue(String key, float value) {
-        put(key, new JSONNumber(value));
-    }
-
-    public void putValue(String key, double value) {
-        put(key, new JSONNumber(value));
-    }
-
-    public void putValue(String key, Number value) {
-        put(key, new JSONNumber(value));
-    }
-
-    public void putValue(String key, boolean value) {
-        put(key, JSONBoolean.valueOf(value));
-    }
-
-    public void putValue(String key, Boolean value) {
-        put(key, JSONBoolean.valueOf(Objects.requireNonNull(value).booleanValue()));
-    }
-
-    public void putNull(String key) {
-        put(key, null);
-    }
-
-    public void remove(String key) {
+    /**
+     * Remove the specified key-value mapping from the {@code JSONObject}.
+     *
+     * @param   key     the key
+     * @return          the value stored with that key, or {@code null} if key not used
+     * @see     Map#remove(Object)
+     */
+    @Override
+    public JSONValue remove(Object key) {
         int index = findIndex(Objects.requireNonNull(key));
-        if (index >= 0)
-            list.remove(index);
+        if (index >= 0) {
+            Entry entry = list.remove(index);
+            return entry.getValue();
+        }
+        return null;
     }
 
-    private int findIndex(String key) {
+    /**
+     * Get the number of values in the {@code JSONObject}.
+     *
+     * @return  the number of values
+     * @see     Map#size()
+     */
+    @Override
+    public int size() {
+        return list.size();
+    }
+
+    /**
+     * Test whether the {@code JSONObject}is empty.
+     *
+     * @return  {@code true} if the {@code JSONObject} is empty
+     * @see     Map#isEmpty()
+     */
+    @Override
+    public boolean isEmpty() {
+        return size() == 0;
+    }
+
+    /**
+     * Test whether the {@code JSONObject} contains the specified value.
+     *
+     * @param   value   the value
+     * @return          {@code true} if the {@code JSONObject} contains the value
+     * @see     Map#containsValue(Object)
+     */
+    @Override
+    public boolean containsValue(Object value) {
         for (int i = 0, n = list.size(); i < n; i++)
-            if (list.get(i).getKey().equals(key))
-                return i;
-        return -1;
+            if (Objects.equals(list.get(i).getValue(), value))
+                return true;
+        return false;
+    }
+
+    /**
+     * Add all the members of another {@link Map} to this {@code JSONObject}.
+     *
+     * @param   m       the other {@link Map}
+     * @see     Map#putAll(Map)
+     */
+    @Override
+    public void putAll(Map<? extends String, ? extends JSONValue> m) {
+        for (String s : m.keySet())
+            put(s, m.get(s));
+    }
+
+    /**
+     * Remove all members from this {@code JSONObject}.
+     *
+     * @see     Map#clear()
+     */
+    @Override
+    public void clear() {
+        list.clear();
+    }
+
+    /**
+     * Get a {@link Set} representing the keys in use in the {@code JSONObject}.
+     *
+     * @return  the {@link Set} of keys
+     * @see     Map#keySet()
+     */
+    @Override
+    public Set<String> keySet() {
+        return new KeySet();
+    }
+
+    /**
+     * Get a {@link Collection} of the values in the {@code JSONObject}.
+     *
+     * @return  the {@link Collection} of values
+     * @see     Map#values()
+     */
+    @Override
+    public Collection<JSONValue> values() {
+        return new ValueCollection();
+    }
+
+    /**
+     * Get a {@link Set} of the key-value pairs in use in the {@code JSONObject}.
+     *
+     * @return  the {@link Set} of key-value pairs
+     * @see     Map#entrySet()
+     */
+    @Override
+    public Set<Map.Entry<String, JSONValue>> entrySet() {
+        return new EntrySet();
     }
 
     /**
@@ -120,9 +400,14 @@ public class JSONObject implements JSONValue, Iterable<String> {
      */
     @Override
     public Iterator<String> iterator() {
-        return new Iter();
+        return new KeyIterator();
     }
 
+    /**
+     * Create the external representation for this {@code JSONObject}.
+     *
+     * @return  the JSON representation for this object
+     */
     @Override
     public String toJSON() {
         StringBuilder sb = new StringBuilder();
@@ -135,6 +420,12 @@ public class JSONObject implements JSONValue, Iterable<String> {
         return sb.toString();
     }
 
+    /**
+     * Append the external representation for this JSON object to a given {@link Appendable}.
+     *
+     * @param   a   the {@link Appendable}
+     * @throws  IOException     if thrown by the {@link Appendable}
+     */
     @Override
     public void appendJSON(Appendable a) throws IOException {
         a.append('{');
@@ -155,35 +446,71 @@ public class JSONObject implements JSONValue, Iterable<String> {
         a.append('}');
     }
 
+    /**
+     * Get the {@link String} representation of this {@code JSONObject}.
+     *
+     * @return  the string representation for this object
+     * @see     Object#toString()
+     */
     @Override
     public String toString() {
-        return toString();
+        return toJSON();
     }
 
+    /**
+     * Get the hash code for this {@code JSONObject}.
+     *
+     * @return  the hash code
+     * @see     Object#hashCode()
+     */
     @Override
     public int hashCode() {
         int result = 0;
-        for (Entry entry : list) {
-            result ^= entry.getKey().hashCode();
-            result ^= Objects.hashCode(entry.getValue());
-        }
+        for (int i = 0, n = list.size(); i < n; i++)
+            result ^= list.get(i).hashCode();
         return result;
     }
 
+    /**
+     * Compare this {@code JSONObject} with another object for equality.
+     *
+     * @param   other   the other object
+     * @return  {@code true} if the other object is a {@code JSONObject} and is identical to
+     *          this object
+     * @see     Object#equals(Object)
+     */
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof JSONObject))
             return false;
-        JSONObject o = (JSONObject)other;
-        if (list.size() != o.list.size())
+        JSONObject otherObj = (JSONObject)other;
+        if (list.size() != otherObj.list.size())
             return false;
         for (Entry entry : list)
-            if (!Objects.equals(entry.getValue(), o.get(entry.getKey())))
+            if (!Objects.equals(entry.getValue(), otherObj.get(entry.getKey())))
                 return false;
         return true;
     }
 
-    public static class Entry {
+    /**
+     * Find the index for the specified key.
+     *
+     * @param   key     the key
+     * @return          the index for this key, or -1 if not found
+     */
+    private int findIndex(Object key) {
+        for (int i = 0, n = list.size(); i < n; i++)
+            if (list.get(i).getKey().equals(key))
+                return i;
+        return -1;
+    }
+
+    /**
+     * Inner class to represent a key-value pair in the {@code JSONObject}.
+     */
+    public static class Entry implements Map.Entry<String, JSONValue>, Serializable {
+
+        private static final long serialVersionUID = 7415672545416600849L;
 
         private String key;
         private JSONValue value;
@@ -193,26 +520,92 @@ public class JSONObject implements JSONValue, Iterable<String> {
             this.value = value;
         }
 
+        @Override
         public String getKey() {
             return key;
         }
 
+        @Override
         public JSONValue getValue() {
             return value;
         }
 
-        public void setValue(JSONValue value) {
+        @Override
+        public JSONValue setValue(JSONValue value) {
+            JSONValue oldValue = this.value;
             this.value = value;
+            return oldValue;
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if (!(other instanceof Entry))
+                return false;
+            Entry otherEntry = (Entry)other;
+            return Objects.equals(key, otherEntry.key) &&
+                    Objects.equals(value, otherEntry.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(key, value);
         }
 
     }
 
-    private class Iter implements Iterator<String> {
+    /**
+     * An {@link Iterator} over the {@link Set} of key-value pairs in the {@code JSONObject}.
+     */
+    private class EntryIterator extends BaseIterator<Map.Entry<String, JSONValue>> {
+
+        @Override
+        public Entry next() {
+            return nextEntry();
+        }
+
+    }
+
+    /**
+     * An {@link Iterator} over the {@link Set} of keys in the {@code JSONObject}.
+     */
+    private class KeyIterator extends BaseIterator<String> {
+
+        @Override
+        public String next() {
+            return nextEntry().getKey();
+        }
+
+    }
+
+    /**
+     * An {@link Iterator} over the {@link Collection} of values in the {@code JSONObject}.
+     */
+    private class ValueIterator extends BaseIterator<JSONValue> {
+
+        @Override
+        public JSONValue next() {
+            return nextEntry().getValue();
+        }
+
+    }
+
+    /**
+     * Abstract base class for various iterators.
+     *
+     * @param   <T>     the returned type
+     */
+    private abstract class BaseIterator<T> implements Iterator<T> {
 
         private int index;
 
-        public Iter() {
+        public BaseIterator() {
             index = 0;
+        }
+
+        public Entry nextEntry() {
+            if (!hasNext())
+                throw new NoSuchElementException();
+            return list.get(index++);
         }
 
         @Override
@@ -221,14 +614,134 @@ public class JSONObject implements JSONValue, Iterable<String> {
         }
 
         @Override
-        public String next() {
-            if (!hasNext())
-                throw new NoSuchElementException();
-            return list.get(index++).getKey();
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+    }
+
+    /**
+     * A collection of the key-value pairs in the {@code JSONObject}.
+     *
+     * @see     #entrySet()
+     */
+    private class EntrySet extends CollectionBase<Map.Entry<String, JSONValue>> {
+
+        @Override
+        public boolean contains(Object o) {
+            return list.contains(o);
         }
 
         @Override
-        public void remove() {
+        public Iterator<Map.Entry<String, JSONValue>> iterator() {
+            return new EntryIterator();
+        }
+
+        @Override
+        public boolean containsAll(Collection<?> c) {
+            for (Object o : c)
+                if (!list.contains(o))
+                    return false;
+            return true;
+        }
+
+    }
+
+    /**
+     * A collection of the keys in the {@code JSONObject}.
+     *
+     * @see     #keySet()
+     */
+    private class KeySet extends CollectionBase<String> {
+
+        @Override
+        public boolean contains(Object o) {
+            return containsKey(o);
+        }
+
+        @Override
+        public Iterator<String> iterator() {
+            return new KeyIterator();
+        }
+
+        @Override
+        public boolean containsAll(Collection<?> c) {
+            for (Object o : c)
+                if (!containsKey(o))
+                    return false;
+            return true;
+        }
+
+    }
+
+    /**
+     * A collection of the values in the {@code JSONObject}.
+     *
+     * @see     #values()
+     */
+    private class ValueCollection extends CollectionBase<JSONValue> {
+
+        @Override
+        public boolean contains(Object o) {
+            return containsValue(o);
+        }
+
+        @Override
+        public Iterator<JSONValue> iterator() {
+            return new ValueIterator();
+        }
+
+        @Override
+        public boolean containsAll(Collection<?> c) {
+            for (Object o : c)
+                if (!containsValue(o))
+                    return false;
+            return true;
+        }
+
+    }
+
+    /**
+     * Abstract base class for various returned collections.  All modifying operations throw an
+     * {@link UnsupportedOperationException}.
+     *
+     * @param   <T>     the returned type
+     */
+    private abstract class CollectionBase<T> extends AbstractSet<T> {
+
+        /**
+         * Return the number of elements in the set.  All returned collections are the same size
+         * as the underlying collection.
+         *
+         * @return  the number of elements in the collection
+         */
+        @Override
+        public int size() {
+            return list.size();
+        }
+
+        @Override
+        public boolean remove(Object o) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends T> c) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean retainAll(Collection<?> c) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean removeAll(Collection<?> c) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void clear() {
             throw new UnsupportedOperationException();
         }
 

@@ -2,7 +2,7 @@
  * @(#) JSONValue.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014 Peter Wall
+ * Copyright (c) 2014, 2015 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,13 +26,14 @@
 package net.pwall.json;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Interface for JSON values.
  *
  * @author Peter Wall
  */
-public interface JSONValue {
+public interface JSONValue extends Serializable {
 
     /**
      * Create the appropriate external representation for this JSON value.

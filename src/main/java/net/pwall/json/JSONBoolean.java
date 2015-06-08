@@ -2,7 +2,7 @@
  * @(#) JSONBoolean.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014 Peter Wall
+ * Copyright (c) 2014, 2015 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,8 @@ import java.util.Objects;
  * @author Peter Wall
  */
 public class JSONBoolean implements JSONValue {
+
+    private static final long serialVersionUID = -3294980363221183247L;
 
     /** Constant {@code JSONBoolean} value for FALSE */
     public static final JSONBoolean FALSE = new JSONBoolean(false);

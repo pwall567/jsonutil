@@ -2,7 +2,7 @@
  * @(#) JSON.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014 Peter Wall
+ * Copyright (c) 2014, 2015 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -55,6 +55,8 @@ public class JSON {
                 return "\\\"";
             if (codePoint == '\\')
                 return "\\\\";
+            if (codePoint >= 0x20 && codePoint < 0x7F)
+                return null;
             if (codePoint == 0x08)
                 return "\\b";
             if (codePoint == 0x0C)
@@ -65,23 +67,20 @@ public class JSON {
                 return "\\r";
             if (codePoint == 0x09)
                 return "\\t";
-            if (codePoint < 0x20 || codePoint >= 0x7F) {
-                StringBuilder sb = new StringBuilder("\\u");
-                try {
-                    if (Character.isBmpCodePoint(codePoint))
-                        Strings.appendHex(sb, (char)codePoint);
-                    else {
-                        Strings.appendHex(sb, Character.highSurrogate(codePoint));
-                        sb.append("\\u");
-                        Strings.appendHex(sb, Character.lowSurrogate(codePoint));
-                    }
+            StringBuilder sb = new StringBuilder("\\u");
+            try {
+                if (Character.isBmpCodePoint(codePoint))
+                    Strings.appendHex(sb, (char)codePoint);
+                else {
+                    Strings.appendHex(sb, Character.highSurrogate(codePoint));
+                    sb.append("\\u");
+                    Strings.appendHex(sb, Character.lowSurrogate(codePoint));
                 }
-                catch (IOException e) {
-                    // can't happen - StringBuilder does not throw IOException
-                }
-                return sb.toString();
             }
-            return null;
+            catch (IOException e) {
+                // can't happen - StringBuilder does not throw IOException
+            }
+            return sb.toString();
         }
     };
 
@@ -220,9 +219,27 @@ public class JSON {
             String s = decodeString(p);
             return new JSONString(s);
         }
-        if (p.match('-') || p.matchDecFixed(1)) {
+        if (p.match('0')) {
             int start = p.getStart();
-            p.revert().match('-');
+            boolean floating = false;
+            if (p.match('.')) {
+                floating = true;
+                if (!p.matchDec())
+                    throw new IllegalArgumentException("Illegal JSON number");
+            }
+            if (p.matchIgnoreCase('e')) {
+                floating = true;
+                if (p.match('+') || p.match('-'))
+                    ; // do nothing - just step index
+                if (!p.matchDec())
+                    throw new IllegalArgumentException("Illegal JSON number");
+            }
+            if (floating)
+                return new JSONNumber(Double.parseDouble(p.getString(start, p.getIndex())));
+            return JSONNumber.ZERO;
+        }
+        if (p.match('-')) {
+            int start = p.getStart();
             if (!p.match('0') && !p.matchDec())
                 throw new IllegalArgumentException("Illegal JSON number");
             boolean floating = false;
@@ -241,24 +258,37 @@ public class JSON {
             int end = p.getIndex();
             if (floating)
                 return new JSONNumber(Double.parseDouble(p.getString(start, end)));
-            if (end - start < 10) {
-                int result = Integer.parseInt(p.getString(start, end));
-                if (result == 0)
-                    return JSONNumber.ZERO;
-                return new JSONNumber(result);
-            }
-            long result = Long.parseLong(p.getString(start, end));
-            if (result == 0L)
-                return JSONNumber.ZERO;
-            if (result >= Integer.MIN_VALUE && result <= Integer.MAX_VALUE)
-                return new JSONNumber((int)result);
-            return new JSONNumber(result);
+            return end - start < 10 ?
+                    JSONNumber.valueOf(Integer.parseInt(p.getString(start, end))) :
+                    JSONNumber.valueOf(Long.parseLong(p.getString(start, end)));
         }
-        if (p.match("true"))
+        if (p.matchDec()) {
+            int start = p.getStart();
+            boolean floating = false;
+            if (p.match('.')) {
+                floating = true;
+                if (!p.matchDec())
+                    throw new IllegalArgumentException("Illegal JSON number");
+            }
+            if (p.matchIgnoreCase('e')) {
+                floating = true;
+                if (p.match('+') || p.match('-'))
+                    ; // do nothing - just step index
+                if (!p.matchDec())
+                    throw new IllegalArgumentException("Illegal JSON number");
+            }
+            int end = p.getIndex();
+            if (floating)
+                return new JSONNumber(Double.parseDouble(p.getString(start, end)));
+            return end - start < 10 ?
+                    JSONNumber.valueOf(Integer.parseInt(p.getString(start, end))) :
+                    JSONNumber.valueOf(Long.parseLong(p.getString(start, end)));
+        }
+        if (p.matchName("true"))
             return JSONBoolean.TRUE;
-        if (p.match("false"))
+        if (p.matchName("false"))
             return JSONBoolean.FALSE;
-        if (p.match("null"))
+        if (p.matchName("null"))
             return null;
         throw new IllegalArgumentException("Illegal JSON syntax");
     }
@@ -304,6 +334,54 @@ public class JSON {
             a.append("null");
         else
             value.appendJSON(a);
+    }
+
+    public static String getString(JSONValue value) {
+        if (value == null)
+            return null;
+        if (!(value instanceof JSONString))
+            throw new IllegalStateException();
+        return ((JSONString)value).toString();
+    }
+
+    public static int getInt(JSONValue value) {
+        if (value == null)
+            return 0;
+        if (!(value instanceof JSONNumber))
+            throw new IllegalStateException();
+        return ((JSONNumber)value).intValue();
+    }
+
+    public static long getLong(JSONValue value) {
+        if (value == null)
+            return 0;
+        if (!(value instanceof JSONNumber))
+            throw new IllegalStateException();
+        return ((JSONNumber)value).longValue();
+    }
+
+    public static float getFloat(JSONValue value) {
+        if (value == null)
+            return 0;
+        if (!(value instanceof JSONNumber))
+            throw new IllegalStateException();
+        return ((JSONNumber)value).floatValue();
+    }
+
+    public static double getDouble(JSONValue value) {
+        if (value == null)
+            return 0;
+        if (!(value instanceof JSONNumber))
+            throw new IllegalStateException();
+        return ((JSONNumber)value).doubleValue();
+    }
+
+    public static boolean getBoolean(JSONValue value) {
+        if (value == null)
+            return false;
+        if (!(value instanceof JSONBoolean))
+            throw new IllegalStateException();
+        return ((JSONBoolean)value).booleanValue();
     }
 
 }

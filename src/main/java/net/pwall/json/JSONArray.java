@@ -2,7 +2,7 @@
  * @(#) JSONArray.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014 Peter Wall
+ * Copyright (c) 2014, 2015 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,9 +28,6 @@ package net.pwall.json;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
@@ -38,15 +35,14 @@ import java.util.Objects;
  *
  * @author Peter Wall
  */
-public class JSONArray implements JSONValue, Iterable<JSONValue> {
+public class JSONArray extends ArrayList<JSONValue> implements JSONValue {
 
-    private List<JSONValue> list;
+    private static final long serialVersionUID = -6963671812529472759L;
 
     /**
      * Construct an empty JSON array.
      */
     public JSONArray() {
-        list = new ArrayList<>();
     }
 
     /**
@@ -56,9 +52,8 @@ public class JSONArray implements JSONValue, Iterable<JSONValue> {
      * @throws  NullPointerException if the collection is {@code null}
      */
     public JSONArray(JSONValue[] array) {
-        list = new ArrayList<>();
         for (JSONValue item : Objects.requireNonNull(array))
-            list.add(item);
+            add(item);
     }
 
     /**
@@ -68,27 +63,7 @@ public class JSONArray implements JSONValue, Iterable<JSONValue> {
      * @throws  NullPointerException if the collection is {@code null}
      */
     public JSONArray(Collection<JSONValue> collection) {
-        list = new ArrayList<>(collection);
-    }
-
-    /**
-     * Get the specified item from the JSON array.
-     *
-     * @param   index   the index of the required item
-     * @return  the item at the requested index (may be {@code null})
-     * @throws  IndexOutOfBoundsException if the index is beyond the end of the array
-     */
-    public JSONValue get(int index) {
-        return list.get(index);
-    }
-
-    /**
-     * Add an item to the JSON array.
-     *
-     * @param   item    the item to add
-     */
-    public void add(JSONValue item) {
-        list.add(item);
+        super(collection);
     }
 
     /**
@@ -96,92 +71,169 @@ public class JSONArray implements JSONValue, Iterable<JSONValue> {
      * ({@link String}, {@link StringBuilder} etc.).
      *
      * @param   cs      the {@link CharSequence}
+     * @return          {@code this} (for chaining)
      * @throws  NullPointerException if the value is {@code null}
      */
-    public void addValue(CharSequence cs) {
-        list.add(new JSONString(cs));
+    public JSONArray addValue(CharSequence cs) {
+        add(new JSONString(cs));
+        return this;
     }
 
     /**
      * Add a {@link JSONNumber} to the JSON array representing the supplied {@code int}.
      *
      * @param   value   the value
+     * @return          {@code this} (for chaining)
      */
-    public void addValue(int value) {
-        list.add(value == 0 ? JSONNumber.ZERO : new JSONNumber(value));
+    public JSONArray addValue(int value) {
+        add(JSONNumber.valueOf(value));
+        return this;
     }
 
     /**
      * Add a {@link JSONNumber} to the JSON array representing the supplied {@code long}.
      *
      * @param   value   the value
+     * @return          {@code this} (for chaining)
      */
-    public void addValue(long value) {
-        list.add(new JSONNumber(value));
+    public JSONArray addValue(long value) {
+        add(JSONNumber.valueOf(value));
+        return this;
     }
 
     /**
      * Add a {@link JSONNumber} to the JSON array representing the supplied {@code float}.
      *
      * @param   value   the value
+     * @return          {@code this} (for chaining)
      */
-    public void addValue(float value) {
-        list.add(new JSONNumber(value));
+    public JSONArray addValue(float value) {
+        add(JSONNumber.valueOf(value));
+        return this;
     }
 
     /**
      * Add a {@link JSONNumber} to the JSON array representing the supplied {@code double}.
      *
      * @param   value   the value
+     * @return          {@code this} (for chaining)
      */
-    public void addValue(double value) {
-        list.add(new JSONNumber(value));
+    public JSONArray addValue(double value) {
+        add(JSONNumber.valueOf(value));
+        return this;
     }
 
     /**
      * Add a {@link JSONNumber} to the JSON array representing the supplied {@link Number}.
      *
      * @param   value   the value
+     * @return          {@code this} (for chaining)
      * @throws  NullPointerException if the value is {@code null}
      */
-    public void addValue(Number value) {
-        list.add(new JSONNumber(value));
+    public JSONArray addValue(Number value) {
+        add(new JSONNumber(value));
+        return this;
     }
 
     /**
      * Add a {@link JSONBoolean} to the JSON array representing the supplied {@code boolean}.
      *
      * @param   value   the value
+     * @return          {@code this} (for chaining)
      */
-    public void addValue(boolean value) {
-        list.add(JSONBoolean.valueOf(value));
+    public JSONArray addValue(boolean value) {
+        add(JSONBoolean.valueOf(value));
+        return this;
     }
 
     /**
      * Add a {@link JSONBoolean} to the JSON array representing the supplied {@link Boolean}.
      *
      * @param   value   the value
+     * @return          {@code this} (for chaining)
      * @throws  NullPointerException if the value is {@code null}
      */
-    public void addValue(Boolean value) {
-        list.add(JSONBoolean.valueOf(Objects.requireNonNull(value).booleanValue()));
+    public JSONArray addValue(Boolean value) {
+        add(JSONBoolean.valueOf(Objects.requireNonNull(value).booleanValue()));
+        return this;
     }
 
     /**
      * Add a {@code null} value to the JSON array.
+     *
+     * @return          {@code this} (for chaining)
      */
-    public void addNull() {
-        list.add(null);
+    public JSONArray addNull() {
+        add(null);
+        return this;
     }
 
     /**
-     * Return an {@link Iterator} over the items in the array.
+     * Get a {@link String} value from the array.  If the array entry is {@code null} return an
+     * empty string.
      *
-     * @return  the {@link Iterator}
+     * @param   index   the index of the value
+     * @return  the value
+     * @throws  IllegalStateException if the array entry is not a {@link JSONString}
      */
-    @Override
-    public Iterator<JSONValue> iterator() {
-        return new Iter();
+    public String getString(int index) {
+        return JSON.getString(get(index));
+    }
+
+    /**
+     * Get an {@code int} value from the array.  If the array entry is {@code null} return 0.
+     *
+     * @param   index   the index of the value
+     * @return  the value
+     * @throws  IllegalStateException if the array entry is not a {@link JSONNumber}
+     */
+    public int getInt(int index) {
+        return JSON.getInt(get(index));
+    }
+
+    /**
+     * Get a {@code long} value from the array.  If the array entry is {@code null} return 0.
+     *
+     * @param   index   the index of the value
+     * @return  the value
+     * @throws  IllegalStateException if the array entry is not a {@link JSONNumber}
+     */
+    public long getLong(int index) {
+        return JSON.getLong(get(index));
+    }
+
+    /**
+     * Get a {@code float} value from the array.  If the array entry is {@code null} return 0.
+     *
+     * @param   index   the index of the value
+     * @return  the value
+     * @throws  IllegalStateException if the array entry is not a {@link JSONNumber}
+     */
+    public float getFloat(int index) {
+        return JSON.getFloat(get(index));
+    }
+
+    /**
+     * Get a {@code double} value from the array.  If the array entry is {@code null} return 0.
+     *
+     * @param   index   the index of the value
+     * @return  the value
+     * @throws  IllegalStateException if the array entry is not a {@link JSONNumber}
+     */
+    public double getDouble(int index) {
+        return JSON.getDouble(get(index));
+    }
+
+    /**
+     * Get a {@code boolean} value from the array.  If the array entry is {@code null} return
+     * {@code false}.
+     *
+     * @param   index   the index of the value
+     * @return  the value
+     * @throws  IllegalStateException if the array entry is not a {@link JSONBoolean}
+     */
+    public boolean getBoolean(int index) {
+        return JSON.getBoolean(get(index));
     }
 
     /**
@@ -210,11 +262,11 @@ public class JSONArray implements JSONValue, Iterable<JSONValue> {
     @Override
     public void appendJSON(Appendable a) throws IOException {
         a.append('[');
-        if (list.size() > 0) {
+        if (size() > 0) {
             int i = 0;
             for (;;) {
-                JSON.appendJSON(a, list.get(i++));
-                if (i >= list.size())
+                JSON.appendJSON(a, get(i++));
+                if (i >= size())
                     break;
                 a.append(',');
             }
@@ -233,16 +285,6 @@ public class JSONArray implements JSONValue, Iterable<JSONValue> {
     }
 
     /**
-     * Return the hash code for the object.
-     *
-     * @return  the hash code
-     */
-    @Override
-    public int hashCode() {
-        return list.hashCode();
-    }
-
-    /**
      * Compare two JSON arrays for equality.
      *
      * @param   other   the other JSON array
@@ -250,37 +292,7 @@ public class JSONArray implements JSONValue, Iterable<JSONValue> {
      */
     @Override
     public boolean equals(Object other) {
-        return other instanceof JSONArray && list.equals(((JSONArray)other).list);
-    }
-
-    /**
-     * Inner class to implement {@link Iterator} interface.
-     */
-    private class Iter implements Iterator<JSONValue> {
-
-        private int index;
-
-        public Iter() {
-            index = 0;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return index < list.size();
-        }
-
-        @Override
-        public JSONValue next() {
-            if (!hasNext())
-                throw new NoSuchElementException();
-            return list.get(index++);
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-
+        return other instanceof JSONArray && super.equals(other);
     }
 
 }

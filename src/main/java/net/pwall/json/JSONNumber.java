@@ -2,7 +2,7 @@
  * @(#) JSONNumber.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014 Peter Wall
+ * Copyright (c) 2014, 2015 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,8 +33,9 @@ import java.util.Objects;
  *
  * @author Peter Wall
  */
-@SuppressWarnings("serial")
 public class JSONNumber extends Number implements JSONValue {
+
+    private static final long serialVersionUID = -414008228926856838L;
 
     public static final JSONNumber ZERO = new JSONNumber(0);
 
@@ -126,6 +127,24 @@ public class JSONNumber extends Number implements JSONValue {
     @Override
     public boolean equals(Object other) {
         return other instanceof JSONNumber && value.equals(((JSONNumber)other).get());
+    }
+
+    public static JSONNumber valueOf(int value) {
+        return value == 0 ? JSONNumber.ZERO : new JSONNumber(value);
+    }
+
+    public static JSONNumber valueOf(long value) {
+        return value == 0 ? JSONNumber.ZERO :
+                value >= Integer.MIN_VALUE && value <= Integer.MAX_VALUE ?
+                        new JSONNumber((int)value) : new JSONNumber(value);
+    }
+
+    public static JSONNumber valueOf(float value) {
+        return value == 0 ? JSONNumber.ZERO : new JSONNumber(value);
+    }
+
+    public static JSONNumber valueOf(double value) {
+        return value == 0 ? JSONNumber.ZERO : new JSONNumber(value);
     }
 
 }
