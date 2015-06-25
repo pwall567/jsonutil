@@ -40,6 +40,20 @@ import net.pwall.util.Strings;
  */
 public class JSON {
 
+    public static final String INVALID_CHAR_SEQ = "Invalid JSON character sequence";
+    public static final String EXCESS_CHARS = "Excess characters after JSON value";
+    public static final String ILLEGAL_KEY = "Illegal key in JSON object";
+    public static final String MISSING_COLON = "Missing colon in JSON object";
+    public static final String MISSING_CLOSING_BRACE = "Missing closing brace in JSON object";
+    public static final String MISSING_CLOSING_BRACKET =
+            "Missing closing bracket in JSON array";
+    public static final String ILLEGAL_NUMBER = "Illegal JSON number";
+    public static final String ILLEGAL_SYNTAX = "Illegal JSON syntax";
+    public static final String ILLEGAL_STRING = "Illegal JSON string";
+    public static final String NOT_A_STRING = "Not a JSON string";
+    public static final String NOT_A_NUMBER = "Not a JSON number";
+    public static final String NOT_A_BOOLEAN = "Not a JSON boolean";
+
     /**
      * A {@link CharMapper} for escaping JSON strings.
      *
@@ -99,7 +113,7 @@ public class JSON {
         @Override
         public int unmap(StringBuilder sb, CharSequence s, int offset) {
             if (offset + 1 >= s.length())
-                throw new IllegalArgumentException("Invalid JSON character sequence");
+                throw new IllegalArgumentException(INVALID_CHAR_SEQ);
             char ch = s.charAt(offset + 1);
             if (ch == '"') {
                 sb.append('"');
@@ -138,7 +152,7 @@ public class JSON {
                 sb.append((char)n);
                 return 6;
             }
-            throw new IllegalArgumentException("Invalid JSON character sequence");
+            throw new IllegalArgumentException(INVALID_CHAR_SEQ);
         }
     };
 
@@ -160,7 +174,7 @@ public class JSON {
         JSONValue result = parse(p);
         p.skipSpaces();
         if (!p.isExhausted())
-            throw new IllegalArgumentException("Excess characters after JSON value");
+            throw new IllegalArgumentException(EXCESS_CHARS);
         return result;
     }
 
@@ -181,11 +195,11 @@ public class JSON {
             if (!p.match('}')) {
                 for (;;) {
                     if (!p.match('"'))
-                        throw new IllegalArgumentException("Illegal key in JSON object");
+                        throw new IllegalArgumentException(ILLEGAL_KEY);
                     String key = decodeString(p);
                     p.skipSpaces();
                     if (!p.match(':'))
-                        throw new IllegalArgumentException("Missing colon in JSON object");
+                        throw new IllegalArgumentException(MISSING_COLON);
                     p.skipSpaces();
                     JSONValue value = parse(p);
                     object.put(key, value);
@@ -195,7 +209,7 @@ public class JSON {
                     p.skipSpaces();
                 }
                 if (!p.match('}'))
-                    throw new IllegalArgumentException("Missing closing brace in JSON object");
+                    throw new IllegalArgumentException(MISSING_CLOSING_BRACE);
             }
             return object;
         }
@@ -211,7 +225,7 @@ public class JSON {
                     p.skipSpaces();
                 }
                 if (!p.match(']'))
-                    throw new IllegalArgumentException("Missing closing bracket in JSON array");
+                    throw new IllegalArgumentException(MISSING_CLOSING_BRACKET);
             }
             return array;
         }
@@ -225,42 +239,41 @@ public class JSON {
             if (p.match('.')) {
                 floating = true;
                 if (!p.matchDec())
-                    throw new IllegalArgumentException("Illegal JSON number");
+                    throw new IllegalArgumentException(ILLEGAL_NUMBER);
             }
             if (p.matchIgnoreCase('e')) {
                 floating = true;
                 if (p.match('+') || p.match('-'))
                     ; // do nothing - just step index
                 if (!p.matchDec())
-                    throw new IllegalArgumentException("Illegal JSON number");
+                    throw new IllegalArgumentException(ILLEGAL_NUMBER);
             }
             if (floating)
-                return new JSONNumber(Double.parseDouble(p.getString(start, p.getIndex())));
-            return JSONNumber.ZERO;
+                return JSONDouble.valueOf(p.getString(start, p.getIndex()));
+            return JSONZero.ZERO;
         }
         if (p.match('-')) {
             int start = p.getStart();
             if (!p.match('0') && !p.matchDec())
-                throw new IllegalArgumentException("Illegal JSON number");
+                throw new IllegalArgumentException(ILLEGAL_NUMBER);
             boolean floating = false;
             if (p.match('.')) {
                 floating = true;
                 if (!p.matchDec())
-                    throw new IllegalArgumentException("Illegal JSON number");
+                    throw new IllegalArgumentException(ILLEGAL_NUMBER);
             }
             if (p.matchIgnoreCase('e')) {
                 floating = true;
                 if (p.match('+') || p.match('-'))
                     ; // do nothing - just step index
                 if (!p.matchDec())
-                    throw new IllegalArgumentException("Illegal JSON number");
+                    throw new IllegalArgumentException(ILLEGAL_NUMBER);
             }
             int end = p.getIndex();
             if (floating)
-                return new JSONNumber(Double.parseDouble(p.getString(start, end)));
-            return end - start < 10 ?
-                    JSONNumber.valueOf(Integer.parseInt(p.getString(start, end))) :
-                    JSONNumber.valueOf(Long.parseLong(p.getString(start, end)));
+                return JSONDouble.valueOf(p.getString(start, end));
+            return end - start < 10 ? JSONInteger.valueOf(p.getString(start, end)) :
+                    JSONLong.valueOf(p.getString(start, end));
         }
         if (p.matchDec()) {
             int start = p.getStart();
@@ -268,21 +281,20 @@ public class JSON {
             if (p.match('.')) {
                 floating = true;
                 if (!p.matchDec())
-                    throw new IllegalArgumentException("Illegal JSON number");
+                    throw new IllegalArgumentException(ILLEGAL_NUMBER);
             }
             if (p.matchIgnoreCase('e')) {
                 floating = true;
                 if (p.match('+') || p.match('-'))
                     ; // do nothing - just step index
                 if (!p.matchDec())
-                    throw new IllegalArgumentException("Illegal JSON number");
+                    throw new IllegalArgumentException(ILLEGAL_NUMBER);
             }
             int end = p.getIndex();
             if (floating)
-                return new JSONNumber(Double.parseDouble(p.getString(start, end)));
-            return end - start < 10 ?
-                    JSONNumber.valueOf(Integer.parseInt(p.getString(start, end))) :
-                    JSONNumber.valueOf(Long.parseLong(p.getString(start, end)));
+                return JSONDouble.valueOf(p.getString(start, end));
+            return end - start < 10 ? JSONInteger.valueOf(p.getString(start, end)) :
+                    JSONLong.valueOf(p.getString(start, end));
         }
         if (p.matchName("true"))
             return JSONBoolean.TRUE;
@@ -290,7 +302,7 @@ public class JSON {
             return JSONBoolean.FALSE;
         if (p.matchName("null"))
             return null;
-        throw new IllegalArgumentException("Illegal JSON syntax");
+        throw new IllegalArgumentException(ILLEGAL_SYNTAX);
     }
 
     /**
@@ -305,7 +317,7 @@ public class JSON {
     private static String decodeString(ParseText p) {
         String s = p.unescape(charUnmapper, '"');
         if (!p.match('"'))
-            throw new IllegalArgumentException("Illegal JSON string");
+            throw new IllegalArgumentException(ILLEGAL_STRING);
         return s;
     }
 
@@ -340,47 +352,47 @@ public class JSON {
         if (value == null)
             return null;
         if (!(value instanceof JSONString))
-            throw new IllegalStateException();
+            throw new IllegalStateException(NOT_A_STRING);
         return ((JSONString)value).toString();
     }
 
     public static int getInt(JSONValue value) {
         if (value == null)
             return 0;
-        if (!(value instanceof JSONNumber))
-            throw new IllegalStateException();
-        return ((JSONNumber)value).intValue();
+        if (!(value instanceof Number))
+            throw new IllegalStateException(NOT_A_NUMBER);
+        return ((Number)value).intValue();
     }
 
     public static long getLong(JSONValue value) {
         if (value == null)
             return 0;
-        if (!(value instanceof JSONNumber))
+        if (!(value instanceof Number))
             throw new IllegalStateException();
-        return ((JSONNumber)value).longValue();
+        return ((Number)value).longValue();
     }
 
     public static float getFloat(JSONValue value) {
         if (value == null)
             return 0;
-        if (!(value instanceof JSONNumber))
-            throw new IllegalStateException();
-        return ((JSONNumber)value).floatValue();
+        if (!(value instanceof Number))
+            throw new IllegalStateException(NOT_A_NUMBER);
+        return ((Number)value).floatValue();
     }
 
     public static double getDouble(JSONValue value) {
         if (value == null)
             return 0;
-        if (!(value instanceof JSONNumber))
-            throw new IllegalStateException();
-        return ((JSONNumber)value).doubleValue();
+        if (!(value instanceof Number))
+            throw new IllegalStateException(NOT_A_NUMBER);
+        return ((Number)value).doubleValue();
     }
 
     public static boolean getBoolean(JSONValue value) {
         if (value == null)
             return false;
         if (!(value instanceof JSONBoolean))
-            throw new IllegalStateException();
+            throw new IllegalStateException(NOT_A_BOOLEAN);
         return ((JSONBoolean)value).booleanValue();
     }
 

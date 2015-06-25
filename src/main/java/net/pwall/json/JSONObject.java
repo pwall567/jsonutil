@@ -72,32 +72,32 @@ public class JSONObject implements JSONValue, Map<String, JSONValue>, Iterable<S
     }
 
     /**
-     * Add a {@link JSONNumber} to the {@code JSONObject} representing the supplied {@code int}.
+     * Add a {@link JSONInteger} to the {@code JSONObject} representing the supplied
+     * {@code int}.
      *
      * @param   key     the key to use when storing the value
      * @param   value   the value
      * @return          {@code this} (for chaining)
      */
     public JSONObject putValue(String key, int value) {
-        put(key, JSONNumber.valueOf(value));
+        put(key, JSONInteger.valueOf(value));
         return this;
     }
 
     /**
-     * Add a {@link JSONNumber} to the {@code JSONObject} representing the supplied
-     * {@code long}.
+     * Add a {@link JSONLong} to the {@code JSONObject} representing the supplied {@code long}.
      *
      * @param   key     the key to use when storing the value
      * @param   value   the value
      * @return          {@code this} (for chaining)
      */
     public JSONObject putValue(String key, long value) {
-        put(key, JSONNumber.valueOf(value));
+        put(key, JSONLong.valueOf(value));
         return this;
     }
 
     /**
-     * Add a {@link JSONNumber} to the {@code JSONObject} representing the supplied
+     * Add a {@link JSONFloat} to the {@code JSONObject} representing the supplied
      * {@code float}.
      *
      * @param   key     the key to use when storing the value
@@ -105,12 +105,12 @@ public class JSONObject implements JSONValue, Map<String, JSONValue>, Iterable<S
      * @return          {@code this} (for chaining)
      */
     public JSONObject putValue(String key, float value) {
-        put(key, JSONNumber.valueOf(value));
+        put(key, JSONFloat.valueOf(value));
         return this;
     }
 
     /**
-     * Add a {@link JSONNumber} to the {@code JSONObject} representing the supplied
+     * Add a {@link JSONDouble} to the {@code JSONObject} representing the supplied
      * {@code double}.
      *
      * @param   key     the key to use when storing the value
@@ -118,25 +118,24 @@ public class JSONObject implements JSONValue, Map<String, JSONValue>, Iterable<S
      * @return          {@code this} (for chaining)
      */
     public JSONObject putValue(String key, double value) {
-        put(key, JSONNumber.valueOf(value));
+        put(key, JSONDouble.valueOf(value));
         return this;
     }
 
-    /**
-     * Add a {@link JSONNumber} to the {@code JSONObject} representing the supplied
-     * {@link Number}.
-     *
-     * @param   key     the key to use when storing the value
-     * @param   value   the value
-     * @return          {@code this} (for chaining)
-     */
-    public JSONObject putValue(String key, Number value) {
-        put(key, new JSONNumber(value));
-        return this;
-    }
+//    /**
+//     * Add a {@link JSONNumber} to the {@code JSONObject}.
+//     *
+//     * @param   key     the key to use when storing the value
+//     * @param   value   the value
+//     * @return          {@code this} (for chaining)
+//     */
+//    public JSONObject putValue(String key, Number value) {
+//        put(key, new JSONNumber(value));
+//        return this;
+//    }
 
     /**
-     * Add a {@link JSONNumber} to the {@code JSONObject} representing the supplied
+     * Add a {@link JSONBoolean} to the {@code JSONObject} representing the supplied
      * {@code boolean}.
      *
      * @param   key     the key to use when storing the value
@@ -149,8 +148,7 @@ public class JSONObject implements JSONValue, Map<String, JSONValue>, Iterable<S
     }
 
     /**
-     * Add a {@link JSONNumber} to the {@code JSONObject} representing the supplied
-     * {@link Boolean}.
+     * Add a {@link JSONBoolean} to the {@code JSONObject}.
      *
      * @param   key     the key to use when storing the value
      * @param   value   the value
@@ -410,7 +408,8 @@ public class JSONObject implements JSONValue, Map<String, JSONValue>, Iterable<S
      */
     @Override
     public String toJSON() {
-        StringBuilder sb = new StringBuilder();
+        int estimate = size() * 40;
+        StringBuilder sb = new StringBuilder(estimate);
         try {
             appendJSON(sb);
         }

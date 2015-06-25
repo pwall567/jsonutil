@@ -80,60 +80,60 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONValue {
     }
 
     /**
-     * Add a {@link JSONNumber} to the JSON array representing the supplied {@code int}.
+     * Add a {@link JSONInteger} to the JSON array representing the supplied {@code int}.
      *
      * @param   value   the value
      * @return          {@code this} (for chaining)
      */
     public JSONArray addValue(int value) {
-        add(JSONNumber.valueOf(value));
+        add(JSONInteger.valueOf(value));
         return this;
     }
 
     /**
-     * Add a {@link JSONNumber} to the JSON array representing the supplied {@code long}.
+     * Add a {@link JSONLong} to the JSON array representing the supplied {@code long}.
      *
      * @param   value   the value
      * @return          {@code this} (for chaining)
      */
     public JSONArray addValue(long value) {
-        add(JSONNumber.valueOf(value));
+        add(JSONLong.valueOf(value));
         return this;
     }
 
     /**
-     * Add a {@link JSONNumber} to the JSON array representing the supplied {@code float}.
+     * Add a {@link JSONFloat} to the JSON array representing the supplied {@code float}.
      *
      * @param   value   the value
      * @return          {@code this} (for chaining)
      */
     public JSONArray addValue(float value) {
-        add(JSONNumber.valueOf(value));
+        add(JSONFloat.valueOf(value));
         return this;
     }
 
     /**
-     * Add a {@link JSONNumber} to the JSON array representing the supplied {@code double}.
+     * Add a {@link JSONDouble} to the JSON array representing the supplied {@code double}.
      *
      * @param   value   the value
      * @return          {@code this} (for chaining)
      */
     public JSONArray addValue(double value) {
-        add(JSONNumber.valueOf(value));
+        add(JSONDouble.valueOf(value));
         return this;
     }
 
-    /**
-     * Add a {@link JSONNumber} to the JSON array representing the supplied {@link Number}.
-     *
-     * @param   value   the value
-     * @return          {@code this} (for chaining)
-     * @throws  NullPointerException if the value is {@code null}
-     */
-    public JSONArray addValue(Number value) {
-        add(new JSONNumber(value));
-        return this;
-    }
+//    /**
+//     * Add a {@link JSONNumber} to the JSON array representing the supplied {@link Number}.
+//     *
+//     * @param   value   the value
+//     * @return          {@code this} (for chaining)
+//     * @throws  NullPointerException if the value is {@code null}
+//     */
+//    public JSONArray addValue(Number value) {
+//        add(new JSONNumber(value));
+//        return this;
+//    }
 
     /**
      * Add a {@link JSONBoolean} to the JSON array representing the supplied {@code boolean}.
@@ -185,7 +185,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONValue {
      *
      * @param   index   the index of the value
      * @return  the value
-     * @throws  IllegalStateException if the array entry is not a {@link JSONNumber}
+     * @throws  IllegalStateException if the array entry is not a {@link Number}
      */
     public int getInt(int index) {
         return JSON.getInt(get(index));
@@ -196,7 +196,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONValue {
      *
      * @param   index   the index of the value
      * @return  the value
-     * @throws  IllegalStateException if the array entry is not a {@link JSONNumber}
+     * @throws  IllegalStateException if the array entry is not a {@link Number}
      */
     public long getLong(int index) {
         return JSON.getLong(get(index));
@@ -207,7 +207,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONValue {
      *
      * @param   index   the index of the value
      * @return  the value
-     * @throws  IllegalStateException if the array entry is not a {@link JSONNumber}
+     * @throws  IllegalStateException if the array entry is not a {@link Number}
      */
     public float getFloat(int index) {
         return JSON.getFloat(get(index));
@@ -218,7 +218,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONValue {
      *
      * @param   index   the index of the value
      * @return  the value
-     * @throws  IllegalStateException if the array entry is not a {@link JSONNumber}
+     * @throws  IllegalStateException if the array entry is not a {@link Number}
      */
     public double getDouble(int index) {
         return JSON.getDouble(get(index));
@@ -243,7 +243,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONValue {
      */
     @Override
     public String toJSON() {
-        StringBuilder sb = new StringBuilder();
+        int estimate = size() * 20;
+        StringBuilder sb = new StringBuilder(estimate);
         try {
             appendJSON(sb);
         }

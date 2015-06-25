@@ -66,7 +66,8 @@ public class JSONString implements JSONValue, CharSequence {
 
     @Override
     public String toJSON() {
-        StringBuilder sb = new StringBuilder();
+        int estimate = value.length() + 20;
+        StringBuilder sb = new StringBuilder(estimate);
         try {
             appendJSON(sb);
         }
@@ -79,7 +80,41 @@ public class JSONString implements JSONValue, CharSequence {
     @Override
     public void appendJSON(Appendable a) throws IOException {
         a.append('"');
-        Strings.appendEscaped(a, value, JSON.charMapper);
+        for (int i = 0, n = value.length(); i < n; ) {
+            char ch = value.charAt(i++);
+            if (ch == '"' || ch == '\\') {
+                a.append('\\');
+                a.append(ch);
+            }
+            else if (ch >= 0x20 && ch < 0x7F) {
+                a.append(ch);
+            }
+            else if (ch == '\b') {
+                a.append('\\');
+                a.append('b');
+            }
+            else if (ch == '\f') {
+                a.append('\\');
+                a.append('f');
+            }
+            else if (ch == '\n') {
+                a.append('\\');
+                a.append('n');
+            }
+            else if (ch == '\r') {
+                a.append('\\');
+                a.append('r');
+            }
+            else if (ch == '\t') {
+                a.append('\\');
+                a.append('t');
+            }
+            else {
+                a.append('\\');
+                a.append('u');
+                Strings.appendHex(a, ch);
+            }
+        }
         a.append('"');
     }
 
