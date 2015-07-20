@@ -25,7 +25,12 @@
 
 package net.pwall.json;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 import net.pwall.util.CharMapper;
 import net.pwall.util.CharUnmapper;
@@ -160,6 +165,85 @@ public class JSON {
      * Private constructor to prevent instantiation.
      */
     private JSON() {
+    }
+
+    /**
+     * Parse the contents of a {@link File} as a JSON value.
+     *
+     * @param   f       the {@link File}
+     * @return          the JSON value
+     * @throws  IllegalArgumentException if the file does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     */
+    public static JSONValue parse(File f) throws IOException {
+        try (InputStream is = new FileInputStream(f)) {
+            return parse(is);
+        }
+    }
+
+    /**
+     * Parse the contents of a {@link File} as a JSON value, specifying the character set by
+     * name.
+     *
+     * @param   f       the {@link File}
+     * @param   charSet the character set name
+     * @return          the JSON value
+     * @throws  IllegalArgumentException if the file does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     */
+    public static JSONValue parse(File f, String charSet) throws IOException {
+        try (InputStream is = new FileInputStream(f)) {
+            return parse(is, charSet);
+        }
+    }
+
+    /**
+     * Parse a sequence of characters from an {@link InputStream} as a JSON value.
+     *
+     * @param   is      the {@link InputStream}
+     * @return          the JSON value
+     * @throws  IllegalArgumentException if the stream does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     */
+    public static JSONValue parse(InputStream is) throws IOException {
+        try (Reader rdr = new InputStreamReader(is)) {
+            return parse(rdr);
+        }
+    }
+
+    /**
+     * Parse a sequence of characters from an {@link InputStream} as a JSON value, specifying
+     * the character set by name.
+     *
+     * @param   is      the {@link InputStream}
+     * @param   charSet the character set name
+     * @return          the JSON value
+     * @throws  IllegalArgumentException if the stream does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     */
+    public static JSONValue parse(InputStream is, String charSet) throws IOException {
+        try (Reader rdr = new InputStreamReader(is, charSet)) {
+            return parse(rdr);
+        }
+    }
+
+    /**
+     * Parse a sequence of characters from a {@link Reader} as a JSON value.
+     *
+     * @param   rdr     the {@link Reader}
+     * @return          the JSON value
+     * @throws  IllegalArgumentException if the sequence does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     */
+    public static JSONValue parse(Reader rdr) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        for (;;) {
+            int i = rdr.read();
+            if (i < 0)
+                break;
+            sb.append((char)i);
+        }
+        return parse(sb);
     }
 
     /**
