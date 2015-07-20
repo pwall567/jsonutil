@@ -58,6 +58,8 @@ public class JSON {
     public static final String NOT_A_STRING = "Not a JSON string";
     public static final String NOT_A_NUMBER = "Not a JSON number";
     public static final String NOT_A_BOOLEAN = "Not a JSON boolean";
+    public static final String NOT_AN_ARRAY = "Not a JSON array";
+    public static final String NOT_AN_OBJECT = "Not a JSON object";
 
     /**
      * A {@link CharMapper} for escaping JSON strings.
@@ -478,6 +480,22 @@ public class JSON {
         if (!(value instanceof JSONBoolean))
             throw new IllegalStateException(NOT_A_BOOLEAN);
         return ((JSONBoolean)value).booleanValue();
+    }
+
+    public static JSONArray getArray(JSONValue value) {
+        if (value == null)
+            return null;
+        if (!(value instanceof JSONArray))
+            throw new IllegalStateException(NOT_AN_ARRAY);
+        return (JSONArray)value;
+    }
+
+    public static JSONObject getObject(JSONValue value) {
+        if (value == null)
+            return null;
+        if (!(value instanceof JSONObject))
+            throw new IllegalStateException(NOT_AN_OBJECT);
+        return (JSONObject)value;
     }
 
 }

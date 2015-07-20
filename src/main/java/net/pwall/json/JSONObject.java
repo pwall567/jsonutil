@@ -237,6 +237,28 @@ public class JSONObject implements JSONValue, Map<String, JSONValue>, Iterable<S
     }
 
     /**
+     * Get a value from the {@code JSONObject} as a {@code JSONArray}.
+     *
+     * @param   key     the key of the value
+     * @return  the value
+     * @throws  IllegalStateException if the array entry is not a {@link JSONArray}
+     */
+    public JSONArray getArray(String key) {
+        return JSON.getArray(get(key));
+    }
+
+    /**
+     * Get a value from the {@code JSONObject} as a {@code JSONObject}.
+     *
+     * @param   key     the key of the value
+     * @return  the value
+     * @throws  IllegalStateException if the array entry is not a {@link JSONArray}
+     */
+    public JSONObject getObject(String key) {
+        return JSON.getObject(get(key));
+    }
+
+    /**
      * Get a value from the {@code JSONObject}.
      *
      * @param   key     the key of the value
@@ -263,7 +285,7 @@ public class JSONObject implements JSONValue, Map<String, JSONValue>, Iterable<S
 
     /**
      * Store a value in the {@code JSONObject} with the specified key.
-     * 
+     *
      * @param   key     the key
      * @param   value   the value
      * @return          the previous value stored with that key, or {@code null} if no previous

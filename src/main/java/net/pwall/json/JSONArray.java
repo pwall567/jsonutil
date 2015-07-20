@@ -237,6 +237,30 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONValue {
     }
 
     /**
+     * Get a {@link JSONArray} value from the array.  If the array entry is {@code null} return
+     * {@code null}.
+     *
+     * @param   index   the index of the value
+     * @return  the value
+     * @throws  IllegalStateException if the array entry is not a {@link JSONArray}
+     */
+    public JSONArray getArray(int index) {
+        return JSON.getArray(get(index));
+    }
+
+    /**
+     * Get a {@link JSONObject} value from the array.  If the array entry is {@code null} return
+     * {@code null}.
+     *
+     * @param   index   the index of the value
+     * @return  the value
+     * @throws  IllegalStateException if the array entry is not a {@link JSONArray}
+     */
+    public JSONObject getObject(int index) {
+        return JSON.getObject(get(index));
+    }
+
+    /**
      * Create the external representation for this JSON array.
      *
      * @return  the JSON representation for this array
