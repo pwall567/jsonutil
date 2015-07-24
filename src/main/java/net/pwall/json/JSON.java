@@ -434,6 +434,14 @@ public class JSON {
             value.appendJSON(a);
     }
 
+    /**
+     * Get a {@link String} from a {@link JSONValue}.  Return {@code null} if the
+     * {@link JSONValue} is {@code null}.
+     *
+     * @param   value   the {@link JSONValue}
+     * @return  the value as a {@link String}
+     * @throws  IllegalStateException if the value is not a string
+     */
     public static String getString(JSONValue value) {
         if (value == null)
             return null;
@@ -442,6 +450,14 @@ public class JSON {
         return ((JSONString)value).toString();
     }
 
+    /**
+     * Get an {@code int} from a {@link JSONValue}.  Return 0 if the {@link JSONValue} is
+     * {@code null}.
+     *
+     * @param   value   the {@link JSONValue}
+     * @return  the value as an {@code int}
+     * @throws  IllegalStateException if the value is not a number
+     */
     public static int getInt(JSONValue value) {
         if (value == null)
             return 0;
@@ -450,6 +466,14 @@ public class JSON {
         return ((Number)value).intValue();
     }
 
+    /**
+     * Get a {@code long} from a {@link JSONValue}.  Return 0 if the {@link JSONValue} is
+     * {@code null}.
+     *
+     * @param   value   the {@link JSONValue}
+     * @return  the value as a {@code long}
+     * @throws  IllegalStateException if the value is not a number
+     */
     public static long getLong(JSONValue value) {
         if (value == null)
             return 0;
@@ -458,6 +482,14 @@ public class JSON {
         return ((Number)value).longValue();
     }
 
+    /**
+     * Get a {@code float} from a {@link JSONValue}.  Return 0 if the {@link JSONValue} is
+     * {@code null}.
+     *
+     * @param   value   the {@link JSONValue}
+     * @return  the value as a {@code float}
+     * @throws  IllegalStateException if the value is not a number
+     */
     public static float getFloat(JSONValue value) {
         if (value == null)
             return 0;
@@ -466,6 +498,14 @@ public class JSON {
         return ((Number)value).floatValue();
     }
 
+    /**
+     * Get a {@code double} from a {@link JSONValue}.  Return 0 if the {@link JSONValue} is
+     * {@code null}.
+     *
+     * @param   value   the {@link JSONValue}
+     * @return  the value as a {@code double}
+     * @throws  IllegalStateException if the value is not a number
+     */
     public static double getDouble(JSONValue value) {
         if (value == null)
             return 0;
@@ -474,6 +514,14 @@ public class JSON {
         return ((Number)value).doubleValue();
     }
 
+    /**
+     * Get a {@code boolean} from a {@link JSONValue}.  Return {@code false} if the
+     * {@link JSONValue} is {@code null}.
+     *
+     * @param   value   the {@link JSONValue}
+     * @return  the value as a {@code boolean}
+     * @throws  IllegalStateException if the value is not a boolean
+     */
     public static boolean getBoolean(JSONValue value) {
         if (value == null)
             return false;
@@ -482,6 +530,14 @@ public class JSON {
         return ((JSONBoolean)value).booleanValue();
     }
 
+    /**
+     * Get a {@link JSONArray} from a {@link JSONValue}.  Return {@code null} if the
+     * {@link JSONValue} is {@code null}.
+     *
+     * @param   value   the {@link JSONValue}
+     * @return  the value as a {@link JSONArray}
+     * @throws  IllegalStateException if the value is not an array
+     */
     public static JSONArray getArray(JSONValue value) {
         if (value == null)
             return null;
@@ -490,6 +546,14 @@ public class JSON {
         return (JSONArray)value;
     }
 
+    /**
+     * Get a {@link JSONObject} from a {@link JSONValue}.  Return {@code null} if the
+     * {@link JSONValue} is {@code null}.
+     *
+     * @param   value   the {@link JSONValue}
+     * @return  the value as a {@link JSONObject}
+     * @throws  IllegalStateException if the value is not an object
+     */
     public static JSONObject getObject(JSONValue value) {
         if (value == null)
             return null;

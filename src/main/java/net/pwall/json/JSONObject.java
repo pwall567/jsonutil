@@ -174,7 +174,7 @@ public class JSONObject implements JSONValue, Map<String, JSONValue>, Iterable<S
      * Get a value from the {@code JSONObject} as a {@link String}.
      *
      * @param   key     the key of the value
-     * @return          the value, or an empty string if not found
+     * @return          the value, or {@code null} if not found
      * @throws  IllegalStateException if the value is found but is not a string
      */
     public String getString(String key) {
@@ -241,7 +241,7 @@ public class JSONObject implements JSONValue, Map<String, JSONValue>, Iterable<S
      *
      * @param   key     the key of the value
      * @return  the value
-     * @throws  IllegalStateException if the array entry is not a {@link JSONArray}
+     * @throws  IllegalStateException if the array entry is not an array
      */
     public JSONArray getArray(String key) {
         return JSON.getArray(get(key));
@@ -251,8 +251,8 @@ public class JSONObject implements JSONValue, Map<String, JSONValue>, Iterable<S
      * Get a value from the {@code JSONObject} as a {@code JSONObject}.
      *
      * @param   key     the key of the value
-     * @return  the value
-     * @throws  IllegalStateException if the array entry is not a {@link JSONArray}
+     * @return          the value, or {@code null} if not found
+     * @throws  IllegalStateException if the array entry is not an object
      */
     public JSONObject getObject(String key) {
         return JSON.getObject(get(key));

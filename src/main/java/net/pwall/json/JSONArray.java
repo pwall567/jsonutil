@@ -169,8 +169,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONValue {
     }
 
     /**
-     * Get a {@link String} value from the array.  If the array entry is {@code null} return an
-     * empty string.
+     * Get a {@link String} value from the array.  If the array entry is {@code null} return
+     * {@code null}.
      *
      * @param   index   the index of the value
      * @return  the value
