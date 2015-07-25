@@ -26,7 +26,7 @@
 package net.pwall.json;
 
 /**
- * Extyended interface for numeric JSON values.
+ * Extended interface for numeric JSON values.
  *
  * @author Peter Wall
  */
