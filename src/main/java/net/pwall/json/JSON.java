@@ -25,6 +25,7 @@
 
 package net.pwall.json;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -164,9 +165,13 @@ public class JSON {
     };
 
     /**
-     * Private constructor to prevent instantiation.
+     * Private constructor to prevent instantiation.  Attempts to instantiate the class via
+     * reflection will cause an {@link IllegalAccessException}.
+     *
+     * @throws  IllegalAccessException in all cases
      */
-    private JSON() {
+    private JSON() throws IllegalAccessException {
+        throw new IllegalAccessException("Attempt to instantiate JSON");
     }
 
     /**
@@ -238,6 +243,8 @@ public class JSON {
      * @throws  IOException on any I/O errors
      */
     public static JSONValue parse(Reader rdr) throws IOException {
+        if (!(rdr instanceof BufferedReader))
+            rdr = new BufferedReader(rdr);
         StringBuilder sb = new StringBuilder();
         for (;;) {
             int i = rdr.read();
