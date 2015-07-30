@@ -320,4 +320,16 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONValue {
         return other instanceof JSONArray && super.equals(other);
     }
 
+    /**
+     * Convenience method to create a {@code JSONArray}.  Supports the idiom:
+     * <pre>
+     *     JSONArray arr = JSONArray.create().addValue(0).addValue(1).addValue(2);
+     * </pre>
+     *
+     * @return  the new {@code JSONArray}
+     */
+    public static JSONArray create() {
+        return new JSONArray();
+    }
+
 }

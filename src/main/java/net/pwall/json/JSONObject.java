@@ -527,6 +527,18 @@ public class JSONObject implements JSONValue, Map<String, JSONValue>, Iterable<S
     }
 
     /**
+     * Convenience method to create a {@code JSONObject}.  Supports the idiom:
+     * <pre>
+     *     JSONObject obj = JSONObject.create().putValue("zero", 0).putValue("one", 1);
+     * </pre>
+     *
+     * @return  the new {@code JSONObject}
+     */
+    public static JSONObject create() {
+        return new JSONObject();
+    }
+
+    /**
      * Inner class to represent a key-value pair in the {@code JSONObject}.
      */
     public static class Entry implements Map.Entry<String, JSONValue>, Serializable {
