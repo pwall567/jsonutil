@@ -55,7 +55,12 @@ public class JSON {
             "Missing closing bracket in JSON array";
     public static final String ILLEGAL_NUMBER = "Illegal JSON number";
     public static final String ILLEGAL_SYNTAX = "Illegal JSON syntax";
-    public static final String ILLEGAL_STRING = "Illegal JSON string";
+    public static final String ILLEGAL_STRING_TERM = "Unterminated JSON string";
+    public static final String ILLEGAL_STRING_CHAR = "Illegal character in JSON string";
+    public static final String ILLEGAL_STRING_UNICODE =
+            "Illegal Unicode sequence in JSON string";
+    public static final String ILLEGAL_STRING_ESCAPE =
+            "Illegal escape sequence in JSON string";
     public static final String NOT_A_STRING = "Not a JSON string";
     public static final String NOT_A_NUMBER = "Not a JSON number";
     public static final String NOT_A_BOOLEAN = "Not a JSON boolean";
@@ -401,17 +406,69 @@ public class JSON {
     /**
      * Decode a JSON string, interpreting backslash sequences.  The {@link ParseText} is
      * assumed to be positioned just after the opening quote, and it is left positioned after
-     * the closing quote.
+     * the closing quote.  This method does not check for UTF-16 surrogate sequences;
+     * well-formed UTF-16 will pass through correctly, but so will incorrect data.
      *
      * @param   p   the {@link ParseText}
      * @return  the string
      * @throws  IllegalArgumentException if the string is not valid, or not properly terminated
      */
     private static String decodeString(ParseText p) {
-        String s = p.unescape(charUnmapper, '"');
-        if (!p.match('"'))
-            throw new IllegalArgumentException(ILLEGAL_STRING);
-        return s;
+        // start by assuming we can take a substring from the input
+        int start = p.getIndex();
+        for (;;) {
+            if (p.isExhausted())
+                throw new IllegalArgumentException(ILLEGAL_STRING_TERM);
+            char ch = p.getChar();
+            if (ch == '"')
+                return p.getString(start, p.getStart());
+            if (ch == '\\')
+                break;
+            if (ch < 0x20)
+                throw new IllegalArgumentException(ILLEGAL_STRING_CHAR);
+        }
+        // found a backslash, so we need to build a new string
+        StringBuilder sb = new StringBuilder(p.getString(start, p.getStart()));
+        for (;;) {
+            if (p.isExhausted())
+                throw new IllegalArgumentException(ILLEGAL_STRING_TERM);
+            char ch = p.getChar();
+            if (ch == '"')
+                sb.append('"');
+            else if (ch == '\\')
+                sb.append('\\');
+            else if (ch == '/')
+                sb.append('/');
+            else if (ch == 'b')
+                sb.append('\b');
+            else if (ch == 'f')
+                sb.append('\f');
+            else if (ch == 'n')
+                sb.append('\n');
+            else if (ch == 'r')
+                sb.append('\r');
+            else if (ch == 't')
+                sb.append('\t');
+            else if (ch == 'u') {
+                if (!p.matchHexFixed(4))
+                    throw new IllegalArgumentException(ILLEGAL_STRING_UNICODE);
+                sb.append((char)p.getResultHexInt());
+            }
+            else
+                throw new IllegalArgumentException(ILLEGAL_STRING_ESCAPE);
+            for (;;) {
+                if (p.isExhausted())
+                    throw new IllegalArgumentException(ILLEGAL_STRING_TERM);
+                ch = p.getChar();
+                if (ch == '"')
+                    return sb.toString();
+                if (ch == '\\')
+                    break;
+                if (ch < 0x20)
+                    throw new IllegalArgumentException(ILLEGAL_STRING_CHAR);
+                sb.append(ch);
+            }
+        }
     }
 
     /**
