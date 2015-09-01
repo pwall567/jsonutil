@@ -44,7 +44,7 @@ import net.pwall.util.Strings;
  *
  * @author Peter Wall
  */
-public class JSONObject implements JSONValue, Map<String, JSONValue>, Iterable<String> {
+public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterable<String> {
 
     private static final long serialVersionUID = 4424892153019501302L;
 
@@ -417,6 +417,7 @@ public class JSONObject implements JSONValue, Map<String, JSONValue>, Iterable<S
      * Get an {@link Iterator} over the names (keys) of the members of the object.
      *
      * @return  an {@link Iterator}
+     * @see     Iterable#iterator()
      */
     @Override
     public Iterator<String> iterator() {
@@ -427,6 +428,7 @@ public class JSONObject implements JSONValue, Map<String, JSONValue>, Iterable<S
      * Create the external representation for this {@code JSONObject}.
      *
      * @return  the JSON representation for this object
+     * @see     JSONValue#toJSON()
      */
     @Override
     public String toJSON() {
@@ -446,6 +448,7 @@ public class JSONObject implements JSONValue, Map<String, JSONValue>, Iterable<S
      *
      * @param   a   the {@link Appendable}
      * @throws  IOException     if thrown by the {@link Appendable}
+     * @see     JSONValue#appendJSON(Appendable)
      */
     @Override
     public void appendJSON(Appendable a) throws IOException {
@@ -465,6 +468,21 @@ public class JSONObject implements JSONValue, Map<String, JSONValue>, Iterable<S
             }
         }
         a.append('}');
+    }
+
+    /**
+     * Test whether the composite is "simple", i.e. it contains only non-composite values (to
+     * assist with formatting).
+     *
+     * @return  {@code true} if the composite is simple
+     * @see     JSONComposite#isSimple()
+     */
+    @Override
+    public boolean isSimple() {
+        for (int i = 0; i < list.size(); i++)
+            if (list.get(i).getValue() instanceof JSONComposite)
+                return false;
+        return true;
     }
 
     /**
@@ -511,6 +529,16 @@ public class JSONObject implements JSONValue, Map<String, JSONValue>, Iterable<S
             if (!Objects.equals(entry.getValue(), otherObj.get(entry.getKey())))
                 return false;
         return true;
+    }
+
+    /**
+     * Get an {@link Entry} by index.
+     *
+     * @param   index   the index
+     * @return  the list entry
+     */
+    public Entry getEntry(int index) {
+        return list.get(index);
     }
 
     /**

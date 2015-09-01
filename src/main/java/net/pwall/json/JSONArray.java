@@ -35,7 +35,7 @@ import java.util.Objects;
  *
  * @author Peter Wall
  */
-public class JSONArray extends ArrayList<JSONValue> implements JSONValue {
+public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
 
     private static final long serialVersionUID = -6963671812529472759L;
 
@@ -264,6 +264,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONValue {
      * Create the external representation for this JSON array.
      *
      * @return  the JSON representation for this array
+     * @see     JSONValue#toJSON()
      */
     @Override
     public String toJSON() {
@@ -283,6 +284,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONValue {
      *
      * @param   a   the {@link Appendable}
      * @throws  IOException     if thrown by the {@link Appendable}
+     * @see     JSONValue#appendJSON(Appendable)
      */
     @Override
     public void appendJSON(Appendable a) throws IOException {
@@ -297,6 +299,21 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONValue {
             }
         }
         a.append(']');
+    }
+
+    /**
+     * Test whether the composite is "simple", i.e. it contains only non-composite values (to
+     * assist with formatting).
+     *
+     * @return  {@code true} if the composite is simple
+     * @see     JSONComposite#isSimple()
+     */
+    @Override
+    public boolean isSimple() {
+        for (int i = 0; i < size(); i++)
+            if (get(i) instanceof JSONComposite)
+                return false;
+        return true;
     }
 
     /**
