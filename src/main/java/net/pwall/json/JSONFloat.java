@@ -41,6 +41,10 @@ public class JSONFloat extends Number implements JSONNumberValue {
     private float value;
 
     public JSONFloat(float value) {
+        if (Float.isNaN(value))
+            throw new IllegalArgumentException("Can't store NaN as JSON");
+        if (Float.isInfinite(value))
+            throw new IllegalArgumentException("Can't store infinity as JSON");
         this.value = value;
     }
 
