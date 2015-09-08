@@ -123,18 +123,6 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
         return this;
     }
 
-    public JSONArray addJSONValues(Collection<JSONValue> collection) {
-        for (JSONValue value : collection)
-            add(value);
-        return this;
-    }
-
-    public JSONArray addJSONValues(JSONValue[] array) {
-        for (int i = 0, n = array.length; i < n; i++)
-            add(array[i]);
-        return this;
-    }
-
     public <T extends CharSequence> JSONArray addValues(Collection<T> collection) {
         for (CharSequence value : collection)
             addValue(value);
