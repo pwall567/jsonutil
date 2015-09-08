@@ -123,30 +123,6 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
         return this;
     }
 
-    public <T extends CharSequence> JSONArray addValues(Collection<T> collection) {
-        for (CharSequence value : collection)
-            addValue(value);
-        return this;
-    }
-
-    public <T extends CharSequence> JSONArray addValues(T[] array) {
-        for (int i = 0, n = array.length; i < n; i++)
-            addValue(array[i]);
-        return this;
-    }
-
-//    /**
-//     * Add a {@link JSONNumber} to the JSON array representing the supplied {@link Number}.
-//     *
-//     * @param   value   the value
-//     * @return          {@code this} (for chaining)
-//     * @throws  NullPointerException if the value is {@code null}
-//     */
-//    public JSONArray addValue(Number value) {
-//        add(new JSONNumber(value));
-//        return this;
-//    }
-
     /**
      * Add a {@link JSONBoolean} to the JSON array representing the supplied {@code boolean}.
      *
@@ -167,6 +143,42 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
      */
     public JSONArray addValue(Boolean value) {
         add(JSONBoolean.valueOf(Objects.requireNonNull(value).booleanValue()));
+        return this;
+    }
+
+    public <T extends CharSequence> JSONArray addValues(Collection<T> collection) {
+        for (CharSequence value : collection)
+            addValue(value);
+        return this;
+    }
+
+    public <T extends CharSequence> JSONArray addValues(T[] array) {
+        for (int i = 0, n = array.length; i < n; i++)
+            addValue(array[i]);
+        return this;
+    }
+
+    public JSONArray addValues(int[] array) {
+        for (int i = 0, n = array.length; i < n; i++)
+            addValue(array[i]);
+        return this;
+    }
+
+    public JSONArray addValues(long[] array) {
+        for (int i = 0, n = array.length; i < n; i++)
+            addValue(array[i]);
+        return this;
+    }
+
+    public JSONArray addValues(float[] array) {
+        for (int i = 0, n = array.length; i < n; i++)
+            addValue(array[i]);
+        return this;
+    }
+
+    public JSONArray addValues(double[] array) {
+        for (int i = 0, n = array.length; i < n; i++)
+            addValue(array[i]);
         return this;
     }
 
