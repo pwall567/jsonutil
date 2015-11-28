@@ -82,7 +82,8 @@ public class JSONBoolean implements JSONValue {
 
     @Override
     public boolean equals(Object other) {
-        return other instanceof JSONBoolean && value == ((JSONBoolean)other).get();
+        return other == this ||
+                other instanceof JSONBoolean && value == ((JSONBoolean)other).get();
     }
 
     public static JSONBoolean valueOf(boolean b) {

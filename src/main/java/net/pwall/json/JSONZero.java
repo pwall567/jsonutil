@@ -91,7 +91,8 @@ public class JSONZero extends Number implements JSONNumberValue {
 
     @Override
     public boolean equals(Object other) {
-        return other instanceof JSONNumberValue && ((JSONNumberValue)other).valueEquals(0);
+        return other == this ||
+                other instanceof JSONNumberValue && ((JSONNumberValue)other).valueEquals(0);
     }
 
     @Override

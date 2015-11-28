@@ -99,7 +99,8 @@ public class JSONFloat extends Number implements JSONNumberValue {
 
     @Override
     public boolean equals(Object other) {
-        return other instanceof JSONNumberValue && ((JSONNumberValue)other).valueEquals(value);
+        return other == this ||
+                other instanceof JSONNumberValue && ((JSONNumberValue)other).valueEquals(value);
     }
 
     @Override

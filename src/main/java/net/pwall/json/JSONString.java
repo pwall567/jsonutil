@@ -130,7 +130,8 @@ public class JSONString implements JSONValue, CharSequence {
 
     @Override
     public boolean equals(Object other) {
-        return other instanceof JSONString && value.equals(((JSONString)other).value);
+        return other == this ||
+                other instanceof JSONString && value.equals(((JSONString)other).value);
     }
 
 }

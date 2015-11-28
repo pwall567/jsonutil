@@ -520,6 +520,8 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      */
     @Override
     public boolean equals(Object other) {
+        if (other == this)
+            return true;
         if (!(other instanceof JSONObject))
             return false;
         JSONObject otherObj = (JSONObject)other;

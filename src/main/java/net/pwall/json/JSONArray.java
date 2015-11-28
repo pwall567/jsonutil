@@ -358,7 +358,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
      */
     @Override
     public boolean equals(Object other) {
-        return other instanceof JSONArray && super.equals(other);
+        return other == this || other instanceof JSONArray && super.equals(other);
     }
 
     /**
