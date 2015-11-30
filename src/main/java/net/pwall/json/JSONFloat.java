@@ -42,9 +42,9 @@ public class JSONFloat extends Number implements JSONNumberValue {
 
     public JSONFloat(float value) {
         if (Float.isNaN(value))
-            throw new IllegalArgumentException("Can't store NaN as JSON");
+            throw new JSONException("Can't store NaN as JSON");
         if (Float.isInfinite(value))
-            throw new IllegalArgumentException("Can't store infinity as JSON");
+            throw new JSONException("Can't store infinity as JSON");
         this.value = value;
     }
 
@@ -132,7 +132,7 @@ public class JSONFloat extends Number implements JSONNumberValue {
             return valueOf(Float.parseFloat(string));
         }
         catch (NumberFormatException e) {
-            throw new IllegalArgumentException(JSON.ILLEGAL_NUMBER);
+            throw new JSONException(JSON.ILLEGAL_NUMBER);
         }
     }
 

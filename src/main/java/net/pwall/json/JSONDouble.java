@@ -42,9 +42,9 @@ public class JSONDouble extends Number implements JSONNumberValue {
 
     public JSONDouble(double value) {
         if (Double.isNaN(value))
-            throw new IllegalArgumentException("Can't store NaN as JSON");
+            throw new JSONException("Can't store NaN as JSON");
         if (Double.isInfinite(value))
-            throw new IllegalArgumentException("Can't store infinity as JSON");
+            throw new JSONException("Can't store infinity as JSON");
         this.value = value;
     }
 
@@ -132,7 +132,7 @@ public class JSONDouble extends Number implements JSONNumberValue {
             return valueOf(Double.parseDouble(string));
         }
         catch (NumberFormatException e) {
-            throw new IllegalArgumentException(JSON.ILLEGAL_NUMBER);
+            throw new JSONException(JSON.ILLEGAL_NUMBER);
         }
     }
 

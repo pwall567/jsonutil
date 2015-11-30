@@ -126,7 +126,7 @@ public class JSON {
         @Override
         public int unmap(StringBuilder sb, CharSequence s, int offset) {
             if (offset + 1 >= s.length())
-                throw new IllegalArgumentException(INVALID_CHAR_SEQ);
+                throw new JSONException(INVALID_CHAR_SEQ);
             char ch = s.charAt(offset + 1);
             if (ch == '"') {
                 sb.append('"');
@@ -165,7 +165,7 @@ public class JSON {
                 sb.append((char)n);
                 return 6;
             }
-            throw new IllegalArgumentException(INVALID_CHAR_SEQ);
+            throw new JSONException(INVALID_CHAR_SEQ);
         }
     };
 
@@ -184,7 +184,7 @@ public class JSON {
      *
      * @param   f       the {@link File}
      * @return          the JSON value
-     * @throws  IllegalArgumentException if the file does not contain a valid JSON value
+     * @throws  JSONException if the file does not contain a valid JSON value
      * @throws  IOException on any I/O errors
      */
     public static JSONValue parse(File f) throws IOException {
@@ -200,7 +200,7 @@ public class JSON {
      * @param   f       the {@link File}
      * @param   charSet the character set name
      * @return          the JSON value
-     * @throws  IllegalArgumentException if the file does not contain a valid JSON value
+     * @throws  JSONException if the file does not contain a valid JSON value
      * @throws  IOException on any I/O errors
      */
     public static JSONValue parse(File f, String charSet) throws IOException {
@@ -214,7 +214,7 @@ public class JSON {
      *
      * @param   is      the {@link InputStream}
      * @return          the JSON value
-     * @throws  IllegalArgumentException if the stream does not contain a valid JSON value
+     * @throws  JSONException if the stream does not contain a valid JSON value
      * @throws  IOException on any I/O errors
      */
     public static JSONValue parse(InputStream is) throws IOException {
@@ -230,7 +230,7 @@ public class JSON {
      * @param   is      the {@link InputStream}
      * @param   charSet the character set name
      * @return          the JSON value
-     * @throws  IllegalArgumentException if the stream does not contain a valid JSON value
+     * @throws  JSONException if the stream does not contain a valid JSON value
      * @throws  IOException on any I/O errors
      */
     public static JSONValue parse(InputStream is, String charSet) throws IOException {
@@ -244,7 +244,7 @@ public class JSON {
      *
      * @param   rdr     the {@link Reader}
      * @return          the JSON value
-     * @throws  IllegalArgumentException if the sequence does not contain a valid JSON value
+     * @throws  JSONException if the sequence does not contain a valid JSON value
      * @throws  IOException on any I/O errors
      */
     public static JSONValue parse(Reader rdr) throws IOException {
@@ -265,14 +265,14 @@ public class JSON {
      *
      * @param   cs      the {@link CharSequence}
      * @return          the JSON value
-     * @throws  IllegalArgumentException if the sequence does not contain a valid JSON value
+     * @throws  JSONException if the sequence does not contain a valid JSON value
      */
     public static JSONValue parse(CharSequence cs) {
         ParseText p = new ParseText(cs);
         JSONValue result = parse(p);
         p.skipSpaces();
         if (!p.isExhausted())
-            throw new IllegalArgumentException(EXCESS_CHARS);
+            throw new JSONException(EXCESS_CHARS);
         return result;
     }
 
@@ -282,8 +282,7 @@ public class JSON {
      *
      * @param   p       the {@link ParseText} object
      * @return          the JSON value
-     * @throws  IllegalArgumentException if the text in the {@link ParseText} is not a valid
-     *          JSON value
+     * @throws  JSONException if the text in the {@link ParseText} is not a valid JSON value
      */
     public static JSONValue parse(ParseText p) {
         p.skipSpaces();
@@ -293,11 +292,11 @@ public class JSON {
             if (!p.match('}')) {
                 for (;;) {
                     if (!p.match('"'))
-                        throw new IllegalArgumentException(ILLEGAL_KEY);
+                        throw new JSONException(ILLEGAL_KEY);
                     String key = decodeString(p);
                     p.skipSpaces();
                     if (!p.match(':'))
-                        throw new IllegalArgumentException(MISSING_COLON);
+                        throw new JSONException(MISSING_COLON);
                     p.skipSpaces();
                     JSONValue value = parse(p);
                     object.put(key, value);
@@ -307,7 +306,7 @@ public class JSON {
                     p.skipSpaces();
                 }
                 if (!p.match('}'))
-                    throw new IllegalArgumentException(MISSING_CLOSING_BRACE);
+                    throw new JSONException(MISSING_CLOSING_BRACE);
             }
             return object;
         }
@@ -323,7 +322,7 @@ public class JSON {
                     p.skipSpaces();
                 }
                 if (!p.match(']'))
-                    throw new IllegalArgumentException(MISSING_CLOSING_BRACKET);
+                    throw new JSONException(MISSING_CLOSING_BRACKET);
             }
             return array;
         }
@@ -337,14 +336,14 @@ public class JSON {
             if (p.match('.')) {
                 floating = true;
                 if (!p.matchDec())
-                    throw new IllegalArgumentException(ILLEGAL_NUMBER);
+                    throw new JSONException(ILLEGAL_NUMBER);
             }
             if (p.matchIgnoreCase('e')) {
                 floating = true;
                 if (p.match('+') || p.match('-'))
                     ; // do nothing - just step index
                 if (!p.matchDec())
-                    throw new IllegalArgumentException(ILLEGAL_NUMBER);
+                    throw new JSONException(ILLEGAL_NUMBER);
             }
             if (floating)
                 return JSONDouble.valueOf(p.getString(start, p.getIndex()));
@@ -353,19 +352,19 @@ public class JSON {
         if (p.match('-')) {
             int start = p.getStart();
             if (!p.match('0') && !p.matchDec())
-                throw new IllegalArgumentException(ILLEGAL_NUMBER);
+                throw new JSONException(ILLEGAL_NUMBER);
             boolean floating = false;
             if (p.match('.')) {
                 floating = true;
                 if (!p.matchDec())
-                    throw new IllegalArgumentException(ILLEGAL_NUMBER);
+                    throw new JSONException(ILLEGAL_NUMBER);
             }
             if (p.matchIgnoreCase('e')) {
                 floating = true;
                 if (p.match('+') || p.match('-'))
                     ; // do nothing - just step index
                 if (!p.matchDec())
-                    throw new IllegalArgumentException(ILLEGAL_NUMBER);
+                    throw new JSONException(ILLEGAL_NUMBER);
             }
             int end = p.getIndex();
             if (floating)
@@ -379,14 +378,14 @@ public class JSON {
             if (p.match('.')) {
                 floating = true;
                 if (!p.matchDec())
-                    throw new IllegalArgumentException(ILLEGAL_NUMBER);
+                    throw new JSONException(ILLEGAL_NUMBER);
             }
             if (p.matchIgnoreCase('e')) {
                 floating = true;
                 if (p.match('+') || p.match('-'))
                     ; // do nothing - just step index
                 if (!p.matchDec())
-                    throw new IllegalArgumentException(ILLEGAL_NUMBER);
+                    throw new JSONException(ILLEGAL_NUMBER);
             }
             int end = p.getIndex();
             if (floating)
@@ -400,7 +399,7 @@ public class JSON {
             return JSONBoolean.FALSE;
         if (p.matchName("null"))
             return null;
-        throw new IllegalArgumentException(ILLEGAL_SYNTAX);
+        throw new JSONException(ILLEGAL_SYNTAX);
     }
 
     /**
@@ -411,27 +410,27 @@ public class JSON {
      *
      * @param   p   the {@link ParseText}
      * @return  the string
-     * @throws  IllegalArgumentException if the string is not valid, or not properly terminated
+     * @throws  JSONException if the string is not valid, or not properly terminated
      */
     private static String decodeString(ParseText p) {
         // start by assuming we can take a substring from the input
         int start = p.getIndex();
         for (;;) {
             if (p.isExhausted())
-                throw new IllegalArgumentException(ILLEGAL_STRING_TERM);
+                throw new JSONException(ILLEGAL_STRING_TERM);
             char ch = p.getChar();
             if (ch == '"')
                 return p.getString(start, p.getStart());
             if (ch == '\\')
                 break;
             if (ch < 0x20)
-                throw new IllegalArgumentException(ILLEGAL_STRING_CHAR);
+                throw new JSONException(ILLEGAL_STRING_CHAR);
         }
         // found a backslash, so we need to build a new string
         StringBuilder sb = new StringBuilder(p.getString(start, p.getStart()));
         for (;;) {
             if (p.isExhausted())
-                throw new IllegalArgumentException(ILLEGAL_STRING_TERM);
+                throw new JSONException(ILLEGAL_STRING_TERM);
             char ch = p.getChar();
             if (ch == '"')
                 sb.append('"');
@@ -451,21 +450,21 @@ public class JSON {
                 sb.append('\t');
             else if (ch == 'u') {
                 if (!p.matchHexFixed(4))
-                    throw new IllegalArgumentException(ILLEGAL_STRING_UNICODE);
+                    throw new JSONException(ILLEGAL_STRING_UNICODE);
                 sb.append((char)p.getResultHexInt());
             }
             else
-                throw new IllegalArgumentException(ILLEGAL_STRING_ESCAPE);
+                throw new JSONException(ILLEGAL_STRING_ESCAPE);
             for (;;) {
                 if (p.isExhausted())
-                    throw new IllegalArgumentException(ILLEGAL_STRING_TERM);
+                    throw new JSONException(ILLEGAL_STRING_TERM);
                 ch = p.getChar();
                 if (ch == '"')
                     return sb.toString();
                 if (ch == '\\')
                     break;
                 if (ch < 0x20)
-                    throw new IllegalArgumentException(ILLEGAL_STRING_CHAR);
+                    throw new JSONException(ILLEGAL_STRING_CHAR);
                 sb.append(ch);
             }
         }
@@ -504,13 +503,13 @@ public class JSON {
      *
      * @param   value   the {@link JSONValue}
      * @return  the value as a {@link String}
-     * @throws  IllegalStateException if the value is not a string
+     * @throws  JSONException if the value is not a string
      */
     public static String getString(JSONValue value) {
         if (value == null)
             return null;
         if (!(value instanceof JSONString))
-            throw new IllegalStateException(NOT_A_STRING);
+            throw new JSONException(NOT_A_STRING);
         return ((JSONString)value).toString();
     }
 
@@ -520,13 +519,13 @@ public class JSON {
      *
      * @param   value   the {@link JSONValue}
      * @return  the value as an {@code int}
-     * @throws  IllegalStateException if the value is not a number
+     * @throws  JSONException if the value is not a number
      */
     public static int getInt(JSONValue value) {
         if (value == null)
             return 0;
         if (!(value instanceof Number))
-            throw new IllegalStateException(NOT_A_NUMBER);
+            throw new JSONException(NOT_A_NUMBER);
         return ((Number)value).intValue();
     }
 
@@ -536,13 +535,13 @@ public class JSON {
      *
      * @param   value   the {@link JSONValue}
      * @return  the value as a {@code long}
-     * @throws  IllegalStateException if the value is not a number
+     * @throws  JSONException if the value is not a number
      */
     public static long getLong(JSONValue value) {
         if (value == null)
             return 0;
         if (!(value instanceof Number))
-            throw new IllegalStateException();
+            throw new JSONException(NOT_A_NUMBER);
         return ((Number)value).longValue();
     }
 
@@ -552,13 +551,13 @@ public class JSON {
      *
      * @param   value   the {@link JSONValue}
      * @return  the value as a {@code float}
-     * @throws  IllegalStateException if the value is not a number
+     * @throws  JSONException if the value is not a number
      */
     public static float getFloat(JSONValue value) {
         if (value == null)
             return 0;
         if (!(value instanceof Number))
-            throw new IllegalStateException(NOT_A_NUMBER);
+            throw new JSONException(NOT_A_NUMBER);
         return ((Number)value).floatValue();
     }
 
@@ -568,13 +567,13 @@ public class JSON {
      *
      * @param   value   the {@link JSONValue}
      * @return  the value as a {@code double}
-     * @throws  IllegalStateException if the value is not a number
+     * @throws  JSONException if the value is not a number
      */
     public static double getDouble(JSONValue value) {
         if (value == null)
             return 0;
         if (!(value instanceof Number))
-            throw new IllegalStateException(NOT_A_NUMBER);
+            throw new JSONException(NOT_A_NUMBER);
         return ((Number)value).doubleValue();
     }
 
@@ -584,13 +583,13 @@ public class JSON {
      *
      * @param   value   the {@link JSONValue}
      * @return  the value as a {@code boolean}
-     * @throws  IllegalStateException if the value is not a boolean
+     * @throws  JSONException if the value is not a boolean
      */
     public static boolean getBoolean(JSONValue value) {
         if (value == null)
             return false;
         if (!(value instanceof JSONBoolean))
-            throw new IllegalStateException(NOT_A_BOOLEAN);
+            throw new JSONException(NOT_A_BOOLEAN);
         return ((JSONBoolean)value).booleanValue();
     }
 
@@ -600,13 +599,13 @@ public class JSON {
      *
      * @param   value   the {@link JSONValue}
      * @return  the value as a {@link JSONArray}
-     * @throws  IllegalStateException if the value is not an array
+     * @throws  JSONException if the value is not an array
      */
     public static JSONArray getArray(JSONValue value) {
         if (value == null)
             return null;
         if (!(value instanceof JSONArray))
-            throw new IllegalStateException(NOT_AN_ARRAY);
+            throw new JSONException(NOT_AN_ARRAY);
         return (JSONArray)value;
     }
 
@@ -616,13 +615,13 @@ public class JSON {
      *
      * @param   value   the {@link JSONValue}
      * @return  the value as a {@link JSONObject}
-     * @throws  IllegalStateException if the value is not an object
+     * @throws  JSONException if the value is not an object
      */
     public static JSONObject getObject(JSONValue value) {
         if (value == null)
             return null;
         if (!(value instanceof JSONObject))
-            throw new IllegalStateException(NOT_AN_OBJECT);
+            throw new JSONException(NOT_AN_OBJECT);
         return (JSONObject)value;
     }
 

@@ -128,7 +128,7 @@ public class JSONInteger extends Number implements JSONNumberValue {
             return valueOf(Integer.parseInt(string));
         }
         catch (NumberFormatException e) {
-            throw new IllegalArgumentException(JSON.ILLEGAL_NUMBER);
+            throw new JSONException(JSON.ILLEGAL_NUMBER);
         }
     }
 

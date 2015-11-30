@@ -175,7 +175,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      *
      * @param   key     the key of the value
      * @return          the value, or {@code null} if not found
-     * @throws  IllegalStateException if the value is found but is not a string
+     * @throws  JSONException if the value is found but is not a string
      */
     public String getString(String key) {
         return JSON.getString(get(key));
@@ -186,7 +186,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      *
      * @param   key     the key of the value
      * @return          the value, or {@code 0} if not found
-     * @throws  IllegalStateException if the value is found but is not a number
+     * @throws  JSONException if the value is found but is not a number
      */
     public int getInt(String key) {
         return JSON.getInt(get(key));
@@ -197,7 +197,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      *
      * @param   key     the key of the value
      * @return          the value, or {@code 0} if not found
-     * @throws  IllegalStateException if the value is found but is not a number
+     * @throws  JSONException if the value is found but is not a number
      */
     public long getLong(String key) {
         return JSON.getLong(get(key));
@@ -208,7 +208,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      *
      * @param   key     the key of the value
      * @return          the value, or {@code 0} if not found
-     * @throws  IllegalStateException if the value is found but is not a number
+     * @throws  JSONException if the value is found but is not a number
      */
     public float getFloat(String key) {
         return JSON.getFloat(get(key));
@@ -219,7 +219,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      *
      * @param   key     the key of the value
      * @return          the value, or {@code 0} if not found
-     * @throws  IllegalStateException if the value is found but is not a number
+     * @throws  JSONException if the value is found but is not a number
      */
     public double getDouble(String key) {
         return JSON.getDouble(get(key));
@@ -230,7 +230,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      *
      * @param   key     the key of the value
      * @return          the value, or {@code false} if not found
-     * @throws  IllegalStateException if the value is found but is not a number
+     * @throws  JSONException if the value is found but is not a number
      */
     public boolean getBoolean(String key) {
         return JSON.getBoolean(get(key));
@@ -241,7 +241,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      *
      * @param   key     the key of the value
      * @return  the value
-     * @throws  IllegalStateException if the array entry is not an array
+     * @throws  JSONException if the array entry is not an array
      */
     public JSONArray getArray(String key) {
         return JSON.getArray(get(key));
@@ -252,7 +252,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      *
      * @param   key     the key of the value
      * @return          the value, or {@code null} if not found
-     * @throws  IllegalStateException if the array entry is not an object
+     * @throws  JSONException if the array entry is not an object
      */
     public JSONObject getObject(String key) {
         return JSON.getObject(get(key));

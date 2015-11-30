@@ -198,7 +198,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
      *
      * @param   index   the index of the value
      * @return  the value
-     * @throws  IllegalStateException if the array entry is not a {@link JSONString}
+     * @throws  JSONException if the array entry is not a {@link JSONString}
      */
     public String getString(int index) {
         return JSON.getString(get(index));
@@ -209,7 +209,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
      *
      * @param   index   the index of the value
      * @return  the value
-     * @throws  IllegalStateException if the array entry is not a {@link Number}
+     * @throws  JSONException if the array entry is not a {@link Number}
      */
     public int getInt(int index) {
         return JSON.getInt(get(index));
@@ -220,7 +220,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
      *
      * @param   index   the index of the value
      * @return  the value
-     * @throws  IllegalStateException if the array entry is not a {@link Number}
+     * @throws  JSONException if the array entry is not a {@link Number}
      */
     public long getLong(int index) {
         return JSON.getLong(get(index));
@@ -231,7 +231,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
      *
      * @param   index   the index of the value
      * @return  the value
-     * @throws  IllegalStateException if the array entry is not a {@link Number}
+     * @throws  JSONException if the array entry is not a {@link Number}
      */
     public float getFloat(int index) {
         return JSON.getFloat(get(index));
@@ -242,7 +242,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
      *
      * @param   index   the index of the value
      * @return  the value
-     * @throws  IllegalStateException if the array entry is not a {@link Number}
+     * @throws  JSONException if the array entry is not a {@link Number}
      */
     public double getDouble(int index) {
         return JSON.getDouble(get(index));
@@ -254,7 +254,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
      *
      * @param   index   the index of the value
      * @return  the value
-     * @throws  IllegalStateException if the array entry is not a {@link JSONBoolean}
+     * @throws  JSONException if the array entry is not a {@link JSONBoolean}
      */
     public boolean getBoolean(int index) {
         return JSON.getBoolean(get(index));
@@ -266,7 +266,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
      *
      * @param   index   the index of the value
      * @return  the value
-     * @throws  IllegalStateException if the array entry is not a {@link JSONArray}
+     * @throws  JSONException if the array entry is not a {@link JSONArray}
      */
     public JSONArray getArray(int index) {
         return JSON.getArray(get(index));
@@ -278,7 +278,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
      *
      * @param   index   the index of the value
      * @return  the value
-     * @throws  IllegalStateException if the array entry is not a {@link JSONArray}
+     * @throws  JSONException if the array entry is not a {@link JSONArray}
      */
     public JSONObject getObject(int index) {
         return JSON.getObject(get(index));

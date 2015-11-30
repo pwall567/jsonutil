@@ -128,7 +128,7 @@ public class JSONLong extends Number implements JSONNumberValue {
             return valueOf(Long.parseLong(string));
         }
         catch (NumberFormatException e) {
-            throw new IllegalArgumentException(JSON.ILLEGAL_NUMBER);
+            throw new JSONException(JSON.ILLEGAL_NUMBER);
         }
     }
 
