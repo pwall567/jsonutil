@@ -43,4 +43,14 @@ public class JSONException extends IllegalArgumentException {
         super(message);
     }
 
+    /**
+     * Construct a {@code JSONException} with the given message and nested {@link Exception}.
+     *
+     * @param   message     the message
+     * @param   nested      the nested {@link Exception}
+     */
+    public JSONException(String message, Exception nested) {
+        super(message, nested);
+    }
+
 }
