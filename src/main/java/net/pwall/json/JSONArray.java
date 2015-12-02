@@ -28,6 +28,7 @@ package net.pwall.json;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -189,6 +190,19 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
      */
     public JSONArray addNull() {
         add(null);
+        return this;
+    }
+
+    /**
+     * Add a {@link JSONValue} to the {@code JSONArray}.  This method duplicates the
+     * {@link #add(JSONValue)} method inherited from the {@link ArrayList} class, but it returns
+     * {@code this} to allow for chaining.
+     *
+     * @param   json    the {@link JSONValue}
+     * @return          {@code this} (for chaining)
+     */
+    public JSONArray addJSON(JSONValue json) {
+        add(json);
         return this;
     }
 

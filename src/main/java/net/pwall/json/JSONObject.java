@@ -122,18 +122,6 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
         return this;
     }
 
-//    /**
-//     * Add a {@link JSONNumber} to the {@code JSONObject}.
-//     *
-//     * @param   key     the key to use when storing the value
-//     * @param   value   the value
-//     * @return          {@code this} (for chaining)
-//     */
-//    public JSONObject putValue(String key, Number value) {
-//        put(key, new JSONNumber(value));
-//        return this;
-//    }
-
     /**
      * Add a {@link JSONBoolean} to the {@code JSONObject} representing the supplied
      * {@code boolean}.
@@ -167,6 +155,20 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      */
     public JSONObject putNull(String key) {
         put(key, null);
+        return this;
+    }
+
+    /**
+     * Add a {@link JSONValue} to the {@code JSONObject}.  This method duplicates the
+     * {@link #put(String, JSONValue)} method specified by the {@link Map} interface, but it
+     * returns {@code this} to allow for chaining.
+     *
+     * @param   key     the key to use when storing the value
+     * @param   json    the {@link JSONValue}
+     * @return          {@code this} (for chaining)
+     */
+    public JSONObject putJSON(String key, JSONValue json) {
+        put(key, json);
         return this;
     }
 
