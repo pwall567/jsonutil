@@ -28,7 +28,6 @@ package net.pwall.json;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Objects;
 
 /**
