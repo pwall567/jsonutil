@@ -28,6 +28,7 @@ package net.pwall.json;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Objects;
 
 /**
@@ -298,6 +299,174 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
+     * Get an {@link Iterable} of {@link String} from this array.  Supports the idiom:
+     * <pre>
+     *     for (String item : jsonArray.strings()) {
+     *         // process each item of the array
+     *     }
+     * </pre>
+     * The resulting {@link Iterator} will throw a {@link JSONException} if any item in the
+     * array is not a {@link String} or {@code null}.
+     *
+     * @return  an {@link Iterable} of {@link String}
+     */
+    public Iterable<String> strings() {
+        return new Iterable<String>() {
+            @Override
+            public Iterator<String> iterator() {
+                return new StringIterator();
+            }
+        };
+    }
+
+    /**
+     * Get an {@link Iterable} of {@link Integer} from this array.  Supports the idiom:
+     * <pre>
+     *     for (Integer item : jsonArray.ints()) {
+     *         // process each item of the array
+     *     }
+     * </pre>
+     * The resulting {@link Iterator} will throw a {@link JSONException} if any item in the
+     * array is not a {@link Integer} or {@code null}.
+     *
+     * @return  an {@link Iterable} of {@link Integer}
+     */
+    public Iterable<Integer> ints() {
+        return new Iterable<Integer>() {
+            @Override
+            public Iterator<Integer> iterator() {
+                return new IntegerIterator();
+            }
+        };
+    }
+
+    /**
+     * Get an {@link Iterable} of {@link Long} from this array.  Supports the idiom:
+     * <pre>
+     *     for (Long item : jsonArray.longs()) {
+     *         // process each item of the array
+     *     }
+     * </pre>
+     * The resulting {@link Iterator} will throw a {@link JSONException} if any item in the
+     * array is not a {@link Long} or {@code null}.
+     *
+     * @return  an {@link Iterable} of {@link Long}
+     */
+    public Iterable<Long> longs() {
+        return new Iterable<Long>() {
+            @Override
+            public Iterator<Long> iterator() {
+                return new LongIterator();
+            }
+        };
+    }
+
+    /**
+     * Get an {@link Iterable} of {@link Double} from this array.  Supports the idiom:
+     * <pre>
+     *     for (Double item : jsonArray.doubles()) {
+     *         // process each item of the array
+     *     }
+     * </pre>
+     * The resulting {@link Iterator} will throw a {@link JSONException} if any item in the
+     * array is not a {@link Double} or {@code null}.
+     *
+     * @return  an {@link Iterable} of {@link Double}
+     */
+    public Iterable<Double> doubles() {
+        return new Iterable<Double>() {
+            @Override
+            public Iterator<Double> iterator() {
+                return new DoubleIterator();
+            }
+        };
+    }
+
+    /**
+     * Get an {@link Iterable} of {@link Float} from this array.  Supports the idiom:
+     * <pre>
+     *     for (Float item : jsonArray.doubles()) {
+     *         // process each item of the array
+     *     }
+     * </pre>
+     * The resulting {@link Iterator} will throw a {@link JSONException} if any item in the
+     * array is not a {@link Float} or {@code null}.
+     *
+     * @return  an {@link Iterable} of {@link Float}
+     */
+    public Iterable<Float> floats() {
+        return new Iterable<Float>() {
+            @Override
+            public Iterator<Float> iterator() {
+                return new FloatIterator();
+            }
+        };
+    }
+
+    /**
+     * Get an {@link Iterable} of {@link Boolean} from this array.  Supports the idiom:
+     * <pre>
+     *     for (Boolean item : jsonArray.booleans()) {
+     *         // process each item of the array
+     *     }
+     * </pre>
+     * The resulting {@link Iterator} will throw a {@link JSONException} if any item in the
+     * array is not a {@link Boolean} or {@code null}.
+     *
+     * @return  an {@link Iterable} of {@link Boolean}
+     */
+    public Iterable<Boolean> booleans() {
+        return new Iterable<Boolean>() {
+            @Override
+            public Iterator<Boolean> iterator() {
+                return new BooleanIterator();
+            }
+        };
+    }
+
+    /**
+     * Get an {@link Iterable} of {@link JSONArray} from this array.  Supports the idiom:
+     * <pre>
+     *     for (JSONArray item : jsonArray.arrays()) {
+     *         // process each item of the array
+     *     }
+     * </pre>
+     * The resulting {@link Iterator} will throw a {@link JSONException} if any item in the
+     * array is not a {@link JSONArray} or {@code null}.
+     *
+     * @return  an {@link Iterable} of {@link JSONArray}
+     */
+    public Iterable<JSONArray> arrays() {
+        return new Iterable<JSONArray>() {
+            @Override
+            public Iterator<JSONArray> iterator() {
+                return new ArrayIterator();
+            }
+        };
+    }
+
+    /**
+     * Get an {@link Iterable} of {@link JSONObject} from this array.  Supports the idiom:
+     * <pre>
+     *     for (JSONObject item : jsonArray.objects()) {
+     *         // process each item of the array
+     *     }
+     * </pre>
+     * The resulting {@link Iterator} will throw a {@link JSONException} if any item in the
+     * array is not a {@link JSONObject} or {@code null}.
+     *
+     * @return  an {@link Iterable} of {@link JSONObject}
+     */
+    public Iterable<JSONObject> objects() {
+        return new Iterable<JSONObject>() {
+            @Override
+            public Iterator<JSONObject> iterator() {
+                return new ObjectIterator();
+            }
+        };
+    }
+
+    /**
      * Create the external representation for this JSON array.
      *
      * @return  the JSON representation for this array
@@ -384,6 +553,119 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
      */
     public static JSONArray create() {
         return new JSONArray();
+    }
+
+    public abstract class BaseIterator<T> implements Iterator<T> {
+
+        protected Iterator<JSONValue> iterator = iterator();
+
+        @Override
+        public boolean hasNext() {
+            return iterator.hasNext();
+        }
+
+        @Override
+        public void remove() {
+            iterator.remove();
+        }
+
+    }
+
+    public class StringIterator extends BaseIterator<String> {
+
+        @Override
+        public String next() {
+            return JSON.getString(iterator.next());
+        }
+
+    }
+
+    public class IntegerIterator extends BaseIterator<Integer> {
+
+        @Override
+        public Integer next() {
+            JSONValue value = iterator.next();
+            if (value == null)
+                return null;
+            if (!(value instanceof Number))
+                throw new JSONException(JSON.NOT_A_NUMBER);
+            return ((Number)value).intValue();
+        }
+
+    }
+
+    public class LongIterator extends BaseIterator<Long> {
+
+        @Override
+        public Long next() {
+            JSONValue value = iterator.next();
+            if (value == null)
+                return null;
+            if (!(value instanceof Number))
+                throw new JSONException(JSON.NOT_A_NUMBER);
+            return ((Number)value).longValue();
+        }
+
+    }
+
+    public class DoubleIterator extends BaseIterator<Double> {
+
+        @Override
+        public Double next() {
+            JSONValue value = iterator.next();
+            if (value == null)
+                return null;
+            if (!(value instanceof Number))
+                throw new JSONException(JSON.NOT_A_NUMBER);
+            return ((Number)value).doubleValue();
+        }
+
+    }
+
+    public class FloatIterator extends BaseIterator<Float> {
+
+        @Override
+        public Float next() {
+            JSONValue value = iterator.next();
+            if (value == null)
+                return null;
+            if (!(value instanceof Number))
+                throw new JSONException(JSON.NOT_A_NUMBER);
+            return ((Number)value).floatValue();
+        }
+
+    }
+
+    public class BooleanIterator extends BaseIterator<Boolean> {
+
+        @Override
+        public Boolean next() {
+            JSONValue value = iterator.next();
+            if (value == null)
+                return null;
+            if (!(value instanceof JSONBoolean))
+                throw new JSONException(JSON.NOT_A_BOOLEAN);
+            return ((JSONBoolean)value).booleanValue();
+        }
+
+    }
+
+    public class ArrayIterator extends BaseIterator<JSONArray> {
+
+        @Override
+        public JSONArray next() {
+            return JSON.getArray(iterator.next());
+        }
+
+    }
+
+    public class ObjectIterator extends BaseIterator<JSONObject> {
+
+        @Override
+        public JSONObject next() {
+            return JSON.getObject(iterator.next());
+        }
+
     }
 
 }
