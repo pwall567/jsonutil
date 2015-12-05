@@ -61,7 +61,7 @@ There is extensive JavaDoc which should assist in the use of the library.
 
 To parse and process an incoming JSON object, assuming the JSON is of the form:
 
-```
+```javascript
   {
     "id": "A23456",
     "qty": 12,
@@ -71,7 +71,7 @@ To parse and process an incoming JSON object, assuming the JSON is of the form:
 
 The following code will process that JSON:
 
-```
+```java
 JSONObject jsonObject = (JSONObject)JSON.parse(str);
 String accountId = jsonObject.getString('id');
 int quantity = jsonObject.getInt("qty");
@@ -84,7 +84,7 @@ option of testing the type of the returned value or allowing the system to throw
 
 To create an object of that form and then output it:
 
-```
+```java
 JSONObject jsonObject = JSONObject.create().putValue("id", "A23456").putValue("qty", 12).
         putValue("value", 60.00);
 System.out.println(jsonObject.toJSON()); 
@@ -92,7 +92,7 @@ System.out.println(jsonObject.toJSON());
 
 And if that JSON object was an item in an array of objects, the array could be processed by:
 
-```
+```java
 JSONArray jsonArray = (JSONArray)JSON.parse(str);
 for (JSONObject jsonObject : jsonArray.objects()) {
     String accountId = jsonObject.getString('id');
