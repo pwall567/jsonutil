@@ -100,4 +100,4 @@ for (JSONObject jsonObject : jsonArray.objects()) {
 }
 ```
 
-This is jsut a taste of what is available; see the JavaDoc for more information.
+This is just a taste of what is available; see the JavaDoc for more information.
