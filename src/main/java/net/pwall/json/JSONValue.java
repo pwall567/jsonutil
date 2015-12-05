@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 /**
- * Interface for JSON values.
+ * Main interface implemented by all forms of JSON value.
  *
  * @author Peter Wall
  */
