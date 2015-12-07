@@ -63,7 +63,7 @@ There is extensive JavaDoc which should assist in the use of the library.
 
 On most benchmarks, the library significantly out-performs its competitors.  For example:
 
-![Benchmark diagram](https://github.com/pwall567/jsonutil/raw/develop/benchmark1.png "Benchmark 1")
+![Diagram](https://github.com/pwall567/jsonutil/raw/develop/benchmark1.png "Benchmark 1")
 
 ## Examples
 

@@ -20,9 +20,9 @@
   <rect x="6" y="18" width="201" height="48" fill="#A6CAF0"/>
   <text x="16" y="48" font-family="sans-serif" font-size="14">jsonutil 501.5ns</text>
   <rect x="6" y="80" width="447" height="48" fill="#fd6069"/>
-  <text x="16" y="110" font-family="sans-serif" font-size="14">Jackson 1118.5ns</text>
+  <text x="16" y="110" font-family="sans-serif" font-size="14">fastjson 1118.5ns</text>
   <rect x="6" y="142" width="274" height="48" fill="#3df15f"/>
-  <text x="16" y="172" font-family="sans-serif" font-size="14">fastjson 684ns</text>
+  <text x="16" y="172" font-family="sans-serif" font-size="14">Jackson 684ns</text>
 
   <text x="8" y="260" font-family="sans-serif" font-size="14">Parse</text>
   <text x="52" y="260" font-family="monospace" font-size="14" font-weight="bold">
