@@ -63,9 +63,7 @@ There is extensive JavaDoc which should assist in the use of the library.
 
 On most benchmarks, the library significantly out-performs its competitors.  For example:
 
-![Benchmark diagram](benchmark1.svg "Benchmark 1")
-
-[[benchmark1.svg|alt=Benchmark diagram]]
+![Benchmark diagram](/pwall567/jsonutil/raw/develop/benchmark1.svg "Benchmark 1")
 
 ## Examples
 
