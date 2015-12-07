@@ -27,6 +27,8 @@ to understand and easy to use.
 *Follow Standards* --- where there is an existing standard that could be used, adopt that
 standard rather than creating a new one.
 
+*Make It Fast* --- one of the main reasons for using a limited-functionality library is performance.
+
 ## Design
 
 In the light of those principles, the following design decisions were adopted:
@@ -56,6 +58,12 @@ The second method is an optimisation, which avoids the need to create an individ
 for each node when outputting a composite.
 
 There is extensive JavaDoc which should assist in the use of the library.
+
+## Performance
+
+On most benchmarks, the library significantly out-performs its competitors.  For example:
+
+![Benchmark diagram](benchmark1.svg "Benchmark 1")
 
 ## Examples
 

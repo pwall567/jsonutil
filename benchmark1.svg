@@ -1,0 +1,31 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+    "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="480" height="280"
+    viewBox="0 0 480 280">
+  <rect x="0" y="0" width="480" height="280" fill="#F4F4FF"/>
+  <rect x="4" y="4" width="2" height="200" fill="#666666"/>
+  <rect x="4" y="204" width="464" height="2" fill="#666666"/>
+  <rect x="84" y="206" width="2" height="4" fill="#666666"/>
+  <text x="66" y="230" font-family="sans-serif" font-size="12">200ns</text>
+  <rect x="164" y="206" width="2" height="4" fill="#666666"/>
+  <text x="146" y="230" font-family="sans-serif" font-size="12">400ns</text>
+  <rect x="244" y="206" width="2" height="4" fill="#666666"/>
+  <text x="226" y="230" font-family="sans-serif" font-size="12">600ns</text>
+  <rect x="324" y="206" width="2" height="4" fill="#666666"/>
+  <text x="306" y="230" font-family="sans-serif" font-size="12">800ns</text>
+  <rect x="404" y="206" width="2" height="8" fill="#666666"/>
+  <text x="386" y="230" font-family="sans-serif" font-size="12">1000ns</text>
+
+  <rect x="6" y="18" width="201" height="48" fill="#A6CAF0"/>
+  <text x="16" y="48" font-family="sans-serif" font-size="14">jsonutil 501.5ns</text>
+  <rect x="6" y="80" width="447" height="48" fill="#fd6069"/>
+  <text x="16" y="110" font-family="sans-serif" font-size="14">Jackson 1118.5ns</text>
+  <rect x="6" y="142" width="274" height="48" fill="#3df15f"/>
+  <text x="16" y="172" font-family="sans-serif" font-size="14">fastjson 684ns</text>
+
+  <text x="8" y="260" font-family="sans-serif" font-size="14">Parse</text>
+  <text x="52" y="260" font-family="monospace" font-size="14" font-weight="bold">
+    {"array":["abc","def","ghi"],"bool":true}
+  </text>
+</svg>
