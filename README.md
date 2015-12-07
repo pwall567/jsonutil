@@ -65,6 +65,8 @@ On most benchmarks, the library significantly out-performs its competitors.  For
 
 ![Benchmark diagram](benchmark1.svg "Benchmark 1")
 
+<img src="benchmark1.svg" title="Benchmark 1" alt="Benchmark diagram">
+
 ## Examples
 
 To parse and process an incoming JSON object, assuming the JSON is of the form:
