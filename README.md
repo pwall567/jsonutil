@@ -65,6 +65,46 @@ On most benchmarks, the library significantly out-performs its competitors.  For
 
 ![Diagram](https://github.com/pwall567/jsonutil/raw/develop/benchmark1.png "Benchmark 1")
 
+## Usage
+
+There are several static methods of the `JSON` class to parse a string, file or input stream
+into a `JSONValue`.  The result may be `null` if the input consists simply of the token
+`null`, one of the seven simple JSON forms:
+
+* `JSONString`
+* `JSONInteger`
+* `JSONLong`
+* `JSONDouble`
+* `JSONFloat`
+* `JSONZero` (an optimisation to improve handling of zero values)
+* `JSONBoolean`
+
+or one of the two composite forms:
+
+* `JSONArray`
+* `JSONObject`
+
+All of the simple classes have a `get()` method to retrieve the value (this is not specified by
+the interface because the return type differs in each case).  Also, the number classes all
+extend the `Number` class, so the accessors `intvalue()`, `doubleValue()` etc. may be used
+to retrieve the value in a particular form.  And the `toString()` methods on these classes all
+return the string representation of the value, not the JSON.
+
+The simplest way to use the `JSONArray` and `JSONObject` classes is to treat them as
+`List<JSONValue` and `Map<String, JSONValue>` respectively.  In addition, there are several
+convenience methods (`getString()`, `getObject()` etc.) for use when the type of the value is
+known in advance.  Also, several overloaded forms of `addValue()` (for `JSONArray`) and
+`putValue()` (for `JSONObject`) exist, to simplify adding values to arrays and objects.
+
+The two static methods `JSONArray.create()` and `JSONObject.create()` exist to facilitate
+the "fluent" style of coding.
+
+To create the JSON string value of an object, the `toJSON()` method may be called; this will
+serialize the value, recursively calling `toJSON()` on any member items as necessary.  To avoid
+the unnecessary creation of a large number of intermediate string objects, the `appendJSON()`
+method may be used to append to an existing `Stringbuilder` etc.  It should be noted that this
+is also useful for serializing directly to an output stream, e.g. `PrintStream` or `Writer`.
+
 ## Examples
 
 To parse and process an incoming JSON object, assuming the JSON is of the form:
