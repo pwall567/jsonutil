@@ -121,7 +121,7 @@ The following code will process that JSON:
 
 ```java
 JSONObject jsonObject = (JSONObject)JSON.parse(str);
-String accountId = jsonObject.getString('id');
+String accountId = jsonObject.getString("id");
 int quantity = jsonObject.getInt("qty");
 double value = jsonObject.getDouble("value");
 ```
@@ -143,7 +143,7 @@ And if that JSON object was an item in an array of objects, the array could be p
 ```java
 JSONArray jsonArray = (JSONArray)JSON.parse(str);
 for (JSONObject jsonObject : jsonArray.objects()) {
-    String accountId = jsonObject.getString('id');
+    String accountId = jsonObject.getString("id");
     // etc...
 }
 ```
