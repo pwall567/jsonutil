@@ -487,7 +487,6 @@ public class JSON {
      *
      * @param   a       the {@link Appendable}
      * @param   value   the {@link JSONValue}
-     * @return  the JSON string for this value
      * @throws  IOException if thrown by the {@link Appendable}
      */
     public static void appendJSON(Appendable a, JSONValue value) throws IOException {

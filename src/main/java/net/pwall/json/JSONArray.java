@@ -195,8 +195,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
 
     /**
      * Add a {@link JSONValue} to the {@code JSONArray}.  This method duplicates the
-     * {@link #add(JSONValue)} method inherited from the {@link ArrayList} class, but it returns
-     * {@code this} to allow for chaining.
+     * {@link ArrayList#add(Object) add(JSONValue)} method inherited from the {@link ArrayList}
+     * class, but it returns {@code this} to allow for chaining.
      *
      * @param   json    the {@link JSONValue}
      * @return          {@code this} (for chaining)

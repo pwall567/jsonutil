@@ -473,8 +473,8 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
     }
 
     /**
-     * Test whether the composite is "simple", i.e. it contains only non-composite values (to
-     * assist with formatting).
+     * Test whether the composite is "simple", i.e.&nbsp;it contains only non-composite values
+     * (to assist with formatting).
      *
      * @return  {@code true} if the composite is simple
      * @see     JSONComposite#isSimple()

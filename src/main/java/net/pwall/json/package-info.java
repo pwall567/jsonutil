@@ -168,9 +168,10 @@
  * double value = jsonObject.getDouble("value");
  * </pre>
  *
- * <p>(The cast is required because {@link net.pwall.json.JSON#parse(String) JSON.parse(str)}
- * returns {@link net.pwall.json.JSONValue JSONValue}; the developer has the option of testing
- * the type of the returned value or allowing the system to throw a
+ * <p>(The cast is required because
+ * {@link net.pwall.json.JSON#parse(CharSequence) JSON.parse(str)} returns
+ * {@link net.pwall.json.JSONValue JSONValue}; the developer has the option of testing the type
+ * of the returned value or allowing the system to throw a
  * {@link java.lang.ClassCastException ClassCastException}.)</p>
  *
  * <p>To create an object of that form and then output it:</p>
