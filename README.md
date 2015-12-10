@@ -91,19 +91,19 @@ to retrieve the value in a particular form.  And the `toString()` methods on the
 return the string representation of the value, not the JSON.
 
 The simplest way to use the `JSONArray` and `JSONObject` classes is to treat them as
-`List<JSONValue` and `Map<String, JSONValue>` respectively.  In addition, there are several
+`List<JSONValue>` and `Map<String, JSONValue>` respectively.  In addition, there are several
 convenience methods (`getString()`, `getObject()` etc.) for use when the type of the value is
 known in advance.  Also, several overloaded forms of `addValue()` (for `JSONArray`) and
 `putValue()` (for `JSONObject`) exist, to simplify adding values to arrays and objects.
 
 The two static methods `JSONArray.create()` and `JSONObject.create()` exist to facilitate
-the "fluent" style of coding.
+the "fluent" style of coding (see example below).
 
 To create the JSON string value of an object, the `toJSON()` method may be called; this will
 serialize the value, recursively calling `toJSON()` on any member items as necessary.  To avoid
 the unnecessary creation of a large number of intermediate string objects, the `appendJSON()`
 method may be used to append to an existing `Stringbuilder` etc.  It should be noted that this
-is also useful for serializing directly to an output stream, e.g. `PrintStream` or `Writer`.
+is also useful for serializing directly to an output stream, e.g. a `PrintStream` or `Writer`.
 
 ## Examples
 
