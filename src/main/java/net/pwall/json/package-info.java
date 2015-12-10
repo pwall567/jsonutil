@@ -77,8 +77,8 @@
  * <p>The nodes all implement the {@link net.pwall.json.JSONValue JSONValue} interface, which
  * specifies two methods:</p>
  * <ul>
- * <li>{@link String} {@link net.pwall.json.JSONValue#toJSON() toJSON()} &mdash; convert to the
- * JSON external representation</li>
+ * <li>{@link java.lang.String String} {@link net.pwall.json.JSONValue#toJSON() toJSON()}
+ * &mdash; convert to the JSON external representation</li>
  * <li>{@code void}
  * {@link net.pwall.json.JSONValue#appendJSON(Appendable) appendJSON(Appendable a)} &mdash;
  * append the JSON form to an {@link java.lang.Appendable Appendable} (for example, a

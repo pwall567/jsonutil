@@ -28,7 +28,7 @@ package net.pwall.json;
 import java.io.IOException;
 
 /**
- * A JSON float value.
+ * A JSON double value.
  *
  * @author Peter Wall
  */
