@@ -65,6 +65,18 @@ On most benchmarks, the library significantly out-performs its competitors.  For
 
 ![Diagram](https://github.com/pwall567/jsonutil/raw/develop/benchmark1.png "Benchmark 1")
 
+## Maven
+
+The library is in the Maven Central Repository; the co-ordinates are:
+
+```xml
+<dependency>
+  <groupId>net.pwall.util</groupId>
+  <artifactId>jsonutil</artifactId>
+  <version>1.2</version>
+</dependency>
+```
+
 ## Usage
 
 There are several static methods of the `JSON` class to parse a string, file or input stream
