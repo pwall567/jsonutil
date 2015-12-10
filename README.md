@@ -69,7 +69,7 @@ On most benchmarks, the library significantly out-performs its competitors.  For
 
 There are several static methods of the `JSON` class to parse a string, file or input stream
 into a `JSONValue`.  The result may be `null` if the input consists simply of the token
-`null`, one of the seven simple JSON forms:
+`null`, or one of the seven simple JSON forms:
 
 * `JSONString`
 * `JSONInteger`
@@ -85,7 +85,7 @@ or one of the two composite forms:
 * `JSONObject`
 
 All of the simple classes have a `get()` method to retrieve the value (this is not specified by
-the interface because the return type differs in each case).  Also, the number classes all
+the interface because the return type differs in each case).  Also, the numeric classes all
 extend the `Number` class, so the accessors `intvalue()`, `doubleValue()` etc. may be used
 to retrieve the value in a particular form.  And the `toString()` methods on these classes all
 return the string representation of the value, not the JSON.
