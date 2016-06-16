@@ -385,7 +385,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     /**
      * Get an {@link Iterable} of {@link Float} from this array.  Supports the idiom:
      * <pre>
-     *     for (Float item : jsonArray.doubles()) {
+     *     for (Float item : jsonArray.floats()) {
      *         // process each item of the array
      *     }
      * </pre>
