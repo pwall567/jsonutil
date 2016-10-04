@@ -98,7 +98,7 @@ or one of the two composite forms:
 
 All of the simple classes have a `get()` method to retrieve the value (this is not specified by
 the interface because the return type differs in each case).  Also, the numeric classes all
-extend the `Number` class, so the accessors `intvalue()`, `doubleValue()` etc. may be used
+extend the `Number` class, so the accessors `intValue()`, `doubleValue()` etc. may be used
 to retrieve the value in a particular form.  And the `toString()` methods on these classes all
 return the string representation of the value, not the JSON.
 
