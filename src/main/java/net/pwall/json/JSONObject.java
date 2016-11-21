@@ -29,12 +29,12 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Set;
 
 import net.pwall.util.Strings;
@@ -54,7 +54,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      * Construct an empty {@code JSONObject}.
      */
     public JSONObject() {
-        list = new ArrayList<>();
+        list = new ArrayList<Entry>();
     }
 
     /**
@@ -63,7 +63,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      * @param   other   the other {@code JSONObject}
      */
     public JSONObject(JSONObject other) {
-        list = new ArrayList<>(other.list);
+        list = new ArrayList<Entry>(other.list);
     }
 
     public JSONObject putValue(String key, CharSequence cs) {
@@ -143,7 +143,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      * @return          {@code this} (for chaining)
      */
     public JSONObject putValue(String key, Boolean value) {
-        put(key, JSONBoolean.valueOf(Objects.requireNonNull(value).booleanValue()));
+        put(key, JSONBoolean.valueOf(requireNonNull(value).booleanValue()));
         return this;
     }
 
@@ -269,7 +269,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      */
     @Override
     public JSONValue get(Object key) {
-        int index = findIndex(Objects.requireNonNull(key));
+        int index = findIndex(requireNonNull(key));
         return index < 0 ? null : list.get(index).getValue();
     }
 
@@ -282,7 +282,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      */
     @Override
     public boolean containsKey(Object key) {
-        return findIndex(Objects.requireNonNull(key)) >= 0;
+        return findIndex(requireNonNull(key)) >= 0;
     }
 
     /**
@@ -296,7 +296,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      */
     @Override
     public JSONValue put(String key, JSONValue value) {
-        int index = findIndex(Objects.requireNonNull(key));
+        int index = findIndex(requireNonNull(key));
         if (index >= 0) {
             JSONValue oldValue = list.get(index).getValue();
             list.get(index).setValue(value);
@@ -315,7 +315,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      */
     @Override
     public JSONValue remove(Object key) {
-        int index = findIndex(Objects.requireNonNull(key));
+        int index = findIndex(requireNonNull(key));
         if (index >= 0) {
             Entry entry = list.remove(index);
             return entry.getValue();
@@ -355,7 +355,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
     @Override
     public boolean containsValue(Object value) {
         for (int i = 0, n = list.size(); i < n; i++)
-            if (Objects.equals(list.get(i).getValue(), value))
+            if (equals(list.get(i).getValue(), value))
                 return true;
         return false;
     }
@@ -530,7 +530,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
         if (list.size() != otherObj.list.size())
             return false;
         for (Entry entry : list)
-            if (!Objects.equals(entry.getValue(), otherObj.get(entry.getKey())))
+            if (!equals(entry.getValue(), otherObj.get(entry.getKey())))
                 return false;
         return true;
     }
@@ -570,6 +570,20 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
         return new JSONObject();
     }
 
+    private static <T> T requireNonNull(T obj) {
+        if (obj == null)
+            throw new NullPointerException();
+        return obj;
+    }
+
+    private static boolean equals(Object a, Object b) {
+        return (a == b) || (a != null && a.equals(b));
+    }
+
+    private static int hash(Object... values) {
+        return Arrays.hashCode(values);
+    }
+
     /**
      * Inner class to represent a key-value pair in the {@code JSONObject}.
      */
@@ -607,13 +621,13 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
             if (!(other instanceof Entry))
                 return false;
             Entry otherEntry = (Entry)other;
-            return Objects.equals(key, otherEntry.key) &&
-                    Objects.equals(value, otherEntry.value);
+            return JSONObject.equals(key, otherEntry.key) &&
+                    JSONObject.equals(value, otherEntry.value);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(key, value);
+            return hash(key, value);
         }
 
     }

@@ -188,8 +188,14 @@ public class JSON {
      * @throws  IOException on any I/O errors
      */
     public static JSONValue parse(File f) throws IOException {
-        try (InputStream is = new FileInputStream(f)) {
+        InputStream is = null;
+        try {
+            is = new FileInputStream(f);
             return parse(is);
+        }
+        finally {
+            if (is != null)
+                is.close();
         }
     }
 
@@ -204,8 +210,14 @@ public class JSON {
      * @throws  IOException on any I/O errors
      */
     public static JSONValue parse(File f, String charSet) throws IOException {
-        try (InputStream is = new FileInputStream(f)) {
+        InputStream is = null;
+        try {
+            is = new FileInputStream(f);
             return parse(is, charSet);
+        }
+        finally {
+            if (is != null)
+                is.close();
         }
     }
 
@@ -218,8 +230,14 @@ public class JSON {
      * @throws  IOException on any I/O errors
      */
     public static JSONValue parse(InputStream is) throws IOException {
-        try (Reader rdr = new InputStreamReader(is)) {
+        Reader rdr = null;
+        try {
+            rdr = new InputStreamReader(is);
             return parse(rdr);
+        }
+        finally {
+            if (rdr != null)
+                rdr.close();
         }
     }
 
@@ -234,8 +252,14 @@ public class JSON {
      * @throws  IOException on any I/O errors
      */
     public static JSONValue parse(InputStream is, String charSet) throws IOException {
-        try (Reader rdr = new InputStreamReader(is, charSet)) {
+        Reader rdr = null;
+        try {
+            rdr = new InputStreamReader(is, charSet);
             return parse(rdr);
+        }
+        finally {
+            if (rdr != null)
+                rdr.close();
         }
     }
 

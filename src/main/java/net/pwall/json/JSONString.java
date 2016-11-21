@@ -26,7 +26,6 @@
 package net.pwall.json;
 
 import java.io.IOException;
-import java.util.Objects;
 
 import net.pwall.util.Strings;
 
@@ -42,7 +41,7 @@ public class JSONString implements JSONValue, CharSequence {
     private String value;
 
     public JSONString(CharSequence cs) {
-        value = Objects.requireNonNull(cs).toString();
+        value = requireNonNull(cs).toString();
     }
 
     public String get() {
@@ -132,6 +131,12 @@ public class JSONString implements JSONValue, CharSequence {
     public boolean equals(Object other) {
         return other == this ||
                 other instanceof JSONString && value.equals(((JSONString)other).value);
+    }
+
+    private static <T> T requireNonNull(T obj) {
+        if (obj == null)
+            throw new NullPointerException();
+        return obj;
     }
 
 }

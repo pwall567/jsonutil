@@ -3,6 +3,10 @@ Added this change log after project was already under way.  Early changes are no
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [1.2.2] - 2016-11-21
+### Changed
+- More changes for Java 1.6
+
 ## [1.2.1] - 2016-11-16
 ### Changed
 - Changed Java version to 1.6 to allow creation of version for older systems

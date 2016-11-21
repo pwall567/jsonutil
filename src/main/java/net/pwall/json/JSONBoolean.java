@@ -26,7 +26,6 @@
 package net.pwall.json;
 
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * A JSON boolean value.
@@ -49,7 +48,7 @@ public class JSONBoolean implements JSONValue {
     }
 
     public JSONBoolean(Boolean value) {
-        this.value = Objects.requireNonNull(value).booleanValue();
+        this.value = requireNonNull(value).booleanValue();
     }
 
     public boolean get() {
@@ -88,6 +87,12 @@ public class JSONBoolean implements JSONValue {
 
     public static JSONBoolean valueOf(boolean b) {
         return (b ? TRUE : FALSE);
+    }
+
+    private static <T> T requireNonNull(T obj) {
+        if (obj == null)
+            throw new NullPointerException();
+        return obj;
     }
 
 }

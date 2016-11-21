@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Objects;
 
 /**
  * A JSON array.
@@ -53,7 +52,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
      * @throws  NullPointerException if the collection is {@code null}
      */
     public JSONArray(JSONValue[] array) {
-        for (JSONValue item : Objects.requireNonNull(array))
+        for (JSONValue item : requireNonNull(array))
             add(item);
     }
 
@@ -143,7 +142,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
      * @throws  NullPointerException if the value is {@code null}
      */
     public JSONArray addValue(Boolean value) {
-        add(JSONBoolean.valueOf(Objects.requireNonNull(value).booleanValue()));
+        add(JSONBoolean.valueOf(requireNonNull(value).booleanValue()));
         return this;
     }
 
@@ -553,6 +552,12 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
      */
     public static JSONArray create() {
         return new JSONArray();
+    }
+
+    private static <T> T requireNonNull(T obj) {
+        if (obj == null)
+            throw new NullPointerException();
+        return obj;
     }
 
     public abstract class BaseIterator<T> implements Iterator<T> {
