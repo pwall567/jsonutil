@@ -27,6 +27,8 @@ package net.pwall.json;
 
 import java.io.IOException;
 
+import net.pwall.util.Strings;
+
 /**
  * A JSON integer value.
  *
@@ -69,18 +71,26 @@ public class JSONInteger extends Number implements JSONNumberValue {
     }
 
     /**
-     * Create the appropriate external representation for this JSON value.
+     * Create the external representation for this {@code JSONInteger}.
      *
      * @return  the JSON representation for this value
+     * @see     JSONValue#toJSON()
      */
     @Override
     public String toJSON() {
-        return String.valueOf(value);
+        StringBuilder sb = new StringBuilder(12);
+        try {
+            appendJSON(sb);
+        }
+        catch (IOException e) {
+            // can't happen - StringBuilder does not throw IOException
+        }
+        return sb.toString();
     }
 
     @Override
     public void appendJSON(Appendable a) throws IOException {
-        a.append(toJSON());
+        Strings.appendInt(a, value);
     }
 
     @Override

@@ -3,7 +3,11 @@ Added this change log after project was already under way.  Early changes are no
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
-## [1.2] - 2105-12-10
+## [1.3] - 2015-11-26
+### Changed
+- Used optimised string output of int and long
+
+## [1.2] - 2015-12-10
 ### Added
 - `putJSON()` and `addJSON()` methods to allow chaining
 - new means of iterating over array values
@@ -13,13 +17,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 - Added nested exception to `JSONException`
 - Fixed compiler warnings
 
-## [1.1] - 2105-11-30
+## [1.1] - 2015-11-30
 ### Added
 - `JSONException`
 
 ### Changed
 - Optimised `equals()` in several classes
 
-## [1.0] - 2105-09-08
+## [1.0] - 2015-09-08
 ### Added
 - Initial release

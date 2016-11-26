@@ -57,6 +57,11 @@ public class TestObject {
         assertEquals("\"\\\"\\\\\\u1234\"", str.toJSON());
 
         assertEquals("null", JSON.toJSON(null));
+
+        JSONInteger intValue = new JSONInteger(123456789);
+        assertEquals("123456789", intValue.toJSON());
+        intValue = new JSONInteger(-1000);
+        assertEquals("-1000", intValue.toJSON());
     }
 
     @Test
