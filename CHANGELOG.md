@@ -3,7 +3,7 @@ Added this change log after project was already under way.  Early changes are no
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
-## [1.3] - 2015-11-26
+## [1.3] - 2016-11-27
 ### Changed
 - Used optimised string output of int and long
 
