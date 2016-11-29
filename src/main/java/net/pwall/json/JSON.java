@@ -369,8 +369,10 @@ public class JSON {
             int end = p.getIndex();
             if (floating)
                 return JSONDouble.valueOf(p.getString(start, end));
-            return end - start < 10 ? JSONInteger.valueOf(p.getString(start, end)) :
-                    JSONLong.valueOf(p.getString(start, end));
+            long longValue = Long.parseLong(p.getString(start, end));
+            int intValue = (int)longValue;
+            return intValue == longValue ? JSONInteger.valueOf(intValue) :
+                    JSONLong.valueOf(longValue);
         }
         if (p.matchDec()) {
             int start = p.getStart();
@@ -390,8 +392,10 @@ public class JSON {
             int end = p.getIndex();
             if (floating)
                 return JSONDouble.valueOf(p.getString(start, end));
-            return end - start < 10 ? JSONInteger.valueOf(p.getString(start, end)) :
-                    JSONLong.valueOf(p.getString(start, end));
+            long longValue = Long.parseLong(p.getString(start, end));
+            int intValue = (int)longValue;
+            return intValue == longValue ? JSONInteger.valueOf(intValue) :
+                    JSONLong.valueOf(longValue);
         }
         if (p.matchName("true"))
             return JSONBoolean.TRUE;

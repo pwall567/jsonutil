@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 ## [1.3] - 2016-11-27
 ### Changed
 - Used optimised string output of int and long
+- Better discriminination between int and long in `JSON.parse()`
+
+### Added
+- More JUnit tests
 
 ## [1.2] - 2015-12-10
 ### Added
