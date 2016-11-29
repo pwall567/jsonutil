@@ -147,4 +147,12 @@ public class TestString {
         assertEquals("bc", str.subSequence(1, 3).toString());
     }
 
+    @Test
+    public void testAppend() throws Exception {
+        JSONString str = new JSONString("abc");
+        StringBuilder sb = new StringBuilder();
+        str.appendJSON(sb);
+        assertEquals("\"abc\"", sb.toString());
+    }
+
 }
