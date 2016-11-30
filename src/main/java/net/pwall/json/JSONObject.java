@@ -66,14 +66,22 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
         list = new ArrayList<>(other.list);
     }
 
+    /**
+     * Add a {@link JSONString} representing the supplied {@link CharSequence} ({@link String},
+     * {@link StringBuilder} etc.) to the {@code JSONObject}.
+     *
+     * @param   key     the key to use when storing the value
+     * @param   cs
+     * @return
+     */
     public JSONObject putValue(String key, CharSequence cs) {
         put(key, new JSONString(cs));
         return this;
     }
 
     /**
-     * Add a {@link JSONInteger} to the {@code JSONObject} representing the supplied
-     * {@code int}.
+     * Add a {@link JSONInteger} representing the supplied {@code int} to the
+     * {@code JSONObject}.
      *
      * @param   key     the key to use when storing the value
      * @param   value   the value
@@ -85,7 +93,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
     }
 
     /**
-     * Add a {@link JSONLong} to the {@code JSONObject} representing the supplied {@code long}.
+     * Add a {@link JSONLong} representing the supplied {@code long} to the {@code JSONObject}.
      *
      * @param   key     the key to use when storing the value
      * @param   value   the value
@@ -97,8 +105,8 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
     }
 
     /**
-     * Add a {@link JSONFloat} to the {@code JSONObject} representing the supplied
-     * {@code float}.
+     * Add a {@link JSONFloat} representing the supplied {@code float} to the
+     * {@code JSONObject}.
      *
      * @param   key     the key to use when storing the value
      * @param   value   the value
@@ -110,8 +118,8 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
     }
 
     /**
-     * Add a {@link JSONDouble} to the {@code JSONObject} representing the supplied
-     * {@code double}.
+     * Add a {@link JSONDouble} representing the supplied {@code double} to the
+     * {@code JSONObject}.
      *
      * @param   key     the key to use when storing the value
      * @param   value   the value
@@ -123,8 +131,8 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
     }
 
     /**
-     * Add a {@link JSONBoolean} to the {@code JSONObject} representing the supplied
-     * {@code boolean}.
+     * Add a {@link JSONBoolean} representing the supplied {@code boolean} to the
+     * {@code JSONObject}.
      *
      * @param   key     the key to use when storing the value
      * @param   value   the value
@@ -132,18 +140,6 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      */
     public JSONObject putValue(String key, boolean value) {
         put(key, JSONBoolean.valueOf(value));
-        return this;
-    }
-
-    /**
-     * Add a {@link JSONBoolean} to the {@code JSONObject}.
-     *
-     * @param   key     the key to use when storing the value
-     * @param   value   the value
-     * @return          {@code this} (for chaining)
-     */
-    public JSONObject putValue(String key, Boolean value) {
-        put(key, JSONBoolean.valueOf(Objects.requireNonNull(value).booleanValue()));
         return this;
     }
 
@@ -161,7 +157,7 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
     /**
      * Add a {@link JSONValue} to the {@code JSONObject}.  This method duplicates the
      * {@link #put(String, JSONValue)} method specified by the {@link Map} interface, but it
-     * returns {@code this} to allow for chaining.
+     * also returns {@code this} to allow for chaining.
      *
      * @param   key     the key to use when storing the value
      * @param   json    the {@link JSONValue}
@@ -298,8 +294,9 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
     public JSONValue put(String key, JSONValue value) {
         int index = findIndex(Objects.requireNonNull(key));
         if (index >= 0) {
-            JSONValue oldValue = list.get(index).getValue();
-            list.get(index).setValue(value);
+            Entry entry = list.get(index);
+            JSONValue oldValue = entry.getValue();
+            entry.setValue(value);
             return oldValue;
         }
         list.add(new Entry(key, value));
@@ -316,10 +313,8 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
     @Override
     public JSONValue remove(Object key) {
         int index = findIndex(Objects.requireNonNull(key));
-        if (index >= 0) {
-            Entry entry = list.remove(index);
-            return entry.getValue();
-        }
+        if (index >= 0)
+            return list.remove(index).getValue();
         return null;
     }
 
