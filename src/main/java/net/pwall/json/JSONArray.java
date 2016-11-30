@@ -2,7 +2,7 @@
  * @(#) JSONArray.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015 Peter Wall
+ * Copyright (c) 2014, 2015, 2016 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,24 +41,24 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     private static final long serialVersionUID = -6963671812529472759L;
 
     /**
-     * Construct an empty JSON array.
+     * Construct an empty {@code JSONArray}.
      */
     public JSONArray() {
     }
 
     /**
-     * Construct a JSON array by copying another JSON array.
+     * Construct a {@code JSONArray} from an array of {@link JSONValue}s.
      *
-     * @param   array   the source {@code JSONArray}
+     * @param   values  the source values
      * @throws  NullPointerException if the collection is {@code null}
      */
-    public JSONArray(JSONValue[] array) {
-        for (JSONValue item : Objects.requireNonNull(array))
-            add(item);
+    public JSONArray(JSONValue ... values) {
+        for (int i = 0, n = values.length; i < n; i++)
+            add(values[i]);
     }
 
     /**
-     * Construct a JSON array from a {@link Collection} of JSON values.
+     * Construct a {@code JSONArray} from a {@link Collection} of {@link JSONValue}s.
      *
      * @param   collection  the source {@link Collection}
      * @throws  NullPointerException if the collection is {@code null}
@@ -68,8 +68,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Add a {@link JSONString} to the JSON array representing the supplied {@link CharSequence}
-     * ({@link String}, {@link StringBuilder} etc.).
+     * Add a {@link JSONString} representing the supplied {@link CharSequence} ({@link String},
+     * {@link StringBuilder} etc.) to the {@code JSONArray}.
      *
      * @param   cs      the {@link CharSequence}
      * @return          {@code this} (for chaining)
@@ -81,7 +81,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Add a {@link JSONInteger} to the JSON array representing the supplied {@code int}.
+     * Add a {@link JSONInteger} representing the supplied {@code int} to the {@code JSONArray}.
      *
      * @param   value   the value
      * @return          {@code this} (for chaining)
@@ -92,7 +92,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Add a {@link JSONLong} to the JSON array representing the supplied {@code long}.
+     * Add a {@link JSONLong} representing the supplied {@code long} to the {@code JSONArray}.
      *
      * @param   value   the value
      * @return          {@code this} (for chaining)
@@ -103,7 +103,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Add a {@link JSONFloat} to the JSON array representing the supplied {@code float}.
+     * Add a {@link JSONFloat} representing the supplied {@code float} to the {@code JSONArray}.
      *
      * @param   value   the value
      * @return          {@code this} (for chaining)
@@ -114,7 +114,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Add a {@link JSONDouble} to the JSON array representing the supplied {@code double}.
+     * Add a {@link JSONDouble} representing the supplied {@code double} to the
+     * {@code JSONArray}.
      *
      * @param   value   the value
      * @return          {@code this} (for chaining)
@@ -125,7 +126,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Add a {@link JSONBoolean} to the JSON array representing the supplied {@code boolean}.
+     * Add a {@link JSONBoolean} representing the supplied {@code boolean} to the
+     * {@code JSONArray}.
      *
      * @param   value   the value
      * @return          {@code this} (for chaining)
@@ -136,7 +138,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Add a {@link JSONBoolean} to the JSON array representing the supplied {@link Boolean}.
+     * Add a {@link JSONBoolean} representing the supplied {@link Boolean} to the
+     * {@code JSONArray}.
      *
      * @param   value   the value
      * @return          {@code this} (for chaining)
@@ -153,38 +156,39 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
         return this;
     }
 
-    public <T extends CharSequence> JSONArray addValues(T[] array) {
-        for (int i = 0, n = array.length; i < n; i++)
-            addValue(array[i]);
+    public <T extends CharSequence> JSONArray addValues(
+            @SuppressWarnings("unchecked") T ... values) {
+        for (int i = 0, n = values.length; i < n; i++)
+            addValue(values[i]);
         return this;
     }
 
-    public JSONArray addValues(int[] array) {
-        for (int i = 0, n = array.length; i < n; i++)
-            addValue(array[i]);
+    public JSONArray addValues(int ... values) {
+        for (int i = 0, n = values.length; i < n; i++)
+            addValue(values[i]);
         return this;
     }
 
-    public JSONArray addValues(long[] array) {
-        for (int i = 0, n = array.length; i < n; i++)
-            addValue(array[i]);
+    public JSONArray addValues(long ... values) {
+        for (int i = 0, n = values.length; i < n; i++)
+            addValue(values[i]);
         return this;
     }
 
-    public JSONArray addValues(float[] array) {
-        for (int i = 0, n = array.length; i < n; i++)
-            addValue(array[i]);
+    public JSONArray addValues(float ... values) {
+        for (int i = 0, n = values.length; i < n; i++)
+            addValue(values[i]);
         return this;
     }
 
-    public JSONArray addValues(double[] array) {
-        for (int i = 0, n = array.length; i < n; i++)
-            addValue(array[i]);
+    public JSONArray addValues(double ... values) {
+        for (int i = 0, n = values.length; i < n; i++)
+            addValue(values[i]);
         return this;
     }
 
     /**
-     * Add a {@code null} value to the JSON array.
+     * Add a {@code null} value to the {@code JSONArray}.
      *
      * @return          {@code this} (for chaining)
      */
@@ -196,7 +200,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     /**
      * Add a {@link JSONValue} to the {@code JSONArray}.  This method duplicates the
      * {@link ArrayList#add(Object) add(JSONValue)} method inherited from the {@link ArrayList}
-     * class, but it returns {@code this} to allow for chaining.
+     * class, but it also returns {@code this} to allow for chaining.
      *
      * @param   json    the {@link JSONValue}
      * @return          {@code this} (for chaining)
@@ -207,8 +211,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Get a {@link String} value from the array.  If the array entry is {@code null} return
-     * {@code null}.
+     * Get a {@link String} value from the {@code JSONArray}.  If the array entry is
+     * {@code null} return {@code null}.
      *
      * @param   index   the index of the value
      * @return  the value
@@ -219,7 +223,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Get an {@code int} value from the array.  If the array entry is {@code null} return 0.
+     * Get an {@code int} value from the {@code JSONArray}.  If the array entry is {@code null}
+     * return 0.
      *
      * @param   index   the index of the value
      * @return  the value
@@ -230,7 +235,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Get a {@code long} value from the array.  If the array entry is {@code null} return 0.
+     * Get a {@code long} value from the {@code JSONArray}.  If the array entry is {@code null}
+     * return 0.
      *
      * @param   index   the index of the value
      * @return  the value
@@ -241,7 +247,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Get a {@code float} value from the array.  If the array entry is {@code null} return 0.
+     * Get a {@code float} value from the {@code JSONArray}.  If the array entry is {@code null}
+     * return 0.
      *
      * @param   index   the index of the value
      * @return  the value
@@ -252,7 +259,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Get a {@code double} value from the array.  If the array entry is {@code null} return 0.
+     * Get a {@code double} value from the {@code JSONArray}.  If the array entry is
+     * {@code null} return 0.
      *
      * @param   index   the index of the value
      * @return  the value
@@ -263,8 +271,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Get a {@code boolean} value from the array.  If the array entry is {@code null} return
-     * {@code false}.
+     * Get a {@code boolean} value from the {@code JSONArray}.  If the array entry is
+     * {@code null} return {@code false}.
      *
      * @param   index   the index of the value
      * @return  the value
@@ -275,8 +283,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Get a {@link JSONArray} value from the array.  If the array entry is {@code null} return
-     * {@code null}.
+     * Get a {@link JSONArray} value from the {@code JSONArray}.  If the array entry is
+     * {@code null} return {@code null}.
      *
      * @param   index   the index of the value
      * @return  the value
@@ -287,8 +295,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Get a {@link JSONObject} value from the array.  If the array entry is {@code null} return
-     * {@code null}.
+     * Get a {@link JSONObject} value from the {@code JSONArray}.  If the array entry is
+     * {@code null} return {@code null}.
      *
      * @param   index   the index of the value
      * @return  the value
@@ -299,7 +307,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Get an {@link Iterable} of {@link String} from this array.  Supports the idiom:
+     * Get an {@link Iterable} of {@link String} from the {@code JSONArray}.  Supports the
+     * idiom:
      * <pre>
      *     for (String item : jsonArray.strings()) {
      *         // process each item of the array
@@ -320,7 +329,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Get an {@link Iterable} of {@link Integer} from this array.  Supports the idiom:
+     * Get an {@link Iterable} of {@link Integer} from the {@code JSONArray}.  Supports the
+     * idiom:
      * <pre>
      *     for (Integer item : jsonArray.ints()) {
      *         // process each item of the array
@@ -341,7 +351,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Get an {@link Iterable} of {@link Long} from this array.  Supports the idiom:
+     * Get an {@link Iterable} of {@link Long} from the {@code JSONArray}.  Supports the idiom:
      * <pre>
      *     for (Long item : jsonArray.longs()) {
      *         // process each item of the array
@@ -362,7 +372,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Get an {@link Iterable} of {@link Double} from this array.  Supports the idiom:
+     * Get an {@link Iterable} of {@link Double} from the {@code JSONArray}.  Supports the
+     * idiom:
      * <pre>
      *     for (Double item : jsonArray.doubles()) {
      *         // process each item of the array
@@ -383,7 +394,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Get an {@link Iterable} of {@link Float} from this array.  Supports the idiom:
+     * Get an {@link Iterable} of {@link Float} from the {@code JSONArray}.  Supports the idiom:
      * <pre>
      *     for (Float item : jsonArray.floats()) {
      *         // process each item of the array
@@ -404,7 +415,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Get an {@link Iterable} of {@link Boolean} from this array.  Supports the idiom:
+     * Get an {@link Iterable} of {@link Boolean} from the {@code JSONArray}.  Supports the
+     * idiom:
      * <pre>
      *     for (Boolean item : jsonArray.booleans()) {
      *         // process each item of the array
@@ -425,7 +437,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Get an {@link Iterable} of {@link JSONArray} from this array.  Supports the idiom:
+     * Get an {@link Iterable} of {@link JSONArray} from the {@code JSONArray}.  Supports the
+     * idiom:
      * <pre>
      *     for (JSONArray item : jsonArray.arrays()) {
      *         // process each item of the array
@@ -446,7 +459,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Get an {@link Iterable} of {@link JSONObject} from this array.  Supports the idiom:
+     * Get an {@link Iterable} of {@link JSONObject} from the {@code JSONArray}.  Supports the
+     * idiom:
      * <pre>
      *     for (JSONObject item : jsonArray.objects()) {
      *         // process each item of the array
@@ -467,7 +481,7 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Create the external representation for this JSON array.
+     * Create the external representation for the {@code JSONArray}.
      *
      * @return  the JSON representation for this array
      * @see     JSONValue#toJSON()
@@ -486,7 +500,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Append the external representation for this JSON array to a given {@link Appendable}.
+     * Append the external representation for the {@code JSONArray} to a given
+     * {@link Appendable}.
      *
      * @param   a   the {@link Appendable}
      * @throws  IOException     if thrown by the {@link Appendable}
@@ -523,7 +538,8 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Return a string representation of the JSON array.  This is the same as the JSON format.
+     * Return a string representation of the {@code JSONArray}.  This is the same as the JSON
+     * format.
      *
      * @return  the JSON string
      */
@@ -533,10 +549,11 @@ public class JSONArray extends ArrayList<JSONValue> implements JSONComposite {
     }
 
     /**
-     * Compare two JSON arrays for equality.
+     * Compare two {@code JSONArray}s for equality.
      *
-     * @param   other   the other JSON array
-     * @return  {@code true} if the other object is a JSON array and the contents are equal
+     * @param   other   the other {@code JSONArray}
+     * @return  {@code true} if the other object is a {@code JSONArray} and the contents are
+     *          equal
      */
     @Override
     public boolean equals(Object other) {
