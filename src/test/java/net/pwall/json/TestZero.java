@@ -45,6 +45,12 @@ public class TestZero {
         assertEquals(0, ((JSONZero)value).get());
         assertEquals("0", value.toJSON());
 
+        value = JSON.parse("  0\n ");
+        assertTrue(value instanceof JSONZero);
+        assertEquals("0", value.toString());
+        assertEquals(0, ((JSONZero)value).get());
+        assertEquals("0", value.toJSON());
+
         value = JSON.parse("1");
         assertFalse(value instanceof JSONZero);
 

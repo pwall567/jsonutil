@@ -50,7 +50,7 @@ public class TestString {
         assertEquals("abc\\def", ((JSONString)value).get());
         assertEquals("\"abc\\\\def\"", value.toJSON());
 
-        value = JSON.parse("\"abc\\\\def\\\\ghi\"");
+        value = JSON.parse("\"abc\\\\def\\\\ghi\"\n");
         assertTrue(value instanceof JSONString);
         assertEquals("abc\\def\\ghi", value.toString());
         assertEquals("abc\\def\\ghi", ((JSONString)value).get());
@@ -62,7 +62,7 @@ public class TestString {
         assertEquals("", ((JSONString)value).get());
         assertEquals("\"\"", value.toJSON());
 
-        value = JSON.parse("\" \\t \"");
+        value = JSON.parse(" \" \\t \"\t");
         assertTrue(value instanceof JSONString);
         assertEquals(" \t ", value.toString());
         assertEquals(" \t ", ((JSONString)value).get());

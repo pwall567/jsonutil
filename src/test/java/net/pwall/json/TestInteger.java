@@ -57,7 +57,7 @@ public class TestInteger {
         assertEquals(-1000000, ((JSONInteger)value).get());
         assertEquals("-1000000", value.toJSON());
 
-        value = JSON.parse("123456789");
+        value = JSON.parse(" 123456789 ");
         assertTrue(value instanceof JSONInteger);
         assertEquals("123456789", value.toString());
         assertEquals(123456789, ((JSONInteger)value).get());

@@ -51,6 +51,12 @@ public class TestBoolean {
         assertFalse(((JSONBoolean)value).get());
         assertEquals("false", value.toJSON());
 
+        value = JSON.parse("  false\n");
+        assertTrue(value instanceof JSONBoolean);
+        assertEquals("false", value.toString());
+        assertFalse(((JSONBoolean)value).get());
+        assertEquals("false", value.toJSON());
+
         value = JSON.parse("0");
         assertFalse(value instanceof JSONBoolean);
 
