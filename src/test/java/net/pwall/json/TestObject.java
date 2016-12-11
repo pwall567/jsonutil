@@ -287,6 +287,25 @@ public class TestObject {
     }
 
     @Test
+    public void testRemove() {
+        JSONObject object = new JSONObject();
+        object.putValue("first", 123);
+        object.putValue("second", "abc");
+
+        assertFalse(object.isEmpty());
+        assertEquals(2, object.size());
+        assertTrue(object.containsKey("first"));
+        object.remove("first");
+        assertFalse(object.isEmpty());
+        assertEquals(1, object.size());
+        assertFalse(object.containsKey("first"));
+        object.remove("second");
+        assertTrue(object.isEmpty());
+        assertEquals(0, object.size());
+        assertFalse(object.containsKey("second"));
+    }
+
+    @Test
     public void testOutput() {
         JSONObject object = new JSONObject();
         assertEquals("{}", object.toJSON());
