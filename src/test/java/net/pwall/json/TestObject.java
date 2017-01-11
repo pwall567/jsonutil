@@ -27,6 +27,9 @@ package net.pwall.json;
 
 import static org.junit.Assert.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Test;
 
 /**
@@ -303,6 +306,30 @@ public class TestObject {
         assertTrue(object.isEmpty());
         assertEquals(0, object.size());
         assertFalse(object.containsKey("second"));
+    }
+
+    @Test
+    public void testMapActions() {
+        JSONObject object = new JSONObject();
+        object.putValue("first", 123);
+        object.putValue("second", "abc");
+        object.putValue("third", true);
+        object.putValue("fourth", -1000L);
+        JSONObject object2 = new JSONObject();
+        object2.putAll(object);
+        assertEquals(4, object2.size());
+        Set<String> keySet = new HashSet<>();
+        keySet.add("first");
+        keySet.add("second");
+        keySet.add("third");
+        keySet.add("fourth");
+        assertEquals(keySet, object2.keySet());
+        Set<JSONValue> valueSet = new HashSet<>();
+        valueSet.add(new JSONInteger(123));
+        valueSet.add(new JSONString("abc"));
+        valueSet.add(new JSONBoolean(true));
+        valueSet.add(new JSONLong(-1000L));
+        assertEquals(valueSet, object2.values());
     }
 
     @Test
