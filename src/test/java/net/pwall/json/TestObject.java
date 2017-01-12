@@ -28,6 +28,8 @@ package net.pwall.json;
 import static org.junit.Assert.*;
 
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import org.junit.Test;
@@ -330,6 +332,12 @@ public class TestObject {
         valueSet.add(new JSONBoolean(true));
         valueSet.add(new JSONLong(-1000L));
         assertEquals(valueSet, object2.values());
+        Set<Map.Entry<String, JSONValue>> entrySet = new HashSet<>();
+        entrySet.add(new TestMapEntry("first", new JSONInteger(123)));
+        entrySet.add(new TestMapEntry("second", new JSONString("abc")));
+        entrySet.add(new TestMapEntry("third", new JSONBoolean(true)));
+        entrySet.add(new TestMapEntry("fourth", new JSONLong(-1000L)));
+        assertEquals(entrySet, object2.entrySet());
     }
 
     @Test
@@ -383,6 +391,51 @@ public class TestObject {
         assertEquals(JSON.parse("\"\\\"\\\\\\u1234\""), str);
 
         assertEquals(JSON.parse("null"), null);
+    }
+
+    public static class TestMapEntry implements Map.Entry<String, JSONValue> {
+
+        private String key;
+        private JSONValue value;
+
+        public TestMapEntry(String key, JSONValue value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        @Override
+        public String getKey() {
+            return key;
+        }
+
+        @Override
+        public JSONValue getValue() {
+            return value;
+        }
+
+        @Override
+        public JSONValue setValue(JSONValue value) {
+            JSONValue result = this.value;
+            this.value = value;
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (!(obj instanceof Map.Entry))
+                return false;
+            Map.Entry<?, ?> mapEntry = (Map.Entry<?, ?>)obj;
+            return Objects.equals(getKey(), mapEntry.getKey()) &&
+                    Objects.equals(getValue(), mapEntry.getValue());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(key, value);
+        }
+
     }
 
 }
