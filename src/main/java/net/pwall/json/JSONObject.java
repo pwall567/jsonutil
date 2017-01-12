@@ -599,11 +599,13 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
 
         @Override
         public boolean equals(Object other) {
-            if (!(other instanceof Entry))
+            if (other == this)
+                return true;
+            if (!(other instanceof Map.Entry))
                 return false;
-            Entry otherEntry = (Entry)other;
-            return Objects.equals(key, otherEntry.key) &&
-                    Objects.equals(value, otherEntry.value);
+            Map.Entry<?, ?> otherEntry = (Map.Entry<?, ?>)other;
+            return Objects.equals(key, otherEntry.getKey()) &&
+                    Objects.equals(value, otherEntry.getValue());
         }
 
         @Override
