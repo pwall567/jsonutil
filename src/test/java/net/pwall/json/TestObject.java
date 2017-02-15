@@ -160,6 +160,11 @@ public class TestObject {
         JSON.parse("{\"a\":1");
     }
 
+    @Test(expected=IllegalArgumentException.class)
+    public void testParse5() {
+        JSON.parse("{\"a\":1,\"a\":2}");
+    }
+
     @Test
     public void testConstructor() {
         JSONObject object = new JSONObject();

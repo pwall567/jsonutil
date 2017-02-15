@@ -49,6 +49,7 @@ public class JSON {
     public static final String INVALID_CHAR_SEQ = "Invalid JSON character sequence";
     public static final String EXCESS_CHARS = "Excess characters after JSON value";
     public static final String ILLEGAL_KEY = "Illegal key in JSON object";
+    public static final String DUPLICATE_KEY = "Duplicate key in JSON object";
     public static final String MISSING_COLON = "Missing colon in JSON object";
     public static final String MISSING_CLOSING_BRACE = "Missing closing brace in JSON object";
     public static final String MISSING_CLOSING_BRACKET =
@@ -294,6 +295,8 @@ public class JSON {
                     if (!p.match('"'))
                         throw new JSONException(ILLEGAL_KEY);
                     String key = decodeString(p);
+                    if (object.containsKey(key))
+                        throw new JSONException(DUPLICATE_KEY);
                     p.skipSpaces();
                     if (!p.match(':'))
                         throw new JSONException(MISSING_COLON);
