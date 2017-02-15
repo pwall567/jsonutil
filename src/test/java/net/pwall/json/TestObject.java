@@ -320,6 +320,7 @@ public class TestObject {
         JSONObject object2 = new JSONObject();
         object2.putAll(object);
         assertEquals(4, object2.size());
+        assertEquals(object, object2);
         Set<String> keySet = new HashSet<>();
         keySet.add("first");
         keySet.add("second");
@@ -338,6 +339,9 @@ public class TestObject {
         entrySet.add(new TestMapEntry("third", new JSONBoolean(true)));
         entrySet.add(new TestMapEntry("fourth", new JSONLong(-1000L)));
         assertEquals(entrySet, object2.entrySet());
+        // check comparison both ways (a == b AND b == a)
+        assertTrue(entrySet.equals(object2.entrySet()));
+        assertTrue(object2.entrySet().equals(entrySet));
     }
 
     @Test
