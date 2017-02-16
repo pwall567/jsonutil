@@ -2,7 +2,7 @@
  * @(#) JSON.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015 Peter Wall
+ * Copyright (c) 2014, 2015, 2017 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -287,6 +287,9 @@ public class JSON {
      */
     public static JSONValue parse(ParseText p) {
         p.skipSpaces();
+
+        // check for object
+
         if (p.match('{')) {
             JSONObject object = new JSONObject();
             p.skipSpaces();
@@ -313,6 +316,9 @@ public class JSON {
             }
             return object;
         }
+
+        // check for array
+
         if (p.match('[')) {
             JSONArray array = new JSONArray();
             p.skipSpaces();
@@ -329,56 +335,26 @@ public class JSON {
             }
             return array;
         }
+
+        // check for string
+
         if (p.match('"')) {
             String s = decodeString(p);
             return new JSONString(s);
         }
-        if (p.match('0')) {
-            int start = p.getStart();
-            boolean floating = false;
-            if (p.match('.')) {
-                floating = true;
-                if (!p.matchDec())
-                    throw new JSONException(ILLEGAL_NUMBER);
-            }
-            if (p.matchIgnoreCase('e')) {
-                floating = true;
-                if (p.match('+') || p.match('-'))
-                    ; // do nothing - just step index
-                if (!p.matchDec())
-                    throw new JSONException(ILLEGAL_NUMBER);
-            }
-            if (floating)
-                return JSONDouble.valueOf(p.getString(start, p.getIndex()));
-            return JSONZero.ZERO;
-        }
-        if (p.match('-')) {
-            int start = p.getStart();
-            if (!p.match('0') && !p.matchDec())
-                throw new JSONException(ILLEGAL_NUMBER);
-            boolean floating = false;
-            if (p.match('.')) {
-                floating = true;
-                if (!p.matchDec())
-                    throw new JSONException(ILLEGAL_NUMBER);
-            }
-            if (p.matchIgnoreCase('e')) {
-                floating = true;
-                if (p.match('+') || p.match('-'))
-                    ; // do nothing - just step index
-                if (!p.matchDec())
-                    throw new JSONException(ILLEGAL_NUMBER);
-            }
-            int end = p.getIndex();
-            if (floating)
-                return JSONDouble.valueOf(p.getString(start, end));
-            long longValue = Long.parseLong(p.getString(start, end));
-            int intValue = (int)longValue;
-            return intValue == longValue ? JSONInteger.valueOf(intValue) :
-                    JSONLong.valueOf(longValue);
-        }
+
+        // check for number
+
+        int numberStart = p.getIndex();
+        if (p.match('-'))
+            ; // do nothing - just step index
         if (p.matchDec()) {
-            int start = p.getStart();
+            boolean zero = false;
+            if (p.getResultChar() == '0') {
+                if (p.getResultLength() > 1)
+                    throw new JSONException(ILLEGAL_NUMBER);
+                zero = true;
+            }
             boolean floating = false;
             if (p.match('.')) {
                 floating = true;
@@ -392,20 +368,29 @@ public class JSON {
                 if (!p.matchDec())
                     throw new JSONException(ILLEGAL_NUMBER);
             }
-            int end = p.getIndex();
             if (floating)
-                return JSONDouble.valueOf(p.getString(start, end));
-            long longValue = Long.parseLong(p.getString(start, end));
+                return JSONDouble.valueOf(p.getString(numberStart, p.getIndex()));
+            if (zero)
+                return JSONZero.ZERO;
+            long longValue = Long.parseLong(p.getString(numberStart, p.getIndex()));
             int intValue = (int)longValue;
             return intValue == longValue ? JSONInteger.valueOf(intValue) :
                     JSONLong.valueOf(longValue);
         }
+        if (p.getIndex() > numberStart)
+            throw new JSONException(ILLEGAL_NUMBER); // minus sign without digits
+
+        // check for keywords (true, false, null)
+
         if (p.matchName("true"))
             return JSONBoolean.TRUE;
         if (p.matchName("false"))
             return JSONBoolean.FALSE;
         if (p.matchName("null"))
             return null;
+
+        // error
+
         throw new JSONException(ILLEGAL_SYNTAX);
     }
 
