@@ -271,8 +271,7 @@ public class JSON {
     public static JSONValue parse(CharSequence cs) {
         ParseText p = new ParseText(cs);
         JSONValue result = parse(p);
-        p.skipSpaces();
-        if (!p.isExhausted())
+        if (!p.skipSpaces().isExhausted())
             throw new JSONException(EXCESS_CHARS);
         return result;
     }
@@ -292,22 +291,17 @@ public class JSON {
 
         if (p.match('{')) {
             JSONObject object = new JSONObject();
-            p.skipSpaces();
-            if (!p.match('}')) {
+            if (!p.skipSpaces().match('}')) {
                 for (;;) {
                     if (!p.match('"'))
                         throw new JSONException(ILLEGAL_KEY);
                     String key = decodeString(p);
                     if (object.containsKey(key))
                         throw new JSONException(DUPLICATE_KEY);
-                    p.skipSpaces();
-                    if (!p.match(':'))
+                    if (!p.skipSpaces().match(':'))
                         throw new JSONException(MISSING_COLON);
-                    p.skipSpaces();
-                    JSONValue value = parse(p);
-                    object.put(key, value);
-                    p.skipSpaces();
-                    if (!p.match(','))
+                    object.put(key, parse(p));
+                    if (!p.skipSpaces().match(','))
                         break;
                     p.skipSpaces();
                 }
@@ -321,15 +315,10 @@ public class JSON {
 
         if (p.match('[')) {
             JSONArray array = new JSONArray();
-            p.skipSpaces();
-            if (!p.match(']')) {
-                for (;;) {
+            if (!p.skipSpaces().match(']')) {
+                do {
                     array.add(parse(p));
-                    p.skipSpaces();
-                    if (!p.match(','))
-                        break;
-                    p.skipSpaces();
-                }
+                } while (p.skipSpaces().match(','));
                 if (!p.match(']'))
                     throw new JSONException(MISSING_CLOSING_BRACKET);
             }
@@ -339,8 +328,7 @@ public class JSON {
         // check for string
 
         if (p.match('"')) {
-            String s = decodeString(p);
-            return new JSONString(s);
+            return new JSONString(decodeString(p));
         }
 
         // check for number
