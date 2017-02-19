@@ -25,7 +25,6 @@
 
 package net.pwall.json;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -36,6 +35,7 @@ import java.io.Reader;
 import net.pwall.util.CharMapper;
 import net.pwall.util.CharUnmapper;
 import net.pwall.util.ParseText;
+import net.pwall.util.ReaderBuffer;
 import net.pwall.util.Strings;
 
 /**
@@ -249,16 +249,7 @@ public class JSON {
      * @throws  IOException on any I/O errors
      */
     public static JSONValue parse(Reader rdr) throws IOException {
-        if (!(rdr instanceof BufferedReader))
-            rdr = new BufferedReader(rdr);
-        StringBuilder sb = new StringBuilder();
-        for (;;) {
-            int i = rdr.read();
-            if (i < 0)
-                break;
-            sb.append((char)i);
-        }
-        return parse(sb);
+        return parse(new ReaderBuffer(rdr));
     }
 
     /**
