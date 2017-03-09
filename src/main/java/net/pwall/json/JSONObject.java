@@ -71,11 +71,11 @@ public class JSONObject implements JSONComposite, Map<String, JSONValue>, Iterab
      * {@link StringBuilder} etc.) to the {@code JSONObject}.
      *
      * @param   key     the key to use when storing the value
-     * @param   cs
-     * @return
+     * @param   value   the value
+     * @return          {@code this} (for chaining)
      */
-    public JSONObject putValue(String key, CharSequence cs) {
-        put(key, new JSONString(cs));
+    public JSONObject putValue(String key, CharSequence value) {
+        put(key, new JSONString(value));
         return this;
     }
 
