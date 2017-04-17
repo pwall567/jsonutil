@@ -141,8 +141,8 @@ public class JSONObject extends JSONMapping<JSONValue> {
 
     /**
      * Add a {@link JSONValue} to the {@code JSONObject}.  This method duplicates the
-     * {@link #put(String, JSONValue)} method specified by the {@link Map} interface, but it
-     * also returns {@code this} to allow for chaining.
+     * {@code put(String, JSONValue)} method specified by the {@link Map} interface, but it also
+     * returns {@code this} to allow for chaining.
      *
      * @param   key     the key to use when storing the value
      * @param   json    the {@link JSONValue}
