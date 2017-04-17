@@ -2,7 +2,7 @@
  * @(#) JSONLong.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015 Peter Wall
+ * Copyright (c) 2014, 2015, 2016 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,8 @@
 package net.pwall.json;
 
 import java.io.IOException;
+
+import net.pwall.util.Strings;
 
 /**
  * A JSON long value.
@@ -69,18 +71,26 @@ public class JSONLong extends Number implements JSONNumberValue {
     }
 
     /**
-     * Create the appropriate external representation for this JSON value.
+     * Create the external representation for this {@code JSONLong}.
      *
      * @return  the JSON representation for this value
+     * @see     JSONValue#toJSON()
      */
     @Override
     public String toJSON() {
-        return String.valueOf(value);
+        StringBuilder sb = new StringBuilder(12);
+        try {
+            appendJSON(sb);
+        }
+        catch (IOException e) {
+            // can't happen - StringBuilder does not throw IOException
+        }
+        return sb.toString();
     }
 
     @Override
     public void appendJSON(Appendable a) throws IOException {
-        a.append(toJSON());
+        Strings.appendLong(a, value);
     }
 
     @Override

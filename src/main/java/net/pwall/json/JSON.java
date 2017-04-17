@@ -2,7 +2,7 @@
  * @(#) JSON.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015 Peter Wall
+ * Copyright (c) 2014, 2015, 2017 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,6 @@
 
 package net.pwall.json;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -36,6 +35,7 @@ import java.io.Reader;
 import net.pwall.util.CharMapper;
 import net.pwall.util.CharUnmapper;
 import net.pwall.util.ParseText;
+import net.pwall.util.ReaderBuffer;
 import net.pwall.util.Strings;
 
 /**
@@ -49,6 +49,7 @@ public class JSON {
     public static final String INVALID_CHAR_SEQ = "Invalid JSON character sequence";
     public static final String EXCESS_CHARS = "Excess characters after JSON value";
     public static final String ILLEGAL_KEY = "Illegal key in JSON object";
+    public static final String DUPLICATE_KEY = "Duplicate key in JSON object";
     public static final String MISSING_COLON = "Missing colon in JSON object";
     public static final String MISSING_CLOSING_BRACE = "Missing closing brace in JSON object";
     public static final String MISSING_CLOSING_BRACKET =
@@ -248,16 +249,7 @@ public class JSON {
      * @throws  IOException on any I/O errors
      */
     public static JSONValue parse(Reader rdr) throws IOException {
-        if (!(rdr instanceof BufferedReader))
-            rdr = new BufferedReader(rdr);
-        StringBuilder sb = new StringBuilder();
-        for (;;) {
-            int i = rdr.read();
-            if (i < 0)
-                break;
-            sb.append((char)i);
-        }
-        return parse(sb);
+        return parse(new ReaderBuffer(rdr));
     }
 
     /**
@@ -270,8 +262,7 @@ public class JSON {
     public static JSONValue parse(CharSequence cs) {
         ParseText p = new ParseText(cs);
         JSONValue result = parse(p);
-        p.skipSpaces();
-        if (!p.isExhausted())
+        if (!p.skipSpaces().isExhausted())
             throw new JSONException(EXCESS_CHARS);
         return result;
     }
@@ -286,22 +277,22 @@ public class JSON {
      */
     public static JSONValue parse(ParseText p) {
         p.skipSpaces();
+
+        // check for object
+
         if (p.match('{')) {
             JSONObject object = new JSONObject();
-            p.skipSpaces();
-            if (!p.match('}')) {
+            if (!p.skipSpaces().match('}')) {
                 for (;;) {
                     if (!p.match('"'))
                         throw new JSONException(ILLEGAL_KEY);
                     String key = decodeString(p);
-                    p.skipSpaces();
-                    if (!p.match(':'))
+                    if (object.containsKey(key))
+                        throw new JSONException(DUPLICATE_KEY);
+                    if (!p.skipSpaces().match(':'))
                         throw new JSONException(MISSING_COLON);
-                    p.skipSpaces();
-                    JSONValue value = parse(p);
-                    object.put(key, value);
-                    p.skipSpaces();
-                    if (!p.match(','))
+                    object.put(key, parse(p));
+                    if (!p.skipSpaces().match(','))
                         break;
                     p.skipSpaces();
                 }
@@ -310,70 +301,39 @@ public class JSON {
             }
             return object;
         }
+
+        // check for array
+
         if (p.match('[')) {
             JSONArray array = new JSONArray();
-            p.skipSpaces();
-            if (!p.match(']')) {
-                for (;;) {
+            if (!p.skipSpaces().match(']')) {
+                do {
                     array.add(parse(p));
-                    p.skipSpaces();
-                    if (!p.match(','))
-                        break;
-                    p.skipSpaces();
-                }
+                } while (p.skipSpaces().match(','));
                 if (!p.match(']'))
                     throw new JSONException(MISSING_CLOSING_BRACKET);
             }
             return array;
         }
+
+        // check for string
+
         if (p.match('"')) {
-            String s = decodeString(p);
-            return new JSONString(s);
+            return new JSONString(decodeString(p));
         }
-        if (p.match('0')) {
-            int start = p.getStart();
-            boolean floating = false;
-            if (p.match('.')) {
-                floating = true;
-                if (!p.matchDec())
-                    throw new JSONException(ILLEGAL_NUMBER);
-            }
-            if (p.matchIgnoreCase('e')) {
-                floating = true;
-                if (p.match('+') || p.match('-'))
-                    ; // do nothing - just step index
-                if (!p.matchDec())
-                    throw new JSONException(ILLEGAL_NUMBER);
-            }
-            if (floating)
-                return JSONDouble.valueOf(p.getString(start, p.getIndex()));
-            return JSONZero.ZERO;
-        }
-        if (p.match('-')) {
-            int start = p.getStart();
-            if (!p.match('0') && !p.matchDec())
-                throw new JSONException(ILLEGAL_NUMBER);
-            boolean floating = false;
-            if (p.match('.')) {
-                floating = true;
-                if (!p.matchDec())
-                    throw new JSONException(ILLEGAL_NUMBER);
-            }
-            if (p.matchIgnoreCase('e')) {
-                floating = true;
-                if (p.match('+') || p.match('-'))
-                    ; // do nothing - just step index
-                if (!p.matchDec())
-                    throw new JSONException(ILLEGAL_NUMBER);
-            }
-            int end = p.getIndex();
-            if (floating)
-                return JSONDouble.valueOf(p.getString(start, end));
-            return end - start < 10 ? JSONInteger.valueOf(p.getString(start, end)) :
-                    JSONLong.valueOf(p.getString(start, end));
-        }
+
+        // check for number
+
+        int numberStart = p.getIndex();
+        if (p.match('-'))
+            ; // do nothing - just step index
         if (p.matchDec()) {
-            int start = p.getStart();
+            boolean zero = false;
+            if (p.getResultChar() == '0') {
+                if (p.getResultLength() > 1)
+                    throw new JSONException(ILLEGAL_NUMBER);
+                zero = true;
+            }
             boolean floating = false;
             if (p.match('.')) {
                 floating = true;
@@ -387,18 +347,29 @@ public class JSON {
                 if (!p.matchDec())
                     throw new JSONException(ILLEGAL_NUMBER);
             }
-            int end = p.getIndex();
             if (floating)
-                return JSONDouble.valueOf(p.getString(start, end));
-            return end - start < 10 ? JSONInteger.valueOf(p.getString(start, end)) :
-                    JSONLong.valueOf(p.getString(start, end));
+                return JSONDouble.valueOf(p.getString(numberStart, p.getIndex()));
+            if (zero)
+                return JSONZero.ZERO;
+            long longValue = Long.parseLong(p.getString(numberStart, p.getIndex()));
+            int intValue = (int)longValue;
+            return intValue == longValue ? JSONInteger.valueOf(intValue) :
+                    JSONLong.valueOf(longValue);
         }
+        if (p.getIndex() > numberStart)
+            throw new JSONException(ILLEGAL_NUMBER); // minus sign without digits
+
+        // check for keywords (true, false, null)
+
         if (p.matchName("true"))
             return JSONBoolean.TRUE;
         if (p.matchName("false"))
             return JSONBoolean.FALSE;
         if (p.matchName("null"))
             return null;
+
+        // error
+
         throw new JSONException(ILLEGAL_SYNTAX);
     }
 
