@@ -3,6 +3,16 @@ Added this change log after project was already under way.  Early changes are no
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [Unreleased]
+### Added
+- new class `JSONSequence` (generalisation of `JSONArray`)
+- new class `JSONMapping` (generalisation of `JSONObject`)
+
+### Changed
+- changed `JSONArray` to derive from `JSONSequence`
+- changed `JSONObject` to derive from `JSONMapping`
+- changed `pom.xml` to use version 1.3 of `javautil`
+
 ## [1.3] - 2016-11-27
 ### Changed
 - Used optimised string output of int and long

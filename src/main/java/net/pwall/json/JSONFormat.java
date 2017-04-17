@@ -114,7 +114,7 @@ public class JSONFormat {
                 a.append(LINE_TERMINATOR);
                 int i = 0;
                 for (;;) {
-                    JSONObject.Entry<JSONValue> entry = object.getEntry(i++);
+                    JSONObject.Entry<String, JSONValue> entry = object.getEntry(i++);
                     for (int j = indent; j > 0; --j)
                         a.append(' ');
                     a.append('"');
