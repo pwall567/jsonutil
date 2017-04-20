@@ -73,7 +73,7 @@ The library is in the Maven Central Repository; the co-ordinates are:
 <dependency>
   <groupId>net.pwall.util</groupId>
   <artifactId>jsonutil</artifactId>
-  <version>1.4</version>
+  <version>1.5</version>
 </dependency>
 ```
 

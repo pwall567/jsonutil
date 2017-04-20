@@ -43,6 +43,15 @@ public class JSONObject extends JSONMapping<JSONValue> {
     }
 
     /**
+     * Construct a {@code JSONObject} with a specified initial capacity.
+     *
+     * @param   capacity    the initial capacity
+     */
+    public JSONObject(int capacity) {
+        super(capacity);
+    }
+
+    /**
      * Construct a {@code JSONObject}, copying the contents of another object.
      *
      * @param   other   the other {@code JSONObject}
@@ -56,11 +65,43 @@ public class JSONObject extends JSONMapping<JSONValue> {
      * {@link StringBuilder} etc.) to the {@code JSONObject}.
      *
      * @param   key     the key to use when storing the value
-     * @param   value   the value
+     * @param   value   the value (may not be {@code null})
      * @return          {@code this} (for chaining)
+     * @throws          NullPointerException if key or value is {@code null}
      */
     public JSONObject putValue(String key, CharSequence value) {
         put(key, new JSONString(value));
+        return this;
+    }
+
+    /**
+     * Add a {@link JSONString} representing the supplied {@link CharSequence} ({@link String},
+     * {@link StringBuilder} etc.) to the {@code JSONObject}, storing a {@code null} if the
+     * value is {@code null}.
+     *
+     * @param   key     the key to use when storing the value
+     * @param   value   the value (may be {@code null})
+     * @return          {@code this} (for chaining)
+     * @throws          NullPointerException if key is {@code null}
+     */
+    public JSONObject putAlways(String key, CharSequence value) {
+        put(key, value == null ? null : new JSONString(value));
+        return this;
+    }
+
+    /**
+     * Add a {@link JSONString} representing the supplied {@link CharSequence} ({@link String},
+     * {@link StringBuilder} etc.) to the {@code JSONObject} only if the value is not
+     * {@code null}.
+     *
+     * @param   key     the key to use when storing the value
+     * @param   value   the value (may be {@code null})
+     * @return          {@code this} (for chaining)
+     * @throws          NullPointerException if key is {@code null}
+     */
+    public JSONObject putNonNull(String key, CharSequence value) {
+        if (value != null)
+            put(key, new JSONString(value));
         return this;
     }
 
@@ -71,6 +112,7 @@ public class JSONObject extends JSONMapping<JSONValue> {
      * @param   key     the key to use when storing the value
      * @param   value   the value
      * @return          {@code this} (for chaining)
+     * @throws          NullPointerException if key is {@code null}
      */
     public JSONObject putValue(String key, int value) {
         put(key, JSONInteger.valueOf(value));
@@ -83,6 +125,7 @@ public class JSONObject extends JSONMapping<JSONValue> {
      * @param   key     the key to use when storing the value
      * @param   value   the value
      * @return          {@code this} (for chaining)
+     * @throws          NullPointerException if key is {@code null}
      */
     public JSONObject putValue(String key, long value) {
         put(key, JSONLong.valueOf(value));
@@ -96,6 +139,7 @@ public class JSONObject extends JSONMapping<JSONValue> {
      * @param   key     the key to use when storing the value
      * @param   value   the value
      * @return          {@code this} (for chaining)
+     * @throws          NullPointerException if key is {@code null}
      */
     public JSONObject putValue(String key, float value) {
         put(key, JSONFloat.valueOf(value));
@@ -109,6 +153,7 @@ public class JSONObject extends JSONMapping<JSONValue> {
      * @param   key     the key to use when storing the value
      * @param   value   the value
      * @return          {@code this} (for chaining)
+     * @throws          NullPointerException if key is {@code null}
      */
     public JSONObject putValue(String key, double value) {
         put(key, JSONDouble.valueOf(value));
@@ -122,6 +167,7 @@ public class JSONObject extends JSONMapping<JSONValue> {
      * @param   key     the key to use when storing the value
      * @param   value   the value
      * @return          {@code this} (for chaining)
+     * @throws          NullPointerException if key is {@code null}
      */
     public JSONObject putValue(String key, boolean value) {
         put(key, JSONBoolean.valueOf(value));
@@ -133,6 +179,7 @@ public class JSONObject extends JSONMapping<JSONValue> {
      *
      * @param   key     the key to use when storing the value
      * @return          {@code this} (for chaining)
+     * @throws          NullPointerException if key is {@code null}
      */
     public JSONObject putNull(String key) {
         put(key, null);
@@ -145,8 +192,9 @@ public class JSONObject extends JSONMapping<JSONValue> {
      * returns {@code this} to allow for chaining.
      *
      * @param   key     the key to use when storing the value
-     * @param   json    the {@link JSONValue}
+     * @param   json    the {@link JSONValue} (may be {@code null})
      * @return          {@code this} (for chaining)
+     * @throws          NullPointerException if key is {@code null}
      */
     public JSONObject putJSON(String key, JSONValue json) {
         put(key, json);
