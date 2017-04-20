@@ -46,6 +46,8 @@ public class JSONArray extends JSONSequence<JSONValue> {
 
     /**
      * Construct a {@code JSONArray} with a specified initial capacity.
+     *
+     * @param   capacity    the initial capacity
      */
     public JSONArray(int capacity) {
         super(capacity);
