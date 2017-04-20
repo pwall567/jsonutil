@@ -46,6 +46,15 @@ public class JSONSequence<V extends JSONValue> extends ArrayList<V> implements J
     }
 
     /**
+     * Construct a {@code JSONSequence} with a specified initial capacity.
+     *
+     * @param   capacity    the initial capacity
+     */
+    public JSONSequence(int capacity) {
+        super(capacity);
+    }
+
+    /**
      * Construct a {@code JSONSequence} from an array of values.
      *
      * @param   values  the source values
