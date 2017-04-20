@@ -84,7 +84,6 @@ public class JSONArray extends JSONSequence<JSONValue> {
      *
      * @param   cs      the {@link CharSequence}
      * @return          {@code this} (for chaining)
-     * @throws  NullPointerException if the value is {@code null}
      */
     public JSONArray addAlways(CharSequence cs) {
         add(new JSONString(cs == null ? null : new JSONString(cs)));
@@ -98,7 +97,6 @@ public class JSONArray extends JSONSequence<JSONValue> {
      *
      * @param   cs      the {@link CharSequence}
      * @return          {@code this} (for chaining)
-     * @throws  NullPointerException if the value is {@code null}
      */
     public JSONArray addNonNull(CharSequence cs) {
         if (cs != null)
