@@ -91,7 +91,8 @@ public class JSONObject extends JSONMapping<JSONValue> {
 
     /**
      * Add a {@link JSONString} representing the supplied {@link CharSequence} ({@link String},
-     * {@link StringBuilder} etc.) to the {@code JSONObject} only if the value is {@code null}.
+     * {@link StringBuilder} etc.) to the {@code JSONObject} only if the value is not
+     * {@code null}.
      *
      * @param   key     the key to use when storing the value
      * @param   value   the value (may be {@code null})
