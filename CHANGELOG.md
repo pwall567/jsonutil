@@ -3,6 +3,11 @@ Added this change log after project was already under way.  Early changes are no
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [1.5] - 2017-04-20
+### Changed
+- changed `JSONObject`, `JSONMapping`, `JSONArray` and `JSONSequence`; new convenience
+  methods and constructors
+
 ## [1.4] - 2017-04-17
 ### Added
 - new class `JSONSequence` (generalisation of `JSONArray`)
