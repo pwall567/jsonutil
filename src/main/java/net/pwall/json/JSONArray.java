@@ -45,6 +45,15 @@ public class JSONArray extends JSONSequence<JSONValue> {
     }
 
     /**
+     * Construct a {@code JSONArray} with a specified initial capacity.
+     *
+     * @param   capacity    the initial capacity
+     */
+    public JSONArray(int capacity) {
+        super(capacity);
+    }
+
+    /**
      * Construct a {@code JSONArray} from an array of {@link JSONValue}s.
      *
      * @param   values  the source values
@@ -74,6 +83,33 @@ public class JSONArray extends JSONSequence<JSONValue> {
      */
     public JSONArray addValue(CharSequence cs) {
         add(new JSONString(cs));
+        return this;
+    }
+
+    /**
+     * Add a {@link JSONString} representing the supplied {@link CharSequence} ({@link String},
+     * {@link StringBuilder} etc.) to the {@code JSONArray}, storing a {@code null} if the value
+     * is {@code null}.
+     *
+     * @param   cs      the {@link CharSequence}
+     * @return          {@code this} (for chaining)
+     */
+    public JSONArray addAlways(CharSequence cs) {
+        add(new JSONString(cs == null ? null : new JSONString(cs)));
+        return this;
+    }
+
+    /**
+     * Add a {@link JSONString} representing the supplied {@link CharSequence} ({@link String},
+     * {@link StringBuilder} etc.) to the {@code JSONArray} only if the value is not
+     * {@code null}.
+     *
+     * @param   cs      the {@link CharSequence}
+     * @return          {@code this} (for chaining)
+     */
+    public JSONArray addNonNull(CharSequence cs) {
+        if (cs != null)
+            add(new JSONString(new JSONString(cs)));
         return this;
     }
 

@@ -49,6 +49,15 @@ public class JSONMapping<V extends JSONValue> extends ListMap<String, V>
     }
 
     /**
+     * Construct a {@code JSONMapping} with a specified initial capacity.
+     *
+     * @param   capacity    the initial capacity
+     */
+    public JSONMapping(int capacity) {
+        super(capacity);
+    }
+
+    /**
      * Construct a {@code JSONMapping}, copying the contents of another object.
      *
      * @param   other   the other {@code JSONMapping}
