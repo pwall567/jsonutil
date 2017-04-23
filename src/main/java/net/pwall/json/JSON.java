@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.Charset;
 
 import net.pwall.util.CharMapper;
 import net.pwall.util.CharUnmapper;
@@ -195,19 +196,118 @@ public class JSON {
     }
 
     /**
-     * Parse the contents of a {@link File} as a JSON value, specifying the character set by
-     * name.
+     * Parse the contents of a {@link File} as a JSON array.
      *
      * @param   f       the {@link File}
-     * @param   charSet the character set name
+     * @return          the JSON array
+     * @throws  JSONException if the file does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     * @throws  ClassCastException if the value is not an array
+     */
+    public static JSONArray parseArray(File f) throws IOException {
+        return (JSONArray)parse(f);
+    }
+
+    /**
+     * Parse the contents of a {@link File} as a JSON object.
+     *
+     * @param   f       the {@link File}
+     * @return          the JSON object
+     * @throws  JSONException if the file does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     * @throws  ClassCastException if the value is not an object
+     */
+    public static JSONObject parseObject(File f) throws IOException {
+        return (JSONObject)parse(f);
+    }
+
+    /**
+     * Parse the contents of a {@link File} as a JSON value, specifying the character set.
+     *
+     * @param   f       the {@link File}
+     * @param   charSet the character set
      * @return          the JSON value
      * @throws  JSONException if the file does not contain a valid JSON value
      * @throws  IOException on any I/O errors
      */
-    public static JSONValue parse(File f, String charSet) throws IOException {
+    public static JSONValue parse(File f, Charset charSet) throws IOException {
         try (InputStream is = new FileInputStream(f)) {
             return parse(is, charSet);
         }
+    }
+
+    /**
+     * Parse the contents of a {@link File} as a JSON array, specifying the character set.
+     *
+     * @param   f       the {@link File}
+     * @param   charSet the character set
+     * @return          the JSON array
+     * @throws  JSONException if the file does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     * @throws  ClassCastException if the value is not an array
+     */
+    public static JSONArray parseArray(File f, Charset charSet) throws IOException {
+        return (JSONArray)parse(f, charSet);
+    }
+
+    /**
+     * Parse the contents of a {@link File} as a JSON object, specifying the character set.
+     *
+     * @param   f       the {@link File}
+     * @param   charSet the character set
+     * @return          the JSON object
+     * @throws  JSONException if the file does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     * @throws  ClassCastException if the value is not an object
+     */
+    public static JSONObject parseObject(File f, Charset charSet) throws IOException {
+        return (JSONObject)parse(f, charSet);
+    }
+
+    /**
+     * Parse the contents of a {@link File} as a JSON value, specifying the character set by
+     * name.
+     *
+     * @param   f       the {@link File}
+     * @param   csName  the character set name
+     * @return          the JSON value
+     * @throws  JSONException if the file does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     */
+    public static JSONValue parse(File f, String csName) throws IOException {
+        try (InputStream is = new FileInputStream(f)) {
+            return parse(is, csName);
+        }
+    }
+
+    /**
+     * Parse the contents of a {@link File} as a JSON array, specifying the character set by
+     * name.
+     *
+     * @param   f       the {@link File}
+     * @param   csName  the character set name
+     * @return          the JSON array
+     * @throws  JSONException if the file does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     * @throws  ClassCastException if the value is not an array
+     */
+    public static JSONArray parseArray(File f, String csName) throws IOException {
+        return (JSONArray)parse(f, csName);
+    }
+
+    /**
+     * Parse the contents of a {@link File} as a JSON object, specifying the character set by
+     * name.
+     *
+     * @param   f       the {@link File}
+     * @param   csName  the character set name
+     * @return          the JSON object
+     * @throws  JSONException if the file does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     * @throws  ClassCastException if the value is not an object
+     */
+    public static JSONObject parseObject(File f, String csName) throws IOException {
+        return (JSONObject)parse(f, csName);
     }
 
     /**
@@ -225,19 +325,121 @@ public class JSON {
     }
 
     /**
-     * Parse a sequence of characters from an {@link InputStream} as a JSON value, specifying
-     * the character set by name.
+     * Parse a sequence of characters from an {@link InputStream} as a JSON array.
      *
      * @param   is      the {@link InputStream}
-     * @param   charSet the character set name
+     * @return          the JSON array
+     * @throws  JSONException if the stream does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     * @throws  ClassCastException if the value is not an array
+     */
+    public static JSONArray parseArray(InputStream is) throws IOException {
+        return (JSONArray)parse(is);
+    }
+
+    /**
+     * Parse a sequence of characters from an {@link InputStream} as a JSON object.
+     *
+     * @param   is      the {@link InputStream}
+     * @return          the JSON object
+     * @throws  JSONException if the stream does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     * @throws  ClassCastException if the value is not an object
+     */
+    public static JSONObject parseObject(InputStream is) throws IOException {
+        return (JSONObject)parse(is);
+    }
+
+    /**
+     * Parse a sequence of characters from an {@link InputStream} as a JSON value, specifying
+     * the character set by.
+     *
+     * @param   is      the {@link InputStream}
+     * @param   charSet the character set
      * @return          the JSON value
      * @throws  JSONException if the stream does not contain a valid JSON value
      * @throws  IOException on any I/O errors
      */
-    public static JSONValue parse(InputStream is, String charSet) throws IOException {
+    public static JSONValue parse(InputStream is, Charset charSet) throws IOException {
         try (Reader rdr = new InputStreamReader(is, charSet)) {
             return parse(rdr);
         }
+    }
+
+    /**
+     * Parse a sequence of characters from an {@link InputStream} as a JSON array, specifying
+     * the character set.
+     *
+     * @param   is      the {@link InputStream}
+     * @param   charSet the character set
+     * @return          the JSON array
+     * @throws  JSONException if the stream does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     * @throws  ClassCastException if the value is not an array
+     */
+    public static JSONArray parseArray(InputStream is, Charset charSet) throws IOException {
+        return (JSONArray)parse(is, charSet);
+    }
+
+    /**
+     * Parse a sequence of characters from an {@link InputStream} as a JSON object, specifying
+     * the character set.
+     *
+     * @param   is      the {@link InputStream}
+     * @param   charSet the character set
+     * @return          the JSON object
+     * @throws  JSONException if the stream does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     * @throws  ClassCastException if the value is not an object
+     */
+    public static JSONObject parseObject(InputStream is, Charset charSet) throws IOException {
+        return (JSONObject)parse(is, charSet);
+    }
+
+    /**
+     * Parse a sequence of characters from an {@link InputStream} as a JSON value, specifying
+     * the character set by name.
+     *
+     * @param   is      the {@link InputStream}
+     * @param   csName  the character set name
+     * @return          the JSON value
+     * @throws  JSONException if the stream does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     */
+    public static JSONValue parse(InputStream is, String csName) throws IOException {
+        try (Reader rdr = new InputStreamReader(is, csName)) {
+            return parse(rdr);
+        }
+    }
+
+    /**
+     * Parse a sequence of characters from an {@link InputStream} as a JSON array, specifying
+     * the character set by name.
+     *
+     * @param   is      the {@link InputStream}
+     * @param   csName  the character set name
+     * @return          the JSON array
+     * @throws  JSONException if the stream does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     * @throws  ClassCastException if the value is not an array
+     */
+    public static JSONArray parseArray(InputStream is, String csName) throws IOException {
+        return (JSONArray)parse(is, csName);
+    }
+
+    /**
+     * Parse a sequence of characters from an {@link InputStream} as a JSON object, specifying
+     * the character set by name.
+     *
+     * @param   is      the {@link InputStream}
+     * @param   csName  the character set name
+     * @return          the JSON object
+     * @throws  JSONException if the stream does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     * @throws  ClassCastException if the value is not an object
+     */
+    public static JSONObject parseObject(InputStream is, String csName) throws IOException {
+        return (JSONObject)parse(is, csName);
     }
 
     /**
@@ -253,6 +455,32 @@ public class JSON {
     }
 
     /**
+     * Parse a sequence of characters from a {@link Reader} as a JSON array.
+     *
+     * @param   rdr     the {@link Reader}
+     * @return          the JSON array
+     * @throws  JSONException if the sequence does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     * @throws  ClassCastException if the value is not an array
+     */
+    public static JSONArray parseArray(Reader rdr) throws IOException {
+        return (JSONArray)parse(rdr);
+    }
+
+    /**
+     * Parse a sequence of characters from a {@link Reader} as a JSON object.
+     *
+     * @param   rdr     the {@link Reader}
+     * @return          the JSON object
+     * @throws  JSONException if the sequence does not contain a valid JSON value
+     * @throws  IOException on any I/O errors
+     * @throws  ClassCastException if the value is not an object
+     */
+    public static JSONObject parseObject(Reader rdr) throws IOException {
+        return (JSONObject)parse(rdr);
+    }
+
+    /**
      * Parse a {@link CharSequence} (e.g. a {@link String}) as a JSON value.
      *
      * @param   cs      the {@link CharSequence}
@@ -265,6 +493,30 @@ public class JSON {
         if (!p.skipSpaces().isExhausted())
             throw new JSONException(EXCESS_CHARS);
         return result;
+    }
+
+    /**
+     * Parse a {@link CharSequence} (e.g. a {@link String}) as a JSON array.
+     *
+     * @param   cs      the {@link CharSequence}
+     * @return          the JSON array
+     * @throws  JSONException if the sequence does not contain a valid JSON value
+     * @throws  ClassCastException if the value is not an array
+     */
+    public static JSONArray parseArray(CharSequence cs) {
+        return (JSONArray)parse(cs);
+    }
+
+    /**
+     * Parse a {@link CharSequence} (e.g. a {@link String}) as a JSON object.
+     *
+     * @param   cs      the {@link CharSequence}
+     * @return          the JSON object
+     * @throws  JSONException if the sequence does not contain a valid JSON value
+     * @throws  ClassCastException if the value is not an object
+     */
+    public static JSONObject parseObject(CharSequence cs) {
+        return (JSONObject)parse(cs);
     }
 
     /**
@@ -371,6 +623,32 @@ public class JSON {
         // error
 
         throw new JSONException(ILLEGAL_SYNTAX);
+    }
+
+    /**
+     * Parse a JSON array from a {@link ParseText} object.  The index of the {@link ParseText}
+     * is left positioned after the JSON value.
+     *
+     * @param   p       the {@link ParseText} object
+     * @return          the JSON array
+     * @throws  JSONException if the text in the {@link ParseText} is not a valid JSON value
+     * @throws  ClassCastException if the value is not an array
+     */
+    public static JSONArray parseArray(ParseText p) {
+        return (JSONArray)parse(p);
+    }
+
+    /**
+     * Parse a JSON object from a {@link ParseText} object.  The index of the {@link ParseText}
+     * is left positioned after the JSON value.
+     *
+     * @param   p       the {@link ParseText} object
+     * @return          the JSON object
+     * @throws  JSONException if the text in the {@link ParseText} is not a valid JSON value
+     * @throws  ClassCastException if the value is not an object
+     */
+    public static JSONObject parseObject(ParseText p) {
+        return (JSONObject)parse(p);
     }
 
     /**
