@@ -73,7 +73,7 @@ The library is in the Maven Central Repository; the co-ordinates are:
 <dependency>
   <groupId>net.pwall.util</groupId>
   <artifactId>jsonutil</artifactId>
-  <version>1.5</version>
+  <version>1.6</version>
 </dependency>
 ```
 
@@ -141,6 +141,14 @@ double value = jsonObject.getDouble("value");
 (The cast is required because `JSON.parse(str)` returns `JSONValue`; the developer has the
 option of testing the type of the returned value or allowing the system to throw a
 `ClassCastException`.)
+
+Note: from version 1.6 onwards, additional convenience methods have been provided to cast the
+result to `JSONArray` or `JSONObject`.  The first line of the above example may now be
+written:
+
+```java
+JSONObject jsonObject = JSON.parseObject(str);
+```
 
 To create an object of that form and then output it:
 
