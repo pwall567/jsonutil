@@ -174,6 +174,15 @@
  * of the returned value or allowing the system to throw a
  * {@link java.lang.ClassCastException ClassCastException}.)</p>
  *
+ * <p>Note: from version 1.6 onwards, additional convenience methods have been provided to cast
+ * the result to {@link net.pwall.json.JSONArray JSONArray} or
+ * {@link net.pwall.json.JSONObject JSONObject}.  The first line of the above example may now be
+ * written:</p>
+ *
+ * <pre>
+ * JSONObject jsonObject = JSON.parseObject(str);
+ * </pre>
+ *
  * <p>To create an object of that form and then output it:</p>
  *
  * <pre>
