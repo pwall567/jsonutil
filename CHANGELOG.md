@@ -3,7 +3,7 @@ Added this change log after project was already under way.  Early changes are no
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
-## [Unreleased]
+## [2.0] - 2017-04-25
 ### Changed
 - multiple classes changed for Java 8; README updated accordingly
 
