@@ -350,25 +350,6 @@ public class JSONSequence<V extends JSONValue> extends ArrayList<V> implements J
     }
 
     /**
-     * Create the JSON representation for the {@code JSONSequence}.
-     *
-     * @return  the JSON representation for this array
-     * @see     JSONValue#toJSON()
-     */
-    @Override
-    public String toJSON() {
-        int estimate = size() * 20;
-        StringBuilder sb = new StringBuilder(estimate);
-        try {
-            appendJSON(sb);
-        }
-        catch (IOException e) {
-            // can't happen - StringBuilder does not throw IOException
-        }
-        return sb.toString();
-    }
-
-    /**
      * Append the JSON representation for the {@code JSONSequence} to a given
      * {@link Appendable}.
      *

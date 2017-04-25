@@ -65,19 +65,6 @@ public class JSONString implements JSONValue, CharSequence {
     }
 
     @Override
-    public String toJSON() {
-        int estimate = value.length() + 20;
-        StringBuilder sb = new StringBuilder(estimate);
-        try {
-            appendJSON(sb);
-        }
-        catch (IOException e) {
-            // can't happen - StringBuilder does not throw IOException
-        }
-        return sb.toString();
-    }
-
-    @Override
     public void appendJSON(Appendable a) throws IOException {
         a.append('"');
         for (int i = 0, n = value.length(); i < n; ) {

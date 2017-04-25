@@ -36,13 +36,6 @@ import java.io.Serializable;
 public interface JSONValue extends Serializable {
 
     /**
-     * Create the appropriate external representation for this JSON value.
-     *
-     * @return  the JSON representation for this value
-     */
-    String toJSON();
-
-    /**
      * Append the appropriate external representation for this JSON value to a given
      * {@link Appendable}.
      *
@@ -50,5 +43,21 @@ public interface JSONValue extends Serializable {
      * @throws  IOException     if thrown by the {@link Appendable}
      */
     void appendJSON(Appendable a) throws IOException;
+
+    /**
+     * Create the appropriate external representation for this JSON value.
+     *
+     * @return  the JSON representation for this value
+     */
+    default String toJSON() {
+        StringBuilder sb = new StringBuilder(12);
+        try {
+            appendJSON(sb);
+        }
+        catch (IOException e) {
+            // can't happen - StringBuilder does not throw IOException
+        }
+        return sb.toString();
+    }
 
 }

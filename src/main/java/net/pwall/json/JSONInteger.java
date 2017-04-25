@@ -2,7 +2,7 @@
  * @(#) JSONInteger.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015, 2016 Peter Wall
+ * Copyright (c) 2014, 2015, 2016, 2017 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -68,24 +68,6 @@ public class JSONInteger extends Number implements JSONNumberValue {
     @Override
     public double doubleValue() {
         return value;
-    }
-
-    /**
-     * Create the external representation for this {@code JSONInteger}.
-     *
-     * @return  the JSON representation for this value
-     * @see     JSONValue#toJSON()
-     */
-    @Override
-    public String toJSON() {
-        StringBuilder sb = new StringBuilder(12);
-        try {
-            appendJSON(sb);
-        }
-        catch (IOException e) {
-            // can't happen - StringBuilder does not throw IOException
-        }
-        return sb.toString();
     }
 
     @Override

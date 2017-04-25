@@ -71,6 +71,17 @@ The library is in the Maven Central Repository; the co-ordinates are:
 
 ```xml
 <dependency>
+  <groupId>net.pwall.json</groupId>
+  <artifactId>jsonutil</artifactId>
+  <version>2.0</version>
+</dependency>
+```
+
+Note that the `groupId` has changed from previous versions, which used `net.pwall.util`.
+From version 2.0 onwards, `jsonutil` requires Java 8.  Those seeking a version compatible with Java 7 should use:
+
+```xml
+<dependency>
   <groupId>net.pwall.util</groupId>
   <artifactId>jsonutil</artifactId>
   <version>1.6</version>

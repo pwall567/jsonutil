@@ -77,40 +77,37 @@ public class JSON {
      * @see     Strings#escapeUTF16(CharSequence, CharMapper)
      * @see     Strings#escapeUTF16(String, CharMapper)
      */
-    public static final CharMapper charMapper = new CharMapper() {
-        @Override
-        public String map(int codePoint) {
-            if (codePoint == '"')
-                return "\\\"";
-            if (codePoint == '\\')
-                return "\\\\";
-            if (codePoint >= 0x20 && codePoint < 0x7F)
-                return null;
-            if (codePoint == 0x08)
-                return "\\b";
-            if (codePoint == 0x0C)
-                return "\\f";
-            if (codePoint == 0x0A)
-                return "\\n";
-            if (codePoint == 0x0D)
-                return "\\r";
-            if (codePoint == 0x09)
-                return "\\t";
-            StringBuilder sb = new StringBuilder("\\u");
-            try {
-                if (Character.isBmpCodePoint(codePoint))
-                    Strings.appendHex(sb, (char)codePoint);
-                else {
-                    Strings.appendHex(sb, Character.highSurrogate(codePoint));
-                    sb.append("\\u");
-                    Strings.appendHex(sb, Character.lowSurrogate(codePoint));
-                }
+    public static final CharMapper charMapper = codePoint -> {
+        if (codePoint == '"')
+            return "\\\"";
+        if (codePoint == '\\')
+            return "\\\\";
+        if (codePoint >= 0x20 && codePoint < 0x7F)
+            return null;
+        if (codePoint == 0x08)
+            return "\\b";
+        if (codePoint == 0x0C)
+            return "\\f";
+        if (codePoint == 0x0A)
+            return "\\n";
+        if (codePoint == 0x0D)
+            return "\\r";
+        if (codePoint == 0x09)
+            return "\\t";
+        StringBuilder sb = new StringBuilder("\\u");
+        try {
+            if (Character.isBmpCodePoint(codePoint))
+                Strings.appendHex(sb, (char)codePoint);
+            else {
+                Strings.appendHex(sb, Character.highSurrogate(codePoint));
+                sb.append("\\u");
+                Strings.appendHex(sb, Character.lowSurrogate(codePoint));
             }
-            catch (IOException e) {
-                // can't happen - StringBuilder does not throw IOException
-            }
-            return sb.toString();
         }
+        catch (IOException e) {
+            // can't happen - StringBuilder does not throw IOException
+        }
+        return sb.toString();
     };
 
     /**
@@ -163,7 +160,7 @@ public class JSON {
                 return 2;
             }
             if (ch == 'u' && offset + 6 <= s.length()) {
-                int n = Integer.parseInt(s.subSequence(offset + 2, offset + 6).toString(), 16);
+                int n = Strings.convertHexToInt(s, offset + 2, offset + 6);
                 sb.append((char)n);
                 return 6;
             }

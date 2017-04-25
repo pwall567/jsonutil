@@ -166,25 +166,6 @@ public class JSONMapping<V extends JSONValue> extends ListMap<String, V>
     }
 
     /**
-     * Create the JSON representation for this {@code JSONMapping}.
-     *
-     * @return  the JSON representation for this object
-     * @see     JSONValue#toJSON()
-     */
-    @Override
-    public String toJSON() {
-        int estimate = size() * 40;
-        StringBuilder sb = new StringBuilder(estimate);
-        try {
-            appendJSON(sb);
-        }
-        catch (IOException e) {
-            // can't happen - StringBuilder does not throw IOException
-        }
-        return sb.toString();
-    }
-
-    /**
      * Append the external representation for this JSON object to a given {@link Appendable}.
      *
      * @param   a   the {@link Appendable}
