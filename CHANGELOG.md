@@ -3,6 +3,10 @@ Added this change log after project was already under way.  Early changes are no
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [Unreleased]
+### Changed
+- multiple classes changed for Java 8; README updated accordingly
+
 ## [1.6] - 2017-04-23
 ### Changed
 - changed `JSON`; several new convenience methods
