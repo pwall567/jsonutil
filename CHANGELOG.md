@@ -3,7 +3,7 @@ Added this change log after project was already under way.  Early changes are no
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
-## [Unreleased]
+## [2.1] - 2019-12-01
 ### Changed
 - changed `JSONObject` and `JSONMapping` to add constructor from `Map`
 
