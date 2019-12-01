@@ -28,11 +28,14 @@ package net.pwall.json;
 import static org.junit.Assert.*;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
 import org.junit.Test;
+
+import net.pwall.util.ListMap;
 
 /**
  * Test class for JSONObject.
@@ -400,6 +403,28 @@ public class TestObject {
         assertEquals(JSON.parse("\"\\\"\\\\\\u1234\""), str);
 
         assertEquals(JSON.parse("null"), null);
+    }
+
+    @Test public void testConstructorFromMap() {
+        Map<String, JSONValue> map = new ListMap<>();
+        map.put("first", new JSONString("abc"));
+        map.put("second", new JSONInteger(123));
+        map.put("third", JSONBoolean.TRUE);
+        JSONObject obj = new JSONObject(map);
+        assertEquals("abc", obj.getString("first"));
+        assertEquals(123, obj.getInt("second"));
+        assertTrue(obj.getBoolean("third"));
+        Iterator<Map.Entry<String, JSONValue>> entries = obj.entrySet().iterator();
+        Map.Entry<String, JSONValue> entry = entries.next();
+        assertEquals("first", entry.getKey());
+        assertEquals(new JSONString("abc"), entry.getValue());
+        entry = entries.next();
+        assertEquals("second", entry.getKey());
+        assertEquals(new JSONInteger(123), entry.getValue());
+        entry = entries.next();
+        assertEquals("third", entry.getKey());
+        assertEquals(JSONBoolean.TRUE, entry.getValue());
+        assertFalse(entries.hasNext());
     }
 
     public static class TestMapEntry implements Map.Entry<String, JSONValue> {
