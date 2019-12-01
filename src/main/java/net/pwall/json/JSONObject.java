@@ -61,6 +61,15 @@ public class JSONObject extends JSONMapping<JSONValue> {
     }
 
     /**
+     * Construct a {@code JSONObject}, copying the contents of a map.
+     *
+     * @param   map     the {@code Map}
+     */
+    public JSONObject(Map<String, JSONValue> map) {
+        super(map);
+    }
+
+    /**
      * Add a {@link JSONString} representing the supplied {@link CharSequence} ({@link String},
      * {@link StringBuilder} etc.) to the {@code JSONObject}.
      *

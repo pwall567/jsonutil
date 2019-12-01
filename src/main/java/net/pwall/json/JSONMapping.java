@@ -27,6 +27,7 @@ package net.pwall.json;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 
 import net.pwall.util.ListMap;
@@ -64,6 +65,15 @@ public class JSONMapping<V extends JSONValue> extends ListMap<String, V>
      */
     public JSONMapping(JSONMapping<V> other) {
         super(other);
+    }
+
+    /**
+     * Construct a {@code JSONMapping}, copying the contents of a map.
+     *
+     * @param   map     the {@code Map}
+     */
+    public JSONMapping(Map<String, ? extends V> map) {
+        super(map);
     }
 
     /**
