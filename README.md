@@ -180,3 +180,28 @@ for (JSONObject jsonObject : jsonArray.objects()) {
 ```
 
 This is just a taste of what is available; see the JavaDoc for more information.
+
+## Dependency Specification
+
+The latest version of the library is 2.2, and it may be found the the Maven Central repository.
+
+### Maven
+```xml
+    <dependency>
+      <groupId>net.pwall.json</groupId>
+      <artifactId>jsonutil</artifactId>
+      <version>2.2</version>
+    </dependency>
+```
+### Gradle
+```groovy
+    implementation "net.pwall.json:jsonutil:2.2"
+```
+### Gradle (kts)
+```kotlin
+    implementation("net.pwall.json:jsonutil:2.2")
+```
+
+Peter Wall
+
+2019-12-08
