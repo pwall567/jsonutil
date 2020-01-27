@@ -2,7 +2,7 @@
  * @(#) JSONInteger.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015, 2016, 2017 Peter Wall
+ * Copyright (c) 2014, 2015, 2016, 2017, 2020 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,8 @@
 package net.pwall.json;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import net.pwall.util.Strings;
 
@@ -34,13 +36,13 @@ import net.pwall.util.Strings;
  *
  * @author Peter Wall
  */
-public class JSONInteger extends Number implements JSONNumberValue {
+public class JSONInteger extends JSONNumberValue {
 
     private static final long serialVersionUID = -4271512047065758655L;
 
     public static final JSONInteger ZERO = new JSONInteger(0);
 
-    private int value;
+    private final int value;
 
     public JSONInteger(int value) {
         this.value = value;
@@ -68,6 +70,16 @@ public class JSONInteger extends Number implements JSONNumberValue {
     @Override
     public double doubleValue() {
         return value;
+    }
+
+    @Override
+    public BigInteger bigIntegerValue() {
+        return BigInteger.valueOf(value);
+    }
+
+    @Override
+    public BigDecimal bigDecimalValue() {
+        return BigDecimal.valueOf(value);
     }
 
     @Override
@@ -109,6 +121,16 @@ public class JSONInteger extends Number implements JSONNumberValue {
     @Override
     public boolean valueEquals(double other) {
         return other == value;
+    }
+
+    @Override
+    public boolean valueEquals(BigInteger other) {
+        return other.equals(BigInteger.valueOf(value));
+    }
+
+    @Override
+    public boolean valueEquals(BigDecimal other) {
+        return other.compareTo(BigDecimal.valueOf(value)) == 0;
     }
 
     public static JSONInteger valueOf(int value) {

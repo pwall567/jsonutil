@@ -1,8 +1,8 @@
 /*
- * @(#) JSONLong.java
+ * @(#) JSONDecimal.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015, 2016, 2017, 2020 Peter Wall
+ * Copyright (c) 2020 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,62 +29,77 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import net.pwall.util.Strings;
-
 /**
- * A JSON long value.
+ * A JSON decimal (floating point) value.
  *
  * @author Peter Wall
  */
-public class JSONLong extends JSONNumberValue {
+public class JSONDecimal extends JSONNumberValue {
 
-    private static final long serialVersionUID = 4342545343730856828L;
+    private static final long serialVersionUID = 5004532203973159380L;
 
-    public static final JSONLong ZERO = new JSONLong(0);
+    public static final JSONDecimal ZERO = new JSONDecimal(BigDecimal.ZERO);
 
-    private final long value;
+    private final BigDecimal bigDecimal;
+    private final String string;
 
-    public JSONLong(long value) {
-        this.value = value;
+    public JSONDecimal(BigDecimal bigDecimal) {
+        this.bigDecimal = bigDecimal;
+        this.string = bigDecimal.toString();
     }
 
-    public long get() {
-        return value;
+    public JSONDecimal(String string) {
+        try {
+            bigDecimal = new BigDecimal(string);
+        }
+        catch (Exception e) {
+            throw new JSONException(JSON.ILLEGAL_NUMBER);
+        }
+        this.string = string;
+    }
+
+    public BigDecimal get() {
+        return bigDecimal;
     }
 
     @Override
     public int intValue() {
-        return (int)value;
+        return bigDecimal.intValue();
     }
 
     @Override
     public long longValue() {
-        return value;
+        return bigDecimal.longValue();
     }
 
     @Override
     public float floatValue() {
-        return value;
+        return bigDecimal.floatValue();
     }
 
     @Override
     public double doubleValue() {
-        return value;
+        return bigDecimal.doubleValue();
     }
 
     @Override
     public BigInteger bigIntegerValue() {
-        return BigInteger.valueOf(value);
+        return bigDecimal.toBigInteger();
     }
 
     @Override
     public BigDecimal bigDecimalValue() {
-        return BigDecimal.valueOf(value);
+        return bigDecimal;
+    }
+
+    @Override
+    public String toJSON() {
+        return string;
     }
 
     @Override
     public void appendJSON(Appendable a) throws IOException {
-        Strings.appendLong(a, value);
+        a.append(toJSON());
     }
 
     @Override
@@ -94,56 +109,59 @@ public class JSONLong extends JSONNumberValue {
 
     @Override
     public int hashCode() {
-        return (int)value;
+        return bigDecimal.hashCode();
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this ||
-                other instanceof JSONNumberValue && ((JSONNumberValue)other).valueEquals(value);
+                other instanceof JSONNumberValue && ((JSONNumberValue)other).valueEquals(bigDecimal);
     }
 
     @Override
     public boolean valueEquals(int other) {
-        return other == value;
+        return BigDecimal.valueOf(other).compareTo(bigDecimal) == 0;
     }
 
     @Override
     public boolean valueEquals(long other) {
-        return other == value;
+        return BigDecimal.valueOf(other).compareTo(bigDecimal) == 0;
     }
 
     @Override
     public boolean valueEquals(float other) {
-        return other == value;
+        return BigDecimal.valueOf(other).compareTo(bigDecimal) == 0;
     }
 
     @Override
     public boolean valueEquals(double other) {
-        return other == value;
+        return BigDecimal.valueOf(other).compareTo(bigDecimal) == 0;
     }
 
     @Override
     public boolean valueEquals(BigInteger other) {
-        return other.equals(BigInteger.valueOf(value));
+        return (new BigDecimal(other)).compareTo(bigDecimal) == 0;
     }
 
     @Override
     public boolean valueEquals(BigDecimal other) {
-        return other.compareTo(BigDecimal.valueOf(value)) == 0;
+        return other.equals(bigDecimal);
     }
 
-    public static JSONLong valueOf(long value) {
-        return value == 0 ? ZERO : new JSONLong(value);
+    public static JSONDecimal valueOf(BigDecimal bigDecimal) {
+        return bigDecimal.equals(BigDecimal.ZERO) ? ZERO : new JSONDecimal(bigDecimal);
     }
 
-    public static JSONLong valueOf(String string) {
-        try {
-            return valueOf(Long.parseLong(string));
-        }
-        catch (NumberFormatException e) {
-            throw new JSONException(JSON.ILLEGAL_NUMBER);
-        }
+    public static JSONDecimal valueOf(String s) {
+        return s.equals("0") || s.equals("0.0") ? ZERO : new JSONDecimal(s);
+    }
+
+    public static JSONDecimal valueOf(double d) {
+        return d == 0.0 ? ZERO : new JSONDecimal(BigDecimal.valueOf(d));
+    }
+
+    public static JSONDecimal valueOf(long i) {
+        return i == 0 ? ZERO : new JSONDecimal(BigDecimal.valueOf(i));
     }
 
 }

@@ -3,6 +3,15 @@ Added this change log after project was already under way.  Early changes are no
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [Unreleased]
+### Added
+- `JSONDecimal`: New class to handle decimal (floating point) values
+
+### Changed
+- `JSONNumberValue`, `JSONDouble`, `JSONFloat`, `JSONInteger`, `JSONLong`, `JSONZero`: added conversions to and
+comparisons with `BigInteger` and `BigDecimal`
+- `JSON`: now creates `JSONDecimal` when parsing floating point numbers (instead of `JSONDouble`)
+
 ## [2.2] - 2019-12-08
 ### Changed
 - updated dependency

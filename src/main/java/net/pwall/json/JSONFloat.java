@@ -2,7 +2,7 @@
  * @(#) JSONFloat.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015 Peter Wall
+ * Copyright (c) 2014, 2015, 2020 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,19 +26,21 @@
 package net.pwall.json;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * A JSON float value.
  *
  * @author Peter Wall
  */
-public class JSONFloat extends Number implements JSONNumberValue {
+public class JSONFloat extends JSONNumberValue {
 
     private static final long serialVersionUID = 5622220776852501864L;
 
     public static final JSONFloat ZERO = new JSONFloat(0);
 
-    private float value;
+    private final float value;
 
     public JSONFloat(float value) {
         if (Float.isNaN(value))
@@ -70,6 +72,16 @@ public class JSONFloat extends Number implements JSONNumberValue {
     @Override
     public double doubleValue() {
         return value;
+    }
+
+    @Override
+    public BigInteger bigIntegerValue() {
+        return BigInteger.valueOf((long)value);
+    }
+
+    @Override
+    public BigDecimal bigDecimalValue() {
+        return BigDecimal.valueOf(value);
     }
 
     /**
@@ -121,6 +133,16 @@ public class JSONFloat extends Number implements JSONNumberValue {
     @Override
     public boolean valueEquals(double other) {
         return other == value;
+    }
+
+    @Override
+    public boolean valueEquals(BigInteger other) {
+        return other.equals(BigInteger.valueOf((long)value));
+    }
+
+    @Override
+    public boolean valueEquals(BigDecimal other) {
+        return other.compareTo(BigDecimal.valueOf(value)) == 0;
     }
 
     public static JSONFloat valueOf(float value) {
