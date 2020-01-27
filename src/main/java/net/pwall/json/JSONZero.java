@@ -2,7 +2,7 @@
  * @(#) JSONZero.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015 Peter Wall
+ * Copyright (c) 2014, 2015, 2020 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,13 +26,15 @@
 package net.pwall.json;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * A JSON zero value.
  *
  * @author Peter Wall
  */
-public class JSONZero extends Number implements JSONNumberValue {
+public class JSONZero extends JSONNumberValue {
 
     private static final long serialVersionUID = -2972159538314277194L;
     public static final JSONZero ZERO = new JSONZero();
@@ -62,6 +64,16 @@ public class JSONZero extends Number implements JSONNumberValue {
     @Override
     public double doubleValue() {
         return 0;
+    }
+
+    @Override
+    public BigInteger bigIntegerValue() {
+        return BigInteger.ZERO;
+    }
+
+    @Override
+    public BigDecimal bigDecimalValue() {
+        return BigDecimal.ZERO;
     }
 
     /**
@@ -113,6 +125,16 @@ public class JSONZero extends Number implements JSONNumberValue {
     @Override
     public boolean valueEquals(double other) {
         return other == 0;
+    }
+
+    @Override
+    public boolean valueEquals(BigInteger other) {
+        return other.equals(BigInteger.ZERO);
+    }
+
+    @Override
+    public boolean valueEquals(BigDecimal other) {
+        return other.compareTo(BigDecimal.ZERO) == 0;
     }
 
 }

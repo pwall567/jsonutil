@@ -2,7 +2,7 @@
  * @(#) JSONMapping.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015, 2017 Peter Wall
+ * Copyright (c) 2014, 2015, 2017, 2020 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@
 package net.pwall.json;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
@@ -129,6 +130,17 @@ public class JSONMapping<V extends JSONValue> extends ListMap<String, V>
      */
     public double getDouble(String key) {
         return JSON.getDouble(get(key));
+    }
+
+    /**
+     * Get a value from the {@code JSONMapping} as a {@link BigDecimal}.
+     *
+     * @param   key     the key of the value
+     * @return          the value, or {@code 0} if not found
+     * @throws  JSONException if the value is found but is not a number
+     */
+    public BigDecimal getDecimal(String key) {
+        return JSON.getDecimal(get(key));
     }
 
     /**

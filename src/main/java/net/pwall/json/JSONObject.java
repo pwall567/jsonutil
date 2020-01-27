@@ -2,7 +2,7 @@
  * @(#) JSONObject.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015, 2017 Peter Wall
+ * Copyright (c) 2014, 2015, 2017, 2020 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@
 
 package net.pwall.json;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -166,6 +167,20 @@ public class JSONObject extends JSONMapping<JSONValue> {
      */
     public JSONObject putValue(String key, double value) {
         put(key, JSONDouble.valueOf(value));
+        return this;
+    }
+
+    /**
+     * Add a {@link JSONDecimal} representing the supplied {@link BigDecimal} to the
+     * {@code JSONObject}.
+     *
+     * @param   key     the key to use when storing the value
+     * @param   value   the value
+     * @return          {@code this} (for chaining)
+     * @throws          NullPointerException if key or value is {@code null}
+     */
+    public JSONObject putValue(String key, BigDecimal value) {
+        put(key, JSONDecimal.valueOf(value));
         return this;
     }
 

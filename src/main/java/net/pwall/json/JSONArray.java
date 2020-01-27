@@ -2,7 +2,7 @@
  * @(#) JSONArray.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015, 2016, 2017 Peter Wall
+ * Copyright (c) 2014, 2015, 2016, 2017, 2020 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@
 
 package net.pwall.json;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
@@ -159,6 +160,19 @@ public class JSONArray extends JSONSequence<JSONValue> {
     }
 
     /**
+     * Add a {@link JSONDecimal} representing the supplied {@link BigDecimal} to the
+     * {@code JSONArray}.
+     *
+     * @param   value   the value
+     * @return          {@code this} (for chaining)
+     * @throws  NullPointerException if the value is {@code null}
+     */
+    public JSONArray addValue(BigDecimal value) {
+        add(JSONDecimal.valueOf(value));
+        return this;
+    }
+
+    /**
      * Add a {@link JSONBoolean} representing the supplied {@code boolean} to the
      * {@code JSONArray}.
      *
@@ -215,6 +229,12 @@ public class JSONArray extends JSONSequence<JSONValue> {
     }
 
     public JSONArray addValues(double ... values) {
+        for (int i = 0, n = values.length; i < n; i++)
+            addValue(values[i]);
+        return this;
+    }
+
+    public JSONArray addValues(BigDecimal ... values) {
         for (int i = 0, n = values.length; i < n; i++)
             addValue(values[i]);
         return this;
