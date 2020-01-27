@@ -1,8 +1,8 @@
 /*
- * @(#) JSONValue.java
+ * @(#) JSONNumberValue.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015 Peter Wall
+ * Copyright (c) 2014, 2015, 2020 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,12 +25,19 @@
 
 package net.pwall.json;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 /**
  * Additional interface to assist with comparison of numeric JSON values.
  *
  * @author Peter Wall
  */
-public interface JSONNumberValue extends JSONValue {
+public abstract class JSONNumberValue extends Number implements JSONValue {
+
+    public abstract BigInteger bigIntegerValue();
+
+    public abstract BigDecimal bigDecimalValue();
 
     /**
      * Compare value with an {@code int}.
@@ -38,7 +45,7 @@ public interface JSONNumberValue extends JSONValue {
      * @param   other   the other {@code int}
      * @return  {@code true} if the values are equal
      */
-    boolean valueEquals(int other);
+    public abstract boolean valueEquals(int other);
 
     /**
      * Compare value with a {@code long}.
@@ -46,7 +53,7 @@ public interface JSONNumberValue extends JSONValue {
      * @param   other   the other {@code long}
      * @return  {@code true} if the values are equal
      */
-    boolean valueEquals(long other);
+    public abstract boolean valueEquals(long other);
 
     /**
      * Compare value with a {@code float}.
@@ -54,7 +61,7 @@ public interface JSONNumberValue extends JSONValue {
      * @param   other   the other {@code float}
      * @return  {@code true} if the values are equal
      */
-    boolean valueEquals(float other);
+    public abstract boolean valueEquals(float other);
 
     /**
      * Compare value with a {@code double}.
@@ -62,6 +69,22 @@ public interface JSONNumberValue extends JSONValue {
      * @param   other   the other {@code double}
      * @return  {@code true} if the values are equal
      */
-    boolean valueEquals(double other);
+    public abstract boolean valueEquals(double other);
+
+    /**
+     * Compare value with a {@link BigInteger}.
+     *
+     * @param   other   the other {@link BigInteger}
+     * @return  {@code true} if the values are equal
+     */
+    public abstract boolean valueEquals(BigInteger other);
+
+    /**
+     * Compare value with a {@link BigDecimal}.
+     *
+     * @param   other   the other {@link BigInteger}
+     * @return  {@code true} if the values are equal
+     */
+    public abstract boolean valueEquals(BigDecimal other);
 
 }

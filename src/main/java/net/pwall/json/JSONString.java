@@ -2,7 +2,7 @@
  * @(#) JSONString.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015 Peter Wall
+ * Copyright (c) 2014, 2015, 2020 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,7 @@ public class JSONString implements JSONValue, CharSequence {
 
     private static final long serialVersionUID = -7870545532058668339L;
 
-    private String value;
+    private final String value;
 
     public JSONString(CharSequence cs) {
         value = Objects.requireNonNull(cs).toString();

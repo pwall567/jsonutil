@@ -2,7 +2,7 @@
  * @(#) JSONBoolean.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015 Peter Wall
+ * Copyright (c) 2014, 2015, 2020 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,14 +42,14 @@ public class JSONBoolean implements JSONValue {
     /** Constant {@code JSONBoolean} value for TRUE */
     public static final JSONBoolean TRUE = new JSONBoolean(true);
 
-    private boolean value;
+    private final boolean value;
 
     public JSONBoolean(boolean value) {
         this.value = value;
     }
 
     public JSONBoolean(Boolean value) {
-        this.value = Objects.requireNonNull(value).booleanValue();
+        this.value = Objects.requireNonNull(value);
     }
 
     public boolean get() {

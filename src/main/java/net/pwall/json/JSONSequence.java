@@ -2,7 +2,7 @@
  * @(#) JSONSequence.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015, 2016, 2017 Peter Wall
+ * Copyright (c) 2014, 2015, 2016, 2017, 2020 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@
 package net.pwall.json;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -135,6 +136,18 @@ public class JSONSequence<V extends JSONValue> extends ArrayList<V> implements J
      */
     public double getDouble(int index) {
         return JSON.getDouble(get(index));
+    }
+
+    /**
+     * Get a {@link BigDecimal} value from the {@code JSONSequence}.  If the array entry is
+     * {@code null} return 0.
+     *
+     * @param   index   the index of the value
+     * @return  the value
+     * @throws  JSONException if the array entry is not a {@link Number}
+     */
+    public BigDecimal getDecimal(int index) {
+        return JSON.getDecimal(get(index));
     }
 
     /**

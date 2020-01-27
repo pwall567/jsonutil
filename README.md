@@ -181,27 +181,45 @@ for (JSONObject jsonObject : jsonArray.objects()) {
 
 This is just a taste of what is available; see the JavaDoc for more information.
 
+## New Decimal Handling - Version 3.0 (and above)
+
+JSON uses base 10 to represent numbers.
+This works perfectly well for integer values, e.g. 12345, but it can cause problems when representing fractions.
+
+Most people are familiar with the fact that the value 1/3 (one third) can not be represented in a finite number of
+decimal places - the last digit is recurring.
+What is less well-known is that the value 1/10 (one tenth) can not be represented as a finite binary fraction, and this
+means that all binary representations of decimal fractions are potentially incorrect.
+As a result, Java `double` and `float` variables are potentially problematic as representations of parsed fractional
+numeric values.
+
+To eliminate this problem the `JSONDecimal` class has been created, storing its value in the form of a `BigDecimal`.
+From version 3.0 of this library, all parsing operations will create `JSONDecimal` objects for non-integer number values
+instead of `JSONDouble`.
+Also, all numeric values (classes that derive from `JSONNumberValue`) now include `toBigDecimal()` and `toBigInteger()`
+methods to allow the value to be retrieved without intermediate conversion to binary floating point.
+
 ## Dependency Specification
 
-The latest version of the library is 2.2, and it may be found the the Maven Central repository.
+The latest version of the library is 3.0, and it may be obtained from the Maven Central repository.
 
 ### Maven
 ```xml
     <dependency>
       <groupId>net.pwall.json</groupId>
       <artifactId>jsonutil</artifactId>
-      <version>2.2</version>
+      <version>3.0</version>
     </dependency>
 ```
 ### Gradle
 ```groovy
-    implementation "net.pwall.json:jsonutil:2.2"
+    implementation "net.pwall.json:jsonutil:3.0"
 ```
 ### Gradle (kts)
 ```kotlin
-    implementation("net.pwall.json:jsonutil:2.2")
+    implementation("net.pwall.json:jsonutil:3.0")
 ```
 
 Peter Wall
 
-2019-12-08
+2020-01-27

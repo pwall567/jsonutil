@@ -2,7 +2,7 @@
  * @(#) JSONDouble.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015 Peter Wall
+ * Copyright (c) 2014, 2015, 2020 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,19 +26,21 @@
 package net.pwall.json;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * A JSON double value.
  *
  * @author Peter Wall
  */
-public class JSONDouble extends Number implements JSONNumberValue {
+public class JSONDouble extends JSONNumberValue {
 
     private static final long serialVersionUID = -1538839664142527465L;
 
     public static final JSONDouble ZERO = new JSONDouble(0);
 
-    private double value;
+    private final double value;
 
     public JSONDouble(double value) {
         if (Double.isNaN(value))
@@ -70,6 +72,16 @@ public class JSONDouble extends Number implements JSONNumberValue {
     @Override
     public double doubleValue() {
         return value;
+    }
+
+    @Override
+    public BigInteger bigIntegerValue() {
+        return BigInteger.valueOf((long)value);
+    }
+
+    @Override
+    public BigDecimal bigDecimalValue() {
+        return BigDecimal.valueOf(value);
     }
 
     /**
@@ -121,6 +133,16 @@ public class JSONDouble extends Number implements JSONNumberValue {
     @Override
     public boolean valueEquals(double other) {
         return other == value;
+    }
+
+    @Override
+    public boolean valueEquals(BigInteger other) {
+        return other.equals(BigInteger.valueOf((long)value));
+    }
+
+    @Override
+    public boolean valueEquals(BigDecimal other) {
+        return other.compareTo(BigDecimal.valueOf(value)) == 0;
     }
 
     public static JSONDouble valueOf(double value) {

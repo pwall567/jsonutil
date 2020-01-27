@@ -2,7 +2,7 @@
  * @(#) JSON.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015, 2017 Peter Wall
+ * Copyright (c) 2014, 2015, 2017, 2020 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.math.BigDecimal;
 import java.nio.charset.Charset;
 
 import net.pwall.util.CharMapper;
@@ -597,7 +598,7 @@ public class JSON {
                     throw new JSONException(ILLEGAL_NUMBER);
             }
             if (floating)
-                return JSONDouble.valueOf(p.getString(numberStart, p.getIndex()));
+                return new JSONDecimal(p.getString(numberStart, p.getIndex()));
             if (zero)
                 return JSONZero.ZERO;
             long longValue = Long.parseLong(p.getString(numberStart, p.getIndex()));
@@ -769,9 +770,9 @@ public class JSON {
     public static int getInt(JSONValue value) {
         if (value == null)
             return 0;
-        if (!(value instanceof Number))
+        if (!(value instanceof JSONNumberValue))
             throw new JSONException(NOT_A_NUMBER);
-        return ((Number)value).intValue();
+        return ((JSONNumberValue)value).intValue();
     }
 
     /**
@@ -785,9 +786,9 @@ public class JSON {
     public static long getLong(JSONValue value) {
         if (value == null)
             return 0;
-        if (!(value instanceof Number))
+        if (!(value instanceof JSONNumberValue))
             throw new JSONException(NOT_A_NUMBER);
-        return ((Number)value).longValue();
+        return ((JSONNumberValue)value).longValue();
     }
 
     /**
@@ -801,9 +802,9 @@ public class JSON {
     public static float getFloat(JSONValue value) {
         if (value == null)
             return 0;
-        if (!(value instanceof Number))
+        if (!(value instanceof JSONNumberValue))
             throw new JSONException(NOT_A_NUMBER);
-        return ((Number)value).floatValue();
+        return ((JSONNumberValue)value).floatValue();
     }
 
     /**
@@ -817,9 +818,25 @@ public class JSON {
     public static double getDouble(JSONValue value) {
         if (value == null)
             return 0;
-        if (!(value instanceof Number))
+        if (!(value instanceof JSONNumberValue))
             throw new JSONException(NOT_A_NUMBER);
-        return ((Number)value).doubleValue();
+        return ((JSONNumberValue)value).doubleValue();
+    }
+
+    /**
+     * Get a {@link BigDecimal} from a {@link JSONValue}.  Return 0 if the {@link JSONValue} is
+     * {@code null}.
+     *
+     * @param   value   the {@link JSONValue}
+     * @return  the value as a {@code double}
+     * @throws  JSONException if the value is not a number
+     */
+    public static BigDecimal getDecimal(JSONValue value) {
+        if (value == null)
+            return BigDecimal.ZERO;
+        if (!(value instanceof JSONNumberValue))
+            throw new JSONException(NOT_A_NUMBER);
+        return ((JSONNumberValue)value).bigDecimalValue();
     }
 
     /**
