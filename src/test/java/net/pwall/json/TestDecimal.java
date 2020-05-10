@@ -64,6 +64,18 @@ public class TestDecimal {
         assertEquals(12300, ((JSONDecimal)value).intValue());
         assertEquals("123e2", value.toJSON());
 
+        value = JSON.parse("9223372036854775808"); // one greater than max long
+        assertTrue(value instanceof JSONDecimal);
+        assertEquals("9223372036854775808", value.toString());
+        assertEquals(new BigDecimal("9223372036854775808"), ((JSONDecimal)value).get());
+        assertEquals("9223372036854775808", value.toJSON());
+
+        value = JSON.parse("-9223372036854775809"); // one less than min long
+        assertTrue(value instanceof JSONDecimal);
+        assertEquals("-9223372036854775809", value.toString());
+        assertEquals(new BigDecimal("-9223372036854775809"), ((JSONDecimal)value).get());
+        assertEquals("-9223372036854775809", value.toJSON());
+
     }
 
 }

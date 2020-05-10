@@ -199,27 +199,30 @@ instead of `JSONDouble`.
 Also, all numeric values (classes that derive from `JSONNumberValue`) now include `toBigDecimal()` and `toBigInteger()`
 methods to allow the value to be retrieved without intermediate conversion to binary floating point.
 
+From version 3.1 of this library, the `JSONDecimal` class is also used for integer values that are too large for the
+`Long` class.
+
 ## Dependency Specification
 
-The latest version of the library is 3.0, and it may be obtained from the Maven Central repository.
+The latest version of the library is 3.1, and it may be obtained from the Maven Central repository.
 
 ### Maven
 ```xml
     <dependency>
       <groupId>net.pwall.json</groupId>
       <artifactId>jsonutil</artifactId>
-      <version>3.0</version>
+      <version>3.1</version>
     </dependency>
 ```
 ### Gradle
 ```groovy
-    implementation "net.pwall.json:jsonutil:3.0"
+    implementation "net.pwall.json:jsonutil:3.1"
 ```
 ### Gradle (kts)
 ```kotlin
-    implementation("net.pwall.json:jsonutil:3.0")
+    implementation("net.pwall.json:jsonutil:3.1")
 ```
 
 Peter Wall
 
-2020-01-27
+2020-05-10

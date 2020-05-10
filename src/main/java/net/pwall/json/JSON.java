@@ -54,21 +54,23 @@ public class JSON {
     public static final String DUPLICATE_KEY = "Duplicate key in JSON object";
     public static final String MISSING_COLON = "Missing colon in JSON object";
     public static final String MISSING_CLOSING_BRACE = "Missing closing brace in JSON object";
-    public static final String MISSING_CLOSING_BRACKET =
-            "Missing closing bracket in JSON array";
+    public static final String MISSING_CLOSING_BRACKET = "Missing closing bracket in JSON array";
     public static final String ILLEGAL_NUMBER = "Illegal JSON number";
     public static final String ILLEGAL_SYNTAX = "Illegal JSON syntax";
     public static final String ILLEGAL_STRING_TERM = "Unterminated JSON string";
     public static final String ILLEGAL_STRING_CHAR = "Illegal character in JSON string";
-    public static final String ILLEGAL_STRING_UNICODE =
-            "Illegal Unicode sequence in JSON string";
-    public static final String ILLEGAL_STRING_ESCAPE =
-            "Illegal escape sequence in JSON string";
+    public static final String ILLEGAL_STRING_UNICODE = "Illegal Unicode sequence in JSON string";
+    public static final String ILLEGAL_STRING_ESCAPE = "Illegal escape sequence in JSON string";
     public static final String NOT_A_STRING = "Not a JSON string";
     public static final String NOT_A_NUMBER = "Not a JSON number";
     public static final String NOT_A_BOOLEAN = "Not a JSON boolean";
     public static final String NOT_AN_ARRAY = "Not a JSON array";
     public static final String NOT_AN_OBJECT = "Not a JSON object";
+
+    public static final String MAX_INTEGER_STRING = "2147483647";
+    public static final String MIN_INTEGER_STRING = "-2147483648";
+    public static final String MAX_LONG_STRING = "9223372036854775807";
+    public static final String MIN_LONG_STRING = "-9223372036854775808";
 
     /**
      * A {@link CharMapper} for escaping JSON strings.
@@ -597,14 +599,24 @@ public class JSON {
                 if (!p.matchDec())
                     throw new JSONException(ILLEGAL_NUMBER);
             }
-            if (floating)
-                return new JSONDecimal(p.getString(numberStart, p.getIndex()));
-            if (zero)
-                return JSONZero.ZERO;
-            long longValue = Long.parseLong(p.getString(numberStart, p.getIndex()));
-            int intValue = (int)longValue;
-            return intValue == longValue ? JSONInteger.valueOf(intValue) :
-                    JSONLong.valueOf(longValue);
+            int numberEnd = p.getIndex();
+            String numberString = p.getString(numberStart, numberEnd);
+            if (!floating) {
+                if (zero)
+                    return JSONZero.ZERO;
+                if (numberString.length() < 10) // optimise the most common case
+                    return new JSONInteger(Integer.parseInt(numberString));
+                String unsignedNumber = numberString.charAt(0) == '-' ? numberString.substring(1) : numberString;
+                if (unsignedNumber.length() < 10 ||
+                        unsignedNumber.length() == 10 && unsignedNumber.compareTo(MAX_INTEGER_STRING) <= 0 ||
+                        numberString.equals(MIN_INTEGER_STRING))
+                    return new JSONInteger(Integer.parseInt(numberString));
+                if (unsignedNumber.length() < 19 ||
+                        unsignedNumber.length() == 19 && unsignedNumber.compareTo(MAX_LONG_STRING) <= 0 ||
+                        numberString.equals(MIN_LONG_STRING))
+                    return new JSONLong(Long.parseLong(numberString));
+            }
+            return new JSONDecimal(numberString);
         }
         if (p.getIndex() > numberStart)
             throw new JSONException(ILLEGAL_NUMBER); // minus sign without digits
