@@ -3,7 +3,11 @@ Added this change log after project was already under way.  Early changes are no
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
-## [Unreleased]
+## [3.1] - 2020-05-10
+### Changed
+- `JSON`: create `JSONDecimal` when integer number is too big for `Long`
+
+## [3.0] - 2020-01-27
 ### Added
 - `JSONDecimal`: New class to handle decimal (floating point) values
 
