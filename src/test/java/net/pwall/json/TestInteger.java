@@ -25,19 +25,18 @@
 
 package net.pwall.json;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class for JSON integers.
  *
  * @author Peter Wall
  */
-public class TestInteger {
+class TestInteger {
 
     @Test
-    public void testParse() {
+    void testParse() {
 
         JSONValue value = JSON.parse("123");
         assertTrue(value instanceof JSONInteger);
@@ -80,28 +79,32 @@ public class TestInteger {
 
     }
 
-    @Test(expected=IllegalArgumentException.class)
-    public void testParse2() {
-        JSON.parse("1a");
-    }
-
-    @Test(expected=IllegalArgumentException.class)
-    public void testParse3() {
-        JSON.parse("1-1");
-    }
-
-    @Test(expected=IllegalArgumentException.class)
-    public void testParse4() {
-        JSON.parse("00");
-    }
-
-    @Test(expected=IllegalArgumentException.class)
-    public void testParse5() {
-        JSON.parse("01");
+    @Test
+    void testParse2() {
+        JSONException e = assertThrows(JSONException.class, () -> JSON.parse("1a"));
+        assertEquals("Excess characters after JSON value", e.getMessage());
     }
 
     @Test
-    public void testConstructor1() {
+    void testParse3() {
+        JSONException e = assertThrows(JSONException.class, () -> JSON.parse("1-1"));
+        assertEquals("Excess characters after JSON value", e.getMessage());
+    }
+
+    @Test
+    void testParse4() {
+        JSONException e = assertThrows(JSONException.class, () -> JSON.parse("00"));
+        assertEquals("Illegal JSON number at root", e.getMessage());
+    }
+
+    @Test
+    void testParse5() {
+        JSONException e = assertThrows(JSONException.class, () -> JSON.parse("01"));
+        assertEquals("Illegal JSON number at root", e.getMessage());
+    }
+
+    @Test
+    void testConstructor1() {
         JSONInteger int1 = new JSONInteger(123);
         assertEquals(123, int1.get());
         assertEquals("123", int1.toString());
@@ -129,11 +132,9 @@ public class TestInteger {
 
     }
 
-    @SuppressWarnings("cast")
     @Test
-    public void testNumberMethods() {
+    void testNumberMethods() {
         JSONInteger int1 = new JSONInteger(123);
-        assertTrue(int1 instanceof Number);
         assertEquals(123, int1.intValue());
         assertEquals(123L, int1.longValue());
         assertEquals(123.0F, int1.floatValue(), 1e-64);
@@ -143,7 +144,7 @@ public class TestInteger {
     }
 
     @Test
-    public void testAppend() throws Exception {
+    void testAppend() throws Exception {
         JSONInteger int1 = new JSONInteger(123);
         StringBuilder sb = new StringBuilder();
         int1.appendJSON(sb);
@@ -151,7 +152,7 @@ public class TestInteger {
     }
 
     @Test
-    public void testValueOf() {
+    void testValueOf() {
         JSONInteger int1 = JSONInteger.valueOf(123);
         assertEquals(123, int1.get());
         assertEquals("123", int1.toString());
@@ -189,7 +190,7 @@ public class TestInteger {
     }
 
     @Test
-    public void testValueEquals() {
+    void testValueEquals() {
         JSONInteger int1 = JSONInteger.valueOf(123);
         assertTrue(int1.valueEquals(123));
         assertTrue(int1.valueEquals(123L));

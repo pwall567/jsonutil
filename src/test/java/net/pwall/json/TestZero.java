@@ -25,19 +25,18 @@
 
 package net.pwall.json;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class for JSON zero values.
  *
  * @author Peter Wall
  */
-public class TestZero {
+class TestZero {
 
     @Test
-    public void testParse() {
+    void testParse() {
 
         JSONValue value = JSON.parse("0");
         assertTrue(value instanceof JSONZero);
@@ -56,24 +55,23 @@ public class TestZero {
 
     }
 
-    @Test(expected=IllegalArgumentException.class)
-    public void testParse2() {
-        JSON.parse("00");
+    @Test
+    void testParse2() {
+        JSONException e = assertThrows(JSONException.class, () -> JSON.parse("00"));
+        assertEquals("Illegal JSON number at root", e.getMessage());
     }
 
     @Test
-    public void testConstructor1() {
+    void testConstructor1() {
         JSONZero zero = new JSONZero();
         assertEquals(0, zero.get());
         assertEquals("0", zero.toString());
         assertEquals("0", zero.toJSON());
     }
 
-    @SuppressWarnings("cast")
     @Test
-    public void testNumberMethods() {
+    void testNumberMethods() {
         JSONZero zero = new JSONZero();
-        assertTrue(zero instanceof Number);
         assertEquals(0, zero.intValue());
         assertEquals(0L, zero.longValue());
         assertEquals(0.0F, zero.floatValue(), 1e-64);
@@ -83,7 +81,7 @@ public class TestZero {
     }
 
     @Test
-    public void testAppend() throws Exception {
+    void testAppend() throws Exception {
         JSONZero zero = new JSONZero();
         StringBuilder sb = new StringBuilder();
         zero.appendJSON(sb);
@@ -91,7 +89,7 @@ public class TestZero {
     }
 
     @Test
-    public void testValueEquals() {
+    void testValueEquals() {
         JSONZero zero = JSONZero.ZERO;
         assertTrue(zero.valueEquals(0));
         assertTrue(zero.valueEquals(0L));

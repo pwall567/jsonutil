@@ -3,6 +3,12 @@ Added this change log after project was already under way.  Early changes are no
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [4.0] - 2020-10-14
+### Changed
+- `JSON`: improved error reporting by including JSON pointer
+- `JSONFormat`: generalised to allow YAML results
+- tests: switched to JUnit 5 (allows checking of exception messages)
+
 ## [3.1] - 2020-05-10
 ### Changed
 - `JSON`: create `JSONDecimal` when integer number is too big for `Long`

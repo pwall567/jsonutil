@@ -67,15 +67,8 @@ On most benchmarks, the library significantly out-performs its competitors.  For
 
 ## Maven
 
-The library is in the Maven Central Repository; the co-ordinates are:
-
-```xml
-<dependency>
-  <groupId>net.pwall.json</groupId>
-  <artifactId>jsonutil</artifactId>
-  <version>2.0</version>
-</dependency>
-```
+The library is in the Maven Central Repository; the co-ordinates are listed in the
+[Dependency Specification](#dependency-specification) section below.
 
 Note that the `groupId` has changed from previous versions, which used `net.pwall.util`.
 From version 2.0 onwards, `jsonutil` requires Java 8.  Those seeking a version compatible with Java 7 should use:
@@ -204,25 +197,25 @@ From version 3.1 of this library, the `JSONDecimal` class is also used for integ
 
 ## Dependency Specification
 
-The latest version of the library is 3.1, and it may be obtained from the Maven Central repository.
+The latest version of the library is 4.0, and it may be obtained from the Maven Central repository.
 
 ### Maven
 ```xml
     <dependency>
       <groupId>net.pwall.json</groupId>
       <artifactId>jsonutil</artifactId>
-      <version>3.1</version>
+      <version>4.0</version>
     </dependency>
 ```
 ### Gradle
 ```groovy
-    implementation "net.pwall.json:jsonutil:3.1"
+    implementation "net.pwall.json:jsonutil:4.0"
 ```
 ### Gradle (kts)
 ```kotlin
-    implementation("net.pwall.json:jsonutil:3.1")
+    implementation("net.pwall.json:jsonutil:4.0")
 ```
 
 Peter Wall
 
-2020-05-10
+2020-10-14

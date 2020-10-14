@@ -27,21 +27,20 @@ package net.pwall.json;
 
 import java.math.BigDecimal;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class for JSON decimal values.
  *
  * @author Peter Wall
  */
-public class TestDecimal {
+class TestDecimal {
 
     private static final double delta = 0.000000001;
 
     @Test
-    public void testParse() {
+    void testParse() {
 
         JSONValue value = JSON.parse("123.0");
         assertTrue(value instanceof JSONDecimal);

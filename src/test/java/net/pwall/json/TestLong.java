@@ -25,19 +25,18 @@
 
 package net.pwall.json;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class for JSON long values.
  *
  * @author Peter Wall
  */
-public class TestLong {
+class TestLong {
 
     @Test
-    public void testParse() {
+    void testParse() {
 
         JSONValue value = JSON.parse("123456789012");
         assertTrue(value instanceof JSONLong);
@@ -74,13 +73,14 @@ public class TestLong {
 
     }
 
-    @Test(expected=IllegalArgumentException.class)
-    public void testParse2() {
-        JSON.parse("123456789012a");
+    @Test
+    void testParse2() {
+        JSONException e = assertThrows(JSONException.class, () -> JSON.parse("123456789012a"));
+        assertEquals("Excess characters after JSON value", e.getMessage());
     }
 
     @Test
-    public void testConstructor1() {
+    void testConstructor1() {
         JSONLong long1 = new JSONLong(123);
         assertEquals(123, long1.get());
         assertEquals("123", long1.toString());
@@ -108,11 +108,9 @@ public class TestLong {
 
     }
 
-    @SuppressWarnings("cast")
     @Test
-    public void testNumberMethods() {
+    void testNumberMethods() {
         JSONLong long1 = new JSONLong(123);
-        assertTrue(long1 instanceof Number);
         assertEquals(123, long1.intValue());
         assertEquals(123L, long1.longValue());
         assertEquals(123.0F, long1.floatValue(), 1e-64);
@@ -122,7 +120,7 @@ public class TestLong {
     }
 
     @Test
-    public void testAppend() throws Exception {
+    void testAppend() throws Exception {
         JSONLong long1 = new JSONLong(123456789012L);
         StringBuilder sb = new StringBuilder();
         long1.appendJSON(sb);
@@ -130,7 +128,7 @@ public class TestLong {
     }
 
     @Test
-    public void testValueOf() {
+    void testValueOf() {
         JSONLong long1 = JSONLong.valueOf(123456789012L);
         assertEquals(123456789012L, long1.get());
         assertEquals("123456789012", long1.toString());
@@ -164,7 +162,7 @@ public class TestLong {
     }
 
     @Test
-    public void testValueEquals() {
+    void testValueEquals() {
         JSONLong long1 = JSONLong.valueOf(123);
         assertTrue(long1.valueEquals(123));
         assertTrue(long1.valueEquals(123L));

@@ -4,22 +4,21 @@
 
 package net.pwall.json;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.io.StringReader;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test various forms of parsing.
  */
-public class TestParse {
+class TestParse {
 
     private static final String exampleString = "{\"aaa\":1234,\"bbb\":true}";
 
     @Test
-    public void test() throws IOException {
+    void test() throws IOException {
         JSONValue result = JSON.parse(exampleString);
         assertTrue(result instanceof JSONObject);
         JSONObject object = (JSONObject)result;

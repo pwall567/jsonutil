@@ -25,19 +25,18 @@
 
 package net.pwall.json;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class for JSON strings.
  *
  * @author Peter Wall
  */
-public class TestString {
+class TestString {
 
     @Test
-    public void testParse() {
+    void testParse() {
         JSONValue value = JSON.parse("\"abc\"");
         assertTrue(value instanceof JSONString);
         assertEquals("abc", value.toString());
@@ -90,28 +89,32 @@ public class TestString {
 
     }
 
-    @Test(expected=IllegalArgumentException.class)
-    public void testParse2() {
-        JSON.parse("\"abc");
-    }
-
-    @Test(expected=IllegalArgumentException.class)
-    public void testParse3() {
-        JSON.parse("\"\\");
-    }
-
-    @Test(expected=IllegalArgumentException.class)
-    public void testParse4() {
-        JSON.parse("\"\\g\"");
-    }
-
-    @Test(expected=IllegalArgumentException.class)
-    public void testParse5() {
-        JSON.parse("\" \\uXYZA \"");
+    @Test
+    void testParse2() {
+        JSONException e = assertThrows(JSONException.class, () -> JSON.parse("\"abc"));
+        assertEquals("Unterminated JSON string at root", e.getMessage());
     }
 
     @Test
-    public void testConstructor1() {
+    void testParse3() {
+        JSONException e = assertThrows(JSONException.class, () -> JSON.parse("\"\\"));
+        assertEquals("Unterminated JSON string at root", e.getMessage());
+    }
+
+    @Test
+    void testParse4() {
+        JSONException e = assertThrows(JSONException.class, () -> JSON.parse("\"\\g\""));
+        assertEquals("Illegal escape sequence in JSON string at root", e.getMessage());
+    }
+
+    @Test
+    void testParse5() {
+        JSONException e = assertThrows(JSONException.class, () -> JSON.parse("\" \\uXYZA \""));
+        assertEquals("Illegal Unicode sequence in JSON string at root", e.getMessage());
+    }
+
+    @Test
+    void testConstructor1() {
         JSONString str = new JSONString("abc");
         assertEquals("abc", str.get());
         assertEquals("abc", str.toString());
@@ -128,17 +131,14 @@ public class TestString {
         assertEquals("\"\"", str.toJSON());
     }
 
-    @SuppressWarnings("unused")
-    @Test(expected=NullPointerException.class)
-    public void testConstructor2() {
-        new JSONString(null);
+    @Test
+    void testConstructor2() {
+        assertThrows(NullPointerException.class, () -> new JSONString(null));
     }
 
-    @SuppressWarnings("cast")
     @Test
-    public void testCharSequenceMethods() {
+    void testCharSequenceMethods() {
         JSONString str = new JSONString("abc");
-        assertTrue(str instanceof CharSequence);
         assertEquals(3, str.length());
         assertEquals('a', str.charAt(0));
         assertEquals('b', str.charAt(1));
@@ -148,7 +148,7 @@ public class TestString {
     }
 
     @Test
-    public void testAppend() throws Exception {
+    void testAppend() throws Exception {
         JSONString str = new JSONString("abc");
         StringBuilder sb = new StringBuilder();
         str.appendJSON(sb);
