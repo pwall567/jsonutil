@@ -528,6 +528,10 @@ public class JSON {
      * @throws  JSONException if the text in the {@link ParseText} is not a valid JSON value
      */
     public static JSONValue parse(ParseText p) {
+        return parse(p, "");
+    }
+
+    private static JSONValue parse(ParseText p, String pointer) {
         p.skipSpaces();
 
         // check for object
@@ -537,19 +541,19 @@ public class JSON {
             if (!p.skipSpaces().match('}')) {
                 for (;;) {
                     if (!p.match('"'))
-                        throw new JSONException(ILLEGAL_KEY);
-                    String key = decodeString(p);
+                        throw new JSONException(ILLEGAL_KEY + pointerMessage(pointer));
+                    String key = decodeString(p, pointer);
                     if (object.containsKey(key))
-                        throw new JSONException(DUPLICATE_KEY);
+                        throw new JSONException(DUPLICATE_KEY + ": \"" + key + '"' + pointerMessage(pointer));
                     if (!p.skipSpaces().match(':'))
-                        throw new JSONException(MISSING_COLON);
-                    object.put(key, parse(p));
+                        throw new JSONException(MISSING_COLON + pointerMessage(pointer));
+                    object.put(key, parse(p, pointer + '/' + key));
                     if (!p.skipSpaces().match(','))
                         break;
                     p.skipSpaces();
                 }
                 if (!p.match('}'))
-                    throw new JSONException(MISSING_CLOSING_BRACE);
+                    throw new JSONException(MISSING_CLOSING_BRACE + pointerMessage(pointer));
             }
             return object;
         }
@@ -560,10 +564,10 @@ public class JSON {
             JSONArray array = new JSONArray();
             if (!p.skipSpaces().match(']')) {
                 do {
-                    array.add(parse(p));
+                    array.add(parse(p, pointer + '/' + array.size()));
                 } while (p.skipSpaces().match(','));
                 if (!p.match(']'))
-                    throw new JSONException(MISSING_CLOSING_BRACKET);
+                    throw new JSONException(MISSING_CLOSING_BRACKET + pointerMessage(pointer));
             }
             return array;
         }
@@ -571,33 +575,31 @@ public class JSON {
         // check for string
 
         if (p.match('"')) {
-            return new JSONString(decodeString(p));
+            return new JSONString(decodeString(p, pointer));
         }
 
         // check for number
 
         int numberStart = p.getIndex();
-        if (p.match('-'))
-            ; // do nothing - just step index
+        p.match('-'); // ignore the result, just step the index
         if (p.matchDec()) {
             boolean zero = false;
             if (p.getResultChar() == '0') {
                 if (p.getResultLength() > 1)
-                    throw new JSONException(ILLEGAL_NUMBER);
+                    throw new JSONException(ILLEGAL_NUMBER + pointerMessage(pointer));
                 zero = true;
             }
             boolean floating = false;
             if (p.match('.')) {
                 floating = true;
                 if (!p.matchDec())
-                    throw new JSONException(ILLEGAL_NUMBER);
+                    throw new JSONException(ILLEGAL_NUMBER + pointerMessage(pointer));
             }
             if (p.matchIgnoreCase('e')) {
                 floating = true;
-                if (p.match('+') || p.match('-'))
-                    ; // do nothing - just step index
+                p.matchAnyOf("-+"); // ignore the result, just step the index
                 if (!p.matchDec())
-                    throw new JSONException(ILLEGAL_NUMBER);
+                    throw new JSONException(ILLEGAL_NUMBER + pointerMessage(pointer));
             }
             int numberEnd = p.getIndex();
             String numberString = p.getString(numberStart, numberEnd);
@@ -619,7 +621,7 @@ public class JSON {
             return new JSONDecimal(numberString);
         }
         if (p.getIndex() > numberStart)
-            throw new JSONException(ILLEGAL_NUMBER); // minus sign without digits
+            throw new JSONException(ILLEGAL_NUMBER + pointerMessage(pointer)); // minus sign without digits
 
         // check for keywords (true, false, null)
 
@@ -632,7 +634,11 @@ public class JSON {
 
         // error
 
-        throw new JSONException(ILLEGAL_SYNTAX);
+        throw new JSONException(ILLEGAL_SYNTAX + pointerMessage(pointer));
+    }
+
+    private static String pointerMessage(String pointer) {
+        return " at " + (pointer.length() == 0 ? "root" : pointer);
     }
 
     /**
@@ -671,25 +677,25 @@ public class JSON {
      * @return  the string
      * @throws  JSONException if the string is not valid, or not properly terminated
      */
-    private static String decodeString(ParseText p) {
+    private static String decodeString(ParseText p, String pointer) {
         // start by assuming we can take a substring from the input
         int start = p.getIndex();
         for (;;) {
             if (p.isExhausted())
-                throw new JSONException(ILLEGAL_STRING_TERM);
+                throw new JSONException(ILLEGAL_STRING_TERM + pointerMessage(pointer));
             char ch = p.getChar();
             if (ch == '"')
                 return p.getString(start, p.getStart());
             if (ch == '\\')
                 break;
             if (ch < 0x20)
-                throw new JSONException(ILLEGAL_STRING_CHAR);
+                throw new JSONException(ILLEGAL_STRING_CHAR + pointerMessage(pointer));
         }
         // found a backslash, so we need to build a new string
         StringBuilder sb = new StringBuilder(p.getString(start, p.getStart()));
         for (;;) {
             if (p.isExhausted())
-                throw new JSONException(ILLEGAL_STRING_TERM);
+                throw new JSONException(ILLEGAL_STRING_TERM + pointerMessage(pointer));
             char ch = p.getChar();
             if (ch == '"')
                 sb.append('"');
@@ -709,21 +715,21 @@ public class JSON {
                 sb.append('\t');
             else if (ch == 'u') {
                 if (!p.matchHexFixed(4))
-                    throw new JSONException(ILLEGAL_STRING_UNICODE);
+                    throw new JSONException(ILLEGAL_STRING_UNICODE + pointerMessage(pointer));
                 sb.append((char)p.getResultHexInt());
             }
             else
-                throw new JSONException(ILLEGAL_STRING_ESCAPE);
+                throw new JSONException(ILLEGAL_STRING_ESCAPE + pointerMessage(pointer));
             for (;;) {
                 if (p.isExhausted())
-                    throw new JSONException(ILLEGAL_STRING_TERM);
+                    throw new JSONException(ILLEGAL_STRING_TERM + pointerMessage(pointer));
                 ch = p.getChar();
                 if (ch == '"')
                     return sb.toString();
                 if (ch == '\\')
                     break;
                 if (ch < 0x20)
-                    throw new JSONException(ILLEGAL_STRING_CHAR);
+                    throw new JSONException(ILLEGAL_STRING_CHAR + pointerMessage(pointer));
                 sb.append(ch);
             }
         }

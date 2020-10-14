@@ -25,19 +25,18 @@
 
 package net.pwall.json;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class for JSON boolean values.
  *
  * @author Peter Wall
  */
-public class TestBoolean {
+class TestBoolean {
 
     @Test
-    public void testParse() {
+    void testParse() {
 
         JSONValue value = JSON.parse("true");
         assertTrue(value instanceof JSONBoolean);
@@ -62,18 +61,20 @@ public class TestBoolean {
 
     }
 
-    @Test(expected=IllegalArgumentException.class)
-    public void testParse2() {
-        JSON.parse("TRUE");
-    }
-
-    @Test(expected=IllegalArgumentException.class)
-    public void testParse3() {
-        JSON.parse("YES");
+    @Test
+    void testParse2() {
+        JSONException e = assertThrows(JSONException.class, () -> JSON.parse("TRUE"));
+        assertEquals("Illegal JSON syntax at root", e.getMessage());
     }
 
     @Test
-    public void testConstructor1() {
+    void testParse3() {
+        JSONException e = assertThrows(JSONException.class, () -> JSON.parse("YES"));
+        assertEquals("Illegal JSON syntax at root", e.getMessage());
+    }
+
+    @Test
+    void testConstructor1() {
         JSONBoolean bool = new JSONBoolean(true);
         assertTrue(bool.get());
         assertEquals("true", bool.toString());
@@ -86,7 +87,7 @@ public class TestBoolean {
     }
 
     @Test
-    public void testAppend() throws Exception {
+    void testAppend() throws Exception {
         JSONBoolean bool = new JSONBoolean(true);
         StringBuilder sb = new StringBuilder();
         bool.appendJSON(sb);

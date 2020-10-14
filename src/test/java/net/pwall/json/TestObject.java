@@ -25,15 +25,14 @@
 
 package net.pwall.json;
 
-import static org.junit.Assert.*;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import net.pwall.util.ListMap;
 
@@ -42,10 +41,10 @@ import net.pwall.util.ListMap;
  *
  * @author Peter Wall
  */
-public class TestObject {
+class TestObject {
 
     @Test
-    public void testParse() {
+    void testParse() {
         JSONValue value = JSON.parse("{}");
         assertTrue(value instanceof JSONObject);
         assertEquals(0, ((JSONObject)value).size());
@@ -148,28 +147,38 @@ public class TestObject {
 
     }
 
-    @Test(expected=IllegalArgumentException.class)
-    public void testParse2() {
-        JSON.parse("{a:1}");
-    }
-
-    @Test(expected=IllegalArgumentException.class)
-    public void testParse3() {
-        JSON.parse("{\"a\":1,}");
-    }
-
-    @Test(expected=IllegalArgumentException.class)
-    public void testParse4() {
-        JSON.parse("{\"a\":1");
-    }
-
-    @Test(expected=IllegalArgumentException.class)
-    public void testParse5() {
-        JSON.parse("{\"a\":1,\"a\":2}");
+    @Test
+    void testParse2() {
+        JSONException e = assertThrows(JSONException.class, () -> JSON.parse("{a:1}"));
+        assertEquals("Illegal key in JSON object at root", e.getMessage());
     }
 
     @Test
-    public void testConstructor() {
+    void testParse3() {
+        JSONException e = assertThrows(JSONException.class, () -> JSON.parse("{\"a\":1,}"));
+        assertEquals("Illegal key in JSON object at root", e.getMessage());
+    }
+
+    @Test
+    void testParse4() {
+        JSONException e = assertThrows(JSONException.class, () -> JSON.parse("{\"a\":1"));
+        assertEquals("Missing closing brace in JSON object at root", e.getMessage());
+    }
+
+    @Test
+    void testParse5() {
+        JSONException e = assertThrows(JSONException.class, () -> JSON.parse("{\"a\":1,\"a\":2}"));
+        assertEquals("Duplicate key in JSON object: \"a\" at root", e.getMessage());
+    }
+
+    @Test
+    void testParse6() {
+        JSONException e = assertThrows(JSONException.class, () -> JSON.parse("{\"a\":[{\"c\":0"));
+        assertEquals("Missing closing brace in JSON object at /a/0", e.getMessage());
+    }
+
+    @Test
+    void testConstructor() {
         JSONObject object = new JSONObject();
         assertEquals(0, object.size());
         String expected = "{}";
@@ -193,7 +202,7 @@ public class TestObject {
     }
 
     @Test
-    public void testPutValue() {
+    void testPutValue() {
         JSONObject object = new JSONObject();
         object.putValue("first", 123);
         assertEquals(1, object.size());
@@ -254,7 +263,7 @@ public class TestObject {
         object.putNull("seventh");
         assertEquals(7, object.size());
         item = object.get("seventh");
-        assertEquals(null, item);
+        assertNull(item);
         expected = "{\"first\":123,\"second\":\"abc\",\"third\":true,\"fourth\":-1000," +
                 "\"fifth\":0.123,\"sixth\":55.55,\"seventh\":null}";
         assertEquals(expected, object.toJSON());
@@ -272,7 +281,7 @@ public class TestObject {
     }
 
     @Test
-    public void testGet() {
+    void testGet() {
         JSONObject object = new JSONObject();
         object.putValue("first", 123);
         object.putValue("second", "abc");
@@ -292,7 +301,7 @@ public class TestObject {
         assertEquals(0, object.getArray("array").size());
         assertEquals(0, object.getObject("object").size());
         assertNotEquals(null, object.get("first"));
-        assertEquals(null, object.get("nonexistant"));
+        assertNull(object.get("nonexistant"));
         assertTrue(object.containsKey("first"));
         assertFalse(object.containsKey("nonexistant"));
         assertTrue(object.containsValue(new JSONString("abc")));
@@ -300,7 +309,7 @@ public class TestObject {
     }
 
     @Test
-    public void testRemove() {
+    void testRemove() {
         JSONObject object = new JSONObject();
         object.putValue("first", 123);
         object.putValue("second", "abc");
@@ -318,8 +327,9 @@ public class TestObject {
         assertFalse(object.containsKey("second"));
     }
 
+    @SuppressWarnings("SimplifiableJUnitAssertion")
     @Test
-    public void testMapActions() {
+    void testMapActions() {
         JSONObject object = new JSONObject();
         object.putValue("first", 123);
         object.putValue("second", "abc");
@@ -353,7 +363,7 @@ public class TestObject {
     }
 
     @Test
-    public void testOutput() {
+    void testOutput() {
         JSONObject object = new JSONObject();
         assertEquals("{}", object.toJSON());
         object.putValue("first", 1);
@@ -381,7 +391,7 @@ public class TestObject {
     }
 
     @Test
-    public void testParseOld() {
+    void testParseOld() {
         JSONObject object = new JSONObject();
         assertEquals(JSON.parse("{}"), object);
 
@@ -402,10 +412,11 @@ public class TestObject {
         JSONString str = new JSONString("\"\\\u1234");
         assertEquals(JSON.parse("\"\\\"\\\\\\u1234\""), str);
 
-        assertEquals(JSON.parse("null"), null);
+        assertNull(JSON.parse("null"));
     }
 
-    @Test public void testConstructorFromMap() {
+    @Test
+    void testConstructorFromMap() {
         Map<String, JSONValue> map = new ListMap<>();
         map.put("first", new JSONString("abc"));
         map.put("second", new JSONInteger(123));
@@ -429,7 +440,7 @@ public class TestObject {
 
     public static class TestMapEntry implements Map.Entry<String, JSONValue> {
 
-        private String key;
+        private final String key;
         private JSONValue value;
 
         public TestMapEntry(String key, JSONValue value) {

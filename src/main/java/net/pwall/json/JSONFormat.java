@@ -2,7 +2,7 @@
  * @(#) JSONFormat.java
  *
  * jsonutil JSON Utility Library
- * Copyright (c) 2014, 2015 Peter Wall
+ * Copyright (c) 2014, 2015, 2020 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,11 +37,11 @@ public class JSONFormat {
     public static final int DEFAULT_INDENTATION = 2;
     public static final String LINE_TERMINATOR = System.getProperty("line.separator");
 
-    private int currentIndentation;
-    private int indentationIncrement;
-    private boolean newlineRequired;
+    private final int currentIndentation;
+    private final int indentationIncrement;
+    private final boolean newlineRequired;
 
-    private static JSONFormat instance = new JSONFormat();
+    private static final JSONFormat instance = new JSONFormat();
 
     public JSONFormat(int currentIndentation, int indentationIncrement,
             boolean newlineRequired) {
@@ -106,22 +106,22 @@ public class JSONFormat {
             a.append(' ');
         if (value == null)
             a.append("null");
-        else if (value instanceof JSONObject) {
-            JSONObject object = (JSONObject)value;
+        else if (value instanceof JSONMapping) {
+            JSONMapping<? extends JSONValue> mapping = (JSONMapping<? extends JSONValue>)value;
             a.append('{');
-            if (object.size() > 0) {
+            if (mapping.size() > 0) {
                 indent += indentationIncrement;
                 a.append(LINE_TERMINATOR);
                 int i = 0;
                 for (;;) {
-                    JSONObject.Entry<String, JSONValue> entry = object.getEntry(i++);
+                    JSONMapping.Entry<String, ? extends JSONValue> entry = mapping.getEntry(i++);
                     for (int j = indent; j > 0; --j)
                         a.append(' ');
                     a.append('"');
                     Strings.appendEscaped(a, entry.getKey(), JSON.charMapper);
                     a.append('"').append(':');
                     appendTo(a, entry.getValue(), indent, 1);
-                    if (i >= object.size())
+                    if (i >= mapping.size())
                         break;
                     a.append(',');
                     a.append(LINE_TERMINATOR);
@@ -133,16 +133,16 @@ public class JSONFormat {
             }
             a.append('}');
         }
-        else if (value instanceof JSONArray) {
-            JSONArray array = (JSONArray)value;
+        else if (value instanceof JSONSequence) {
+            JSONSequence<? extends JSONValue> sequence = (JSONSequence<? extends JSONValue>)value;
             a.append('[');
-            if (array.size() > 0) {
+            if (sequence.size() > 0) {
                 indent += indentationIncrement;
                 a.append(LINE_TERMINATOR);
                 int i = 0;
                 for (;;) {
-                    appendTo(a, array.get(i++), indent, indent);
-                    if (i >= array.size())
+                    appendTo(a, sequence.get(i++), indent, indent);
+                    if (i >= sequence.size())
                         break;
                     a.append(',');
                     a.append(LINE_TERMINATOR);
