@@ -53,6 +53,11 @@ public class JSONLong extends JSONNumberValue {
     }
 
     @Override
+    public Long toSimpleValue() {
+        return value;
+    }
+
+    @Override
     public int intValue() {
         return (int)value;
     }

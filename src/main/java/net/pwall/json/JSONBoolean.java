@@ -61,6 +61,11 @@ public class JSONBoolean implements JSONValue {
     }
 
     @Override
+    public Boolean toSimpleValue() {
+        return value;
+    }
+
+    @Override
     public String toJSON() {
         return value ? "true" : "false";
     }

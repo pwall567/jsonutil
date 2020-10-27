@@ -25,6 +25,7 @@
 
 package net.pwall.json;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -289,6 +290,7 @@ class TestObject {
         object.putValue("fourth", -1000L);
         object.putValue("fifth", 0.123);
         object.putValue("sixth", 55.55F);
+        object.putValue("seventh", new BigDecimal("99.999"));
         object.putJSON("array", new JSONArray());
         object.putJSON("object", new JSONObject());
 
@@ -298,6 +300,7 @@ class TestObject {
         assertEquals(-1000L, object.getLong("fourth"));
         assertEquals(0.123, object.getDouble("fifth"), 1e-64);
         assertEquals(55.55F, object.getFloat("sixth"), 1e-64);
+        assertEquals(new BigDecimal("99.999"), object.getDecimal("seventh"));
         assertEquals(0, object.getArray("array").size());
         assertEquals(0, object.getObject("object").size());
         assertNotEquals(null, object.get("first"));

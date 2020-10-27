@@ -60,4 +60,26 @@ public interface JSONValue extends Serializable {
         return sb.toString();
     }
 
+    /**
+     * Convert this value to a simple representation - a standard Java class or collection.  The result will be one of:
+     * <ul>
+     *     <li>Integer</li>
+     *     <li>Long</li>
+     *     <li>Boolean</li>
+     *     <li>Float</li>
+     *     <li>Double</li>
+     *     <li>BigDecimal</li>
+     *     <li>List&lt;Object&gt;</li>
+     *     <li>Map&lt;String, Object&gt;</li>
+     * </ul>
+     * In the last two cases, the Object will itself be one of the listed types.
+     *
+     * @return  the value in a simple representation
+     */
+    Object toSimpleValue();
+
+    static Object simpleValue(JSONValue value) {
+        return value == null ? null : value.toSimpleValue();
+    }
+
 }

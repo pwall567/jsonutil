@@ -47,6 +47,11 @@ public class JSONZero extends JSONNumberValue {
     }
 
     @Override
+    public Integer toSimpleValue() {
+        return 0;
+    }
+
+    @Override
     public int intValue() {
         return 0;
     }

@@ -78,6 +78,22 @@ public class JSONMapping<V extends JSONValue> extends ListMap<String, V>
     }
 
     /**
+     * Convert to a simple representation.
+     *
+     * @return  the mapping as a Map.
+     */
+    @Override
+    public Map<String, Object> toSimpleValue() {
+        int n = list.size();
+        ListMap<String, Object> map = new ListMap<>(n);
+        for (int i = 0; i < n; i++) {
+            ListMap.Entry<String, V> entry = list.get(i);
+            map.put(entry.getKey(), JSONValue.simpleValue(entry.getValue()));
+        }
+        return map;
+    }
+
+    /**
      * Get a value from the {@code JSONMapping} as a {@link String}.
      *
      * @param   key     the key of the value
@@ -223,7 +239,7 @@ public class JSONMapping<V extends JSONValue> extends ListMap<String, V>
      */
     @Override
     public boolean isSimple() {
-        for (int i = 0; i < list.size(); i++)
+        for (int i = 0, n = list.size(); i < n; i++)
             if (list.get(i).getValue() instanceof JSONComposite)
                 return false;
         return true;

@@ -55,6 +55,11 @@ public class JSONFloat extends JSONNumberValue {
     }
 
     @Override
+    public Float toSimpleValue() {
+        return value;
+    }
+
+    @Override
     public int intValue() {
         return (int)value;
     }

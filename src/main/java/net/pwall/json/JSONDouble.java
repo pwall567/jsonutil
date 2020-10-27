@@ -55,6 +55,11 @@ public class JSONDouble extends JSONNumberValue {
     }
 
     @Override
+    public Double toSimpleValue() {
+        return value;
+    }
+
+    @Override
     public int intValue() {
         return (int)value;
     }

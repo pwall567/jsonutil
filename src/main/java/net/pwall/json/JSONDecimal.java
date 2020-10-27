@@ -63,6 +63,11 @@ public class JSONDecimal extends JSONNumberValue {
     }
 
     @Override
+    public BigDecimal toSimpleValue() {
+        return bigDecimal;
+    }
+
+    @Override
     public int intValue() {
         return bigDecimal.intValue();
     }

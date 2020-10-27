@@ -53,6 +53,11 @@ public class JSONInteger extends JSONNumberValue {
     }
 
     @Override
+    public Integer toSimpleValue() {
+        return value;
+    }
+
+    @Override
     public int intValue() {
         return value;
     }

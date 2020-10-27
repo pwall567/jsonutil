@@ -30,6 +30,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * A JSON sequence (the base for {@link JSONArray}, and possibly other similar collections).
@@ -76,6 +77,20 @@ public class JSONSequence<V extends JSONValue> extends ArrayList<V> implements J
      */
     public JSONSequence(Collection<? extends V> collection) {
         super(collection);
+    }
+
+    /**
+     * Convert to a simple representation.
+     *
+     * @return  the sequence as a List.
+     */
+    @Override
+    public List<Object> toSimpleValue() {
+        int n = size();
+        ArrayList<Object> list = new ArrayList<>(n);
+        for (int i = 0; i < n; i++)
+            list.add(JSONValue.simpleValue(get(i)));
+        return list;
     }
 
     /**

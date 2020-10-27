@@ -50,6 +50,11 @@ public class JSONString implements JSONValue, CharSequence {
     }
 
     @Override
+    public String toSimpleValue() {
+        return value;
+    }
+
+    @Override
     public int length() {
         return value.length();
     }
