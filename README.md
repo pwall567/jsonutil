@@ -1,5 +1,6 @@
 # jsonutil
 
+[![Build Status](https://travis-ci.org/pwall567/jsonutil.svg?branch=master)](https://travis-ci.org/pwall567/jsonutil)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 JSON encode/decode classes for Java
