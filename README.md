@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/pwall567/jsonutil.svg?branch=master)](https://travis-ci.org/pwall567/jsonutil)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Maven Central](https://img.shields.io/maven-central/v/net.pwall.json/jsonutil?label=Maven%20Central)](https://search.maven.org/search?q=g:%22net.pwall.json%22%20AND%20a:%22jsonutil%22)
 
 JSON encode/decode classes for Java
 
@@ -13,7 +14,7 @@ This work was started before any of the currently-popular libraries had achieved
 prominence.  I had a requirement for classes to parse incoming JSON data, to hold the JSON
 representation in an internal form that was easy to access, and to output syntactically-correct
 JSON results.  It seemed a reasonably simple task, and a good test of the `ParseText` class,
-part of my `javautil` library.
+part of my [`javautil`](https://github.com/pwall567/javautil) library.
 
 When I later encountered the more widely used libraries I was struck by how complicated they
 seemed.  And how large.  And one of them described itself as "fastJSON" which I saw as a
