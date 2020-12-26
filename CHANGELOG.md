@@ -3,6 +3,10 @@ Added this change log after project was already under way.  Early changes are no
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [4.2] - 2020-12-26
+### Changed
+- updated dependency
+
 ## [4.1] - 2020-10-27
 ### Changed
 - `JSONValue` etc.: added `toSimpleValue()`

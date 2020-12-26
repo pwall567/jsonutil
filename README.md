@@ -201,25 +201,25 @@ From version 3.1 of this library, the `JSONDecimal` class is also used for integ
 
 ## Dependency Specification
 
-The latest version of the library is 4.1, and it may be obtained from the Maven Central repository.
+The latest version of the library is 4.2, and it may be obtained from the Maven Central repository.
 
 ### Maven
 ```xml
     <dependency>
       <groupId>net.pwall.json</groupId>
       <artifactId>jsonutil</artifactId>
-      <version>4.1</version>
+      <version>4.2</version>
     </dependency>
 ```
 ### Gradle
 ```groovy
-    implementation "net.pwall.json:jsonutil:4.1"
+    implementation "net.pwall.json:jsonutil:4.2"
 ```
 ### Gradle (kts)
 ```kotlin
-    implementation("net.pwall.json:jsonutil:4.1")
+    implementation("net.pwall.json:jsonutil:4.2")
 ```
 
 Peter Wall
 
-2020-10-27
+2020-12-26
