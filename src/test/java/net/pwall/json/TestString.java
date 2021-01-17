@@ -155,4 +155,36 @@ class TestString {
         assertEquals("\"abc\"", sb.toString());
     }
 
+    @Test
+    void testEscape() {
+        String str = "String with no special characters.";
+        assertSame(str, JSON.escape(str));
+        str = "String with quote \".";
+        assertEquals("String with quote \\\".", JSON.escape(str));
+        str = "String with backslash \\.";
+        assertEquals("String with backslash \\\\.", JSON.escape(str));
+        str = "String with tab \t.";
+        assertEquals("String with tab \\t.", JSON.escape(str));
+        str = "String with newline \n.";
+        assertEquals("String with newline \\n.", JSON.escape(str));
+        str = "String with mdash \u2014.";
+        assertEquals("String with mdash \\u2014.", JSON.escape(str));
+    }
+
+    @Test
+    void testUnescape() {
+        String str = "String with no special characters.";
+        assertSame(str, JSON.unescape(str));
+        str = "String with quote \\\".";
+        assertEquals("String with quote \".", JSON.unescape(str));
+        str = "String with backslash \\\\.";
+        assertEquals("String with backslash \\.", JSON.unescape(str));
+        str = "String with tab \\t.";
+        assertEquals("String with tab \t.", JSON.unescape(str));
+        str = "String with newline \\n.";
+        assertEquals("String with newline \n.", JSON.unescape(str));
+        str = "String with mdash \\u2014.";
+        assertEquals("String with mdash \u2014.", JSON.unescape(str));
+    }
+
 }

@@ -905,4 +905,26 @@ public class JSON {
         return (JSONObject)value;
     }
 
+    /**
+     * Replace characters in a string with their mapped equivalents, as required for JSON.  If the string contains no
+     * characters to be mapped, the original string is returned unmodified.
+     *
+     * @param   string  the string to be converted
+     * @return  the string with characters mapped as required
+     */
+    public static String escape(String string) {
+        return Strings.escape(string, charMapper);
+    }
+
+    /**
+     * Scan a string for JSON escape sequences and replace them by the original characters.  If the string contains no
+     * escape sequences to be unmapped, the original string is returned unmodified.
+     *
+     * @param   string      the string to be converted
+     * @return              the "unescaped" string
+     */
+    public static String unescape(String string) {
+        return Strings.unescape(string, charUnmapper);
+    }
+
 }
