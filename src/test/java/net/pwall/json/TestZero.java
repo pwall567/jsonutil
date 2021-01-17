@@ -58,7 +58,7 @@ class TestZero {
     @Test
     void testParse2() {
         JSONException e = assertThrows(JSONException.class, () -> JSON.parse("00"));
-        assertEquals("Illegal JSON number at root", e.getMessage());
+        assertEquals("Illegal JSON number", e.getMessage());
     }
 
     @Test

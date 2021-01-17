@@ -92,25 +92,25 @@ class TestString {
     @Test
     void testParse2() {
         JSONException e = assertThrows(JSONException.class, () -> JSON.parse("\"abc"));
-        assertEquals("Unterminated JSON string at root", e.getMessage());
+        assertEquals("Unterminated JSON string", e.getMessage());
     }
 
     @Test
     void testParse3() {
         JSONException e = assertThrows(JSONException.class, () -> JSON.parse("\"\\"));
-        assertEquals("Unterminated JSON string at root", e.getMessage());
+        assertEquals("Unterminated JSON string", e.getMessage());
     }
 
     @Test
     void testParse4() {
         JSONException e = assertThrows(JSONException.class, () -> JSON.parse("\"\\g\""));
-        assertEquals("Illegal escape sequence in JSON string at root", e.getMessage());
+        assertEquals("Illegal escape sequence in JSON string", e.getMessage());
     }
 
     @Test
     void testParse5() {
         JSONException e = assertThrows(JSONException.class, () -> JSON.parse("\" \\uXYZA \""));
-        assertEquals("Illegal Unicode sequence in JSON string at root", e.getMessage());
+        assertEquals("Illegal Unicode sequence in JSON string", e.getMessage());
     }
 
     @Test

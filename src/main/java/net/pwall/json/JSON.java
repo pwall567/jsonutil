@@ -541,19 +541,19 @@ public class JSON {
             if (!p.skipSpaces().match('}')) {
                 for (;;) {
                     if (!p.match('"'))
-                        throw new JSONException(ILLEGAL_KEY + pointerMessage(pointer));
+                        throw new JSONException(pointerMessage(ILLEGAL_KEY, pointer));
                     String key = decodeString(p, pointer);
                     if (object.containsKey(key))
-                        throw new JSONException(DUPLICATE_KEY + ": \"" + key + '"' + pointerMessage(pointer));
+                        throw new JSONException(pointerMessage(DUPLICATE_KEY + ": \"" + key + '"', pointer));
                     if (!p.skipSpaces().match(':'))
-                        throw new JSONException(MISSING_COLON + pointerMessage(pointer));
+                        throw new JSONException(pointerMessage(MISSING_COLON, pointer));
                     object.put(key, parse(p, pointer + '/' + key));
                     if (!p.skipSpaces().match(','))
                         break;
                     p.skipSpaces();
                 }
                 if (!p.match('}'))
-                    throw new JSONException(MISSING_CLOSING_BRACE + pointerMessage(pointer));
+                    throw new JSONException(pointerMessage(MISSING_CLOSING_BRACE, pointer));
             }
             return object;
         }
@@ -567,7 +567,7 @@ public class JSON {
                     array.add(parse(p, pointer + '/' + array.size()));
                 } while (p.skipSpaces().match(','));
                 if (!p.match(']'))
-                    throw new JSONException(MISSING_CLOSING_BRACKET + pointerMessage(pointer));
+                    throw new JSONException(pointerMessage(MISSING_CLOSING_BRACKET, pointer));
             }
             return array;
         }
@@ -586,20 +586,20 @@ public class JSON {
             boolean zero = false;
             if (p.getResultChar() == '0') {
                 if (p.getResultLength() > 1)
-                    throw new JSONException(ILLEGAL_NUMBER + pointerMessage(pointer));
+                    throw new JSONException(pointerMessage(ILLEGAL_NUMBER, pointer));
                 zero = true;
             }
             boolean floating = false;
             if (p.match('.')) {
                 floating = true;
                 if (!p.matchDec())
-                    throw new JSONException(ILLEGAL_NUMBER + pointerMessage(pointer));
+                    throw new JSONException(pointerMessage(ILLEGAL_NUMBER, pointer));
             }
             if (p.matchIgnoreCase('e')) {
                 floating = true;
                 p.matchAnyOf("-+"); // ignore the result, just step the index
                 if (!p.matchDec())
-                    throw new JSONException(ILLEGAL_NUMBER + pointerMessage(pointer));
+                    throw new JSONException(pointerMessage(ILLEGAL_NUMBER, pointer));
             }
             int numberEnd = p.getIndex();
             String numberString = p.getString(numberStart, numberEnd);
@@ -621,7 +621,7 @@ public class JSON {
             return new JSONDecimal(numberString);
         }
         if (p.getIndex() > numberStart)
-            throw new JSONException(ILLEGAL_NUMBER + pointerMessage(pointer)); // minus sign without digits
+            throw new JSONException(pointerMessage(ILLEGAL_NUMBER, pointer)); // minus sign without digits
 
         // check for keywords (true, false, null)
 
@@ -634,11 +634,11 @@ public class JSON {
 
         // error
 
-        throw new JSONException(ILLEGAL_SYNTAX + pointerMessage(pointer));
+        throw new JSONException(pointerMessage(ILLEGAL_SYNTAX, pointer));
     }
 
-    private static String pointerMessage(String pointer) {
-        return " at " + (pointer.length() == 0 ? "root" : pointer);
+    private static String pointerMessage(String message, String pointer) {
+        return (pointer.length() == 0 ? message : message + " at " + pointer);
     }
 
     /**
@@ -682,20 +682,20 @@ public class JSON {
         int start = p.getIndex();
         for (;;) {
             if (p.isExhausted())
-                throw new JSONException(ILLEGAL_STRING_TERM + pointerMessage(pointer));
+                throw new JSONException(pointerMessage(ILLEGAL_STRING_TERM, pointer));
             char ch = p.getChar();
             if (ch == '"')
                 return p.getString(start, p.getStart());
             if (ch == '\\')
                 break;
             if (ch < 0x20)
-                throw new JSONException(ILLEGAL_STRING_CHAR + pointerMessage(pointer));
+                throw new JSONException(pointerMessage(ILLEGAL_STRING_CHAR, pointer));
         }
         // found a backslash, so we need to build a new string
         StringBuilder sb = new StringBuilder(p.getString(start, p.getStart()));
         for (;;) {
             if (p.isExhausted())
-                throw new JSONException(ILLEGAL_STRING_TERM + pointerMessage(pointer));
+                throw new JSONException(pointerMessage(ILLEGAL_STRING_TERM, pointer));
             char ch = p.getChar();
             if (ch == '"')
                 sb.append('"');
@@ -715,21 +715,21 @@ public class JSON {
                 sb.append('\t');
             else if (ch == 'u') {
                 if (!p.matchHexFixed(4))
-                    throw new JSONException(ILLEGAL_STRING_UNICODE + pointerMessage(pointer));
+                    throw new JSONException(pointerMessage(ILLEGAL_STRING_UNICODE, pointer));
                 sb.append((char)p.getResultHexInt());
             }
             else
-                throw new JSONException(ILLEGAL_STRING_ESCAPE + pointerMessage(pointer));
+                throw new JSONException(pointerMessage(ILLEGAL_STRING_ESCAPE, pointer));
             for (;;) {
                 if (p.isExhausted())
-                    throw new JSONException(ILLEGAL_STRING_TERM + pointerMessage(pointer));
+                    throw new JSONException(pointerMessage(ILLEGAL_STRING_TERM, pointer));
                 ch = p.getChar();
                 if (ch == '"')
                     return sb.toString();
                 if (ch == '\\')
                     break;
                 if (ch < 0x20)
-                    throw new JSONException(ILLEGAL_STRING_CHAR + pointerMessage(pointer));
+                    throw new JSONException(pointerMessage(ILLEGAL_STRING_CHAR, pointer));
                 sb.append(ch);
             }
         }

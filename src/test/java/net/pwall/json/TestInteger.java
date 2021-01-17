@@ -94,13 +94,13 @@ class TestInteger {
     @Test
     void testParse4() {
         JSONException e = assertThrows(JSONException.class, () -> JSON.parse("00"));
-        assertEquals("Illegal JSON number at root", e.getMessage());
+        assertEquals("Illegal JSON number", e.getMessage());
     }
 
     @Test
     void testParse5() {
         JSONException e = assertThrows(JSONException.class, () -> JSON.parse("01"));
-        assertEquals("Illegal JSON number at root", e.getMessage());
+        assertEquals("Illegal JSON number", e.getMessage());
     }
 
     @Test

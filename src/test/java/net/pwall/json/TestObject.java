@@ -151,25 +151,25 @@ class TestObject {
     @Test
     void testParse2() {
         JSONException e = assertThrows(JSONException.class, () -> JSON.parse("{a:1}"));
-        assertEquals("Illegal key in JSON object at root", e.getMessage());
+        assertEquals("Illegal key in JSON object", e.getMessage());
     }
 
     @Test
     void testParse3() {
         JSONException e = assertThrows(JSONException.class, () -> JSON.parse("{\"a\":1,}"));
-        assertEquals("Illegal key in JSON object at root", e.getMessage());
+        assertEquals("Illegal key in JSON object", e.getMessage());
     }
 
     @Test
     void testParse4() {
         JSONException e = assertThrows(JSONException.class, () -> JSON.parse("{\"a\":1"));
-        assertEquals("Missing closing brace in JSON object at root", e.getMessage());
+        assertEquals("Missing closing brace in JSON object", e.getMessage());
     }
 
     @Test
     void testParse5() {
         JSONException e = assertThrows(JSONException.class, () -> JSON.parse("{\"a\":1,\"a\":2}"));
-        assertEquals("Duplicate key in JSON object: \"a\" at root", e.getMessage());
+        assertEquals("Duplicate key in JSON object: \"a\"", e.getMessage());
     }
 
     @Test

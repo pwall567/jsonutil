@@ -64,13 +64,13 @@ class TestBoolean {
     @Test
     void testParse2() {
         JSONException e = assertThrows(JSONException.class, () -> JSON.parse("TRUE"));
-        assertEquals("Illegal JSON syntax at root", e.getMessage());
+        assertEquals("Illegal JSON syntax", e.getMessage());
     }
 
     @Test
     void testParse3() {
         JSONException e = assertThrows(JSONException.class, () -> JSON.parse("YES"));
-        assertEquals("Illegal JSON syntax at root", e.getMessage());
+        assertEquals("Illegal JSON syntax", e.getMessage());
     }
 
     @Test
