@@ -48,7 +48,7 @@ public class JSONLong extends JSONNumberValue {
         this.value = value;
     }
 
-    public long get() {
+    public long getValue() {
         return value;
     }
 

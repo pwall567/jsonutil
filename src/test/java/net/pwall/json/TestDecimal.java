@@ -45,34 +45,34 @@ class TestDecimal {
         JSONValue value = JSON.parse("123.0");
         assertTrue(value instanceof JSONDecimal);
         assertEquals("123.0", value.toString());
-        assertEquals(0, BigDecimal.valueOf(123.0).compareTo(((JSONDecimal)value).get()));
+        assertEquals(0, BigDecimal.valueOf(123.0).compareTo(((JSONDecimal)value).getValue()));
         assertEquals(123.0, ((JSONDecimal)value).doubleValue(), delta);
         assertEquals("123.0", value.toJSON());
 
         value = JSON.parse("-123.0");
         assertTrue(value instanceof JSONDecimal);
         assertEquals("-123.0", value.toString());
-        assertEquals(0, BigDecimal.valueOf(-123.0).compareTo(((JSONDecimal)value).get()));
+        assertEquals(0, BigDecimal.valueOf(-123.0).compareTo(((JSONDecimal)value).getValue()));
         assertEquals(-123.0, ((JSONDecimal)value).doubleValue(), delta);
         assertEquals("-123.0", value.toJSON());
 
         value = JSON.parse("123e2");
         assertTrue(value instanceof JSONDecimal);
         assertEquals("123e2", value.toString());
-        assertEquals(0, BigDecimal.valueOf(123e2).compareTo(((JSONDecimal)value).get()));
+        assertEquals(0, BigDecimal.valueOf(123e2).compareTo(((JSONDecimal)value).getValue()));
         assertEquals(12300, ((JSONDecimal)value).intValue());
         assertEquals("123e2", value.toJSON());
 
         value = JSON.parse("9223372036854775808"); // one greater than max long
         assertTrue(value instanceof JSONDecimal);
         assertEquals("9223372036854775808", value.toString());
-        assertEquals(new BigDecimal("9223372036854775808"), ((JSONDecimal)value).get());
+        assertEquals(new BigDecimal("9223372036854775808"), ((JSONDecimal)value).getValue());
         assertEquals("9223372036854775808", value.toJSON());
 
         value = JSON.parse("-9223372036854775809"); // one less than min long
         assertTrue(value instanceof JSONDecimal);
         assertEquals("-9223372036854775809", value.toString());
-        assertEquals(new BigDecimal("-9223372036854775809"), ((JSONDecimal)value).get());
+        assertEquals(new BigDecimal("-9223372036854775809"), ((JSONDecimal)value).getValue());
         assertEquals("-9223372036854775809", value.toJSON());
 
     }

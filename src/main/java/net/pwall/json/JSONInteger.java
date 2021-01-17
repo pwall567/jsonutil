@@ -48,7 +48,7 @@ public class JSONInteger extends JSONNumberValue {
         this.value = value;
     }
 
-    public int get() {
+    public int getValue() {
         return value;
     }
 

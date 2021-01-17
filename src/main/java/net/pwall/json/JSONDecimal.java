@@ -58,7 +58,7 @@ public class JSONDecimal extends JSONNumberValue {
         this.string = string;
     }
 
-    public BigDecimal get() {
+    public BigDecimal getValue() {
         return bigDecimal;
     }
 

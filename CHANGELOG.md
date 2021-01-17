@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 ### Changed
 - `JSON`: modified error messages (removed "at root" when pointer is at root of JSON)
 - `JSON`: added `escape` and `unescape`
+- `JSONBoolean`, `JSONDecimal`, `JSONDouble`, `JSONFloat`, `JSONInteger`, `JSONLong`, `JSONString`, `JSONZero`: changed
+`get` to `getValue`
 
 ## [4.2] - 2020-12-26
 ### Changed

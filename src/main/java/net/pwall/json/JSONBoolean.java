@@ -52,7 +52,7 @@ public class JSONBoolean implements JSONValue {
         this.value = Objects.requireNonNull(value);
     }
 
-    public boolean get() {
+    public boolean getValue() {
         return value;
     }
 
@@ -88,7 +88,7 @@ public class JSONBoolean implements JSONValue {
     @Override
     public boolean equals(Object other) {
         return other == this ||
-                other instanceof JSONBoolean && value == ((JSONBoolean)other).get();
+                other instanceof JSONBoolean && value == ((JSONBoolean)other).getValue();
     }
 
     public static JSONBoolean valueOf(boolean b) {

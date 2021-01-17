@@ -41,37 +41,37 @@ class TestInteger {
         JSONValue value = JSON.parse("123");
         assertTrue(value instanceof JSONInteger);
         assertEquals("123", value.toString());
-        assertEquals(123, ((JSONInteger)value).get());
+        assertEquals(123, ((JSONInteger)value).getValue());
         assertEquals("123", value.toJSON());
 
         value = JSON.parse("-1");
         assertTrue(value instanceof JSONInteger);
         assertEquals("-1", value.toString());
-        assertEquals(-1, ((JSONInteger)value).get());
+        assertEquals(-1, ((JSONInteger)value).getValue());
         assertEquals("-1", value.toJSON());
 
         value = JSON.parse("-1000000");
         assertTrue(value instanceof JSONInteger);
         assertEquals("-1000000", value.toString());
-        assertEquals(-1000000, ((JSONInteger)value).get());
+        assertEquals(-1000000, ((JSONInteger)value).getValue());
         assertEquals("-1000000", value.toJSON());
 
         value = JSON.parse(" 123456789 ");
         assertTrue(value instanceof JSONInteger);
         assertEquals("123456789", value.toString());
-        assertEquals(123456789, ((JSONInteger)value).get());
+        assertEquals(123456789, ((JSONInteger)value).getValue());
         assertEquals("123456789", value.toJSON());
 
         value = JSON.parse("2147483647");
         assertTrue(value instanceof JSONInteger);
         assertEquals("2147483647", value.toString());
-        assertEquals(2147483647, ((JSONInteger)value).get());
+        assertEquals(2147483647, ((JSONInteger)value).getValue());
         assertEquals("2147483647", value.toJSON());
 
         value = JSON.parse("-2147483648");
         assertTrue(value instanceof JSONInteger);
         assertEquals("-2147483648", value.toString());
-        assertEquals(-2147483648, ((JSONInteger)value).get());
+        assertEquals(-2147483648, ((JSONInteger)value).getValue());
         assertEquals("-2147483648", value.toJSON());
 
         value = JSON.parse("2147483648");
@@ -106,27 +106,27 @@ class TestInteger {
     @Test
     void testConstructor1() {
         JSONInteger int1 = new JSONInteger(123);
-        assertEquals(123, int1.get());
+        assertEquals(123, int1.getValue());
         assertEquals("123", int1.toString());
         assertEquals("123", int1.toJSON());
 
         int1 = new JSONInteger(0);
-        assertEquals(0, int1.get());
+        assertEquals(0, int1.getValue());
         assertEquals("0", int1.toString());
         assertEquals("0", int1.toJSON());
 
         int1 = new JSONInteger(-1000);
-        assertEquals(-1000, int1.get());
+        assertEquals(-1000, int1.getValue());
         assertEquals("-1000", int1.toString());
         assertEquals("-1000", int1.toJSON());
 
         int1 = new JSONInteger(Integer.MAX_VALUE);
-        assertEquals(Integer.MAX_VALUE, int1.get());
+        assertEquals(Integer.MAX_VALUE, int1.getValue());
         assertEquals("2147483647", int1.toString());
         assertEquals("2147483647", int1.toJSON());
 
         int1 = new JSONInteger(Integer.MIN_VALUE);
-        assertEquals(Integer.MIN_VALUE, int1.get());
+        assertEquals(Integer.MIN_VALUE, int1.getValue());
         assertEquals("-2147483648", int1.toString());
         assertEquals("-2147483648", int1.toJSON());
 
@@ -154,37 +154,37 @@ class TestInteger {
     @Test
     void testValueOf() {
         JSONInteger int1 = JSONInteger.valueOf(123);
-        assertEquals(123, int1.get());
+        assertEquals(123, int1.getValue());
         assertEquals("123", int1.toString());
         assertEquals("123", int1.toJSON());
 
         int1 = JSONInteger.valueOf(0);
-        assertEquals(0, int1.get());
+        assertEquals(0, int1.getValue());
         assertEquals("0", int1.toString());
         assertEquals("0", int1.toJSON());
 
         int1 = JSONInteger.valueOf(-1000);
-        assertEquals(-1000, int1.get());
+        assertEquals(-1000, int1.getValue());
         assertEquals("-1000", int1.toString());
         assertEquals("-1000", int1.toJSON());
 
         int1 = JSONInteger.valueOf(Integer.MAX_VALUE);
-        assertEquals(Integer.MAX_VALUE, int1.get());
+        assertEquals(Integer.MAX_VALUE, int1.getValue());
         assertEquals("2147483647", int1.toString());
         assertEquals("2147483647", int1.toJSON());
 
         int1 = JSONInteger.valueOf(Integer.MIN_VALUE);
-        assertEquals(Integer.MIN_VALUE, int1.get());
+        assertEquals(Integer.MIN_VALUE, int1.getValue());
         assertEquals("-2147483648", int1.toString());
         assertEquals("-2147483648", int1.toJSON());
 
         int1 = JSONInteger.valueOf("123");
-        assertEquals(123, int1.get());
+        assertEquals(123, int1.getValue());
         assertEquals("123", int1.toString());
         assertEquals("123", int1.toJSON());
 
         int1 = JSONInteger.valueOf("0");
-        assertEquals(0, int1.get());
+        assertEquals(0, int1.getValue());
         assertEquals("0", int1.toString());
         assertEquals("0", int1.toJSON());
     }

@@ -40,43 +40,43 @@ class TestString {
         JSONValue value = JSON.parse("\"abc\"");
         assertTrue(value instanceof JSONString);
         assertEquals("abc", value.toString());
-        assertEquals("abc", ((JSONString)value).get());
+        assertEquals("abc", ((JSONString)value).getValue());
         assertEquals("\"abc\"", value.toJSON());
 
         value = JSON.parse("\"abc\\\\def\"");
         assertTrue(value instanceof JSONString);
         assertEquals("abc\\def", value.toString());
-        assertEquals("abc\\def", ((JSONString)value).get());
+        assertEquals("abc\\def", ((JSONString)value).getValue());
         assertEquals("\"abc\\\\def\"", value.toJSON());
 
         value = JSON.parse("\"abc\\\\def\\\\ghi\"\n");
         assertTrue(value instanceof JSONString);
         assertEquals("abc\\def\\ghi", value.toString());
-        assertEquals("abc\\def\\ghi", ((JSONString)value).get());
+        assertEquals("abc\\def\\ghi", ((JSONString)value).getValue());
         assertEquals("\"abc\\\\def\\\\ghi\"", value.toJSON());
 
         value = JSON.parse("\"\"");
         assertTrue(value instanceof JSONString);
         assertEquals("", value.toString());
-        assertEquals("", ((JSONString)value).get());
+        assertEquals("", ((JSONString)value).getValue());
         assertEquals("\"\"", value.toJSON());
 
         value = JSON.parse(" \" \\t \"\t");
         assertTrue(value instanceof JSONString);
         assertEquals(" \t ", value.toString());
-        assertEquals(" \t ", ((JSONString)value).get());
+        assertEquals(" \t ", ((JSONString)value).getValue());
         assertEquals("\" \\t \"", value.toJSON());
 
         value = JSON.parse("\" \\r\\n \"");
         assertTrue(value instanceof JSONString);
         assertEquals(" \r\n ", value.toString());
-        assertEquals(" \r\n ", ((JSONString)value).get());
+        assertEquals(" \r\n ", ((JSONString)value).getValue());
         assertEquals("\" \\r\\n \"", value.toJSON());
 
         value = JSON.parse("\" \\\"\\t\\\" \"");
         assertTrue(value instanceof JSONString);
         assertEquals(" \"\t\" ", value.toString());
-        assertEquals(" \"\t\" ", ((JSONString)value).get());
+        assertEquals(" \"\t\" ", ((JSONString)value).getValue());
         assertEquals("\" \\\"\\t\\\" \"", value.toJSON());
 
         value = JSON.parse("\" \\u1234 \"");
@@ -116,17 +116,17 @@ class TestString {
     @Test
     void testConstructor1() {
         JSONString str = new JSONString("abc");
-        assertEquals("abc", str.get());
+        assertEquals("abc", str.getValue());
         assertEquals("abc", str.toString());
         assertEquals("\"abc\"", str.toJSON());
 
         str = new JSONString("abc\\def");
-        assertEquals("abc\\def", str.get());
+        assertEquals("abc\\def", str.getValue());
         assertEquals("abc\\def", str.toString());
         assertEquals("\"abc\\\\def\"", str.toJSON());
 
         str = new JSONString("");
-        assertEquals("", str.get());
+        assertEquals("", str.getValue());
         assertEquals("", str.toString());
         assertEquals("\"\"", str.toJSON());
     }

@@ -50,7 +50,7 @@ public class JSONFloat extends JSONNumberValue {
         this.value = value;
     }
 
-    public float get() {
+    public float getValue() {
         return value;
     }
 

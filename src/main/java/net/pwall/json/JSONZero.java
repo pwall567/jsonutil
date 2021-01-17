@@ -42,7 +42,7 @@ public class JSONZero extends JSONNumberValue {
     public JSONZero() {
     }
 
-    public int get() {
+    public int getValue() {
         return 0;
     }
 

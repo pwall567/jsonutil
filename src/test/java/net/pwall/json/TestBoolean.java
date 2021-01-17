@@ -41,19 +41,19 @@ class TestBoolean {
         JSONValue value = JSON.parse("true");
         assertTrue(value instanceof JSONBoolean);
         assertEquals("true", value.toString());
-        assertTrue(((JSONBoolean)value).get());
+        assertTrue(((JSONBoolean)value).getValue());
         assertEquals("true", value.toJSON());
 
         value = JSON.parse("false");
         assertTrue(value instanceof JSONBoolean);
         assertEquals("false", value.toString());
-        assertFalse(((JSONBoolean)value).get());
+        assertFalse(((JSONBoolean)value).getValue());
         assertEquals("false", value.toJSON());
 
         value = JSON.parse("  false\n");
         assertTrue(value instanceof JSONBoolean);
         assertEquals("false", value.toString());
-        assertFalse(((JSONBoolean)value).get());
+        assertFalse(((JSONBoolean)value).getValue());
         assertEquals("false", value.toJSON());
 
         value = JSON.parse("0");
@@ -76,12 +76,12 @@ class TestBoolean {
     @Test
     void testConstructor1() {
         JSONBoolean bool = new JSONBoolean(true);
-        assertTrue(bool.get());
+        assertTrue(bool.getValue());
         assertEquals("true", bool.toString());
         assertEquals("true", bool.toJSON());
 
         bool = new JSONBoolean(false);
-        assertFalse(bool.get());
+        assertFalse(bool.getValue());
         assertEquals("false", bool.toString());
         assertEquals("false", bool.toJSON());
     }

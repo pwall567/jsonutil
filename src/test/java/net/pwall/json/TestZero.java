@@ -41,13 +41,13 @@ class TestZero {
         JSONValue value = JSON.parse("0");
         assertTrue(value instanceof JSONZero);
         assertEquals("0", value.toString());
-        assertEquals(0, ((JSONZero)value).get());
+        assertEquals(0, ((JSONZero)value).getValue());
         assertEquals("0", value.toJSON());
 
         value = JSON.parse("  0\n ");
         assertTrue(value instanceof JSONZero);
         assertEquals("0", value.toString());
-        assertEquals(0, ((JSONZero)value).get());
+        assertEquals(0, ((JSONZero)value).getValue());
         assertEquals("0", value.toJSON());
 
         value = JSON.parse("1");
@@ -64,7 +64,7 @@ class TestZero {
     @Test
     void testConstructor1() {
         JSONZero zero = new JSONZero();
-        assertEquals(0, zero.get());
+        assertEquals(0, zero.getValue());
         assertEquals("0", zero.toString());
         assertEquals("0", zero.toJSON());
     }

@@ -59,7 +59,7 @@ class TestObject {
         assertEquals(1, object.size());
         JSONValue item = object.get("first");
         assertTrue(item instanceof JSONInteger);
-        assertEquals(123, ((JSONInteger)item).get());
+        assertEquals(123, ((JSONInteger)item).getValue());
         expected = "{\"first\":123}";
         assertEquals(expected, value.toJSON());
         assertEquals(expected, value.toString());
@@ -70,10 +70,10 @@ class TestObject {
         assertEquals(2, object.size());
         item = object.get("first");
         assertTrue(item instanceof JSONInteger);
-        assertEquals(123, ((JSONInteger)item).get());
+        assertEquals(123, ((JSONInteger)item).getValue());
         item = object.get("second");
         assertTrue(item instanceof JSONString);
-        assertEquals("abc", ((JSONString)item).get());
+        assertEquals("abc", ((JSONString)item).getValue());
         expected = "{\"first\":123,\"second\":\"abc\"}";
         assertEquals(expected, value.toJSON());
         assertEquals(expected, value.toString());
@@ -84,19 +84,19 @@ class TestObject {
         assertEquals(3, object.size());
         item = object.get("first");
         assertTrue(item instanceof JSONInteger);
-        assertEquals(123, ((JSONInteger)item).get());
+        assertEquals(123, ((JSONInteger)item).getValue());
         item = object.get("second");
         assertTrue(item instanceof JSONString);
-        assertEquals("abc", ((JSONString)item).get());
+        assertEquals("abc", ((JSONString)item).getValue());
         item = object.get("third");
         assertTrue(item instanceof JSONArray);
         JSONArray array = (JSONArray)item;
         item = array.get(0);
         assertTrue(item instanceof JSONZero);
-        assertEquals(0, ((JSONZero)item).get());
+        assertEquals(0, ((JSONZero)item).getValue());
         item = array.get(1);
         assertTrue(item instanceof JSONBoolean);
-        assertFalse(((JSONBoolean)item).get());
+        assertFalse(((JSONBoolean)item).getValue());
         expected = "{\"first\":123,\"second\":\"abc\",\"third\":[0,false]}";
         assertEquals(expected, value.toJSON());
         assertEquals(expected, value.toString());
@@ -108,19 +108,19 @@ class TestObject {
         assertEquals(4, object.size());
         item = object.get("first");
         assertTrue(item instanceof JSONInteger);
-        assertEquals(123, ((JSONInteger)item).get());
+        assertEquals(123, ((JSONInteger)item).getValue());
         item = object.get("second");
         assertTrue(item instanceof JSONString);
-        assertEquals("abc", ((JSONString)item).get());
+        assertEquals("abc", ((JSONString)item).getValue());
         item = object.get("third");
         assertTrue(item instanceof JSONArray);
         array = (JSONArray)item;
         item = array.get(0);
         assertTrue(item instanceof JSONZero);
-        assertEquals(0, ((JSONZero)item).get());
+        assertEquals(0, ((JSONZero)item).getValue());
         item = array.get(1);
         assertTrue(item instanceof JSONBoolean);
-        assertFalse(((JSONBoolean)item).get());
+        assertFalse(((JSONBoolean)item).getValue());
         item = object.get("fourth");
         assertTrue(item instanceof JSONObject);
         assertEquals(0, ((JSONObject)item).size());
@@ -141,7 +141,7 @@ class TestObject {
         assertEquals(1, object.size());
         item = object.get("first");
         assertTrue(item instanceof JSONInteger);
-        assertEquals(123, ((JSONInteger)item).get());
+        assertEquals(123, ((JSONInteger)item).getValue());
         expected = "{\"first\":123}";
         assertEquals(expected, value.toJSON());
         assertEquals(expected, value.toString());
@@ -193,10 +193,10 @@ class TestObject {
         assertEquals(2, object.size());
         JSONValue item = object.get("first");
         assertTrue(item instanceof JSONInteger);
-        assertEquals(123, ((JSONInteger)item).get());
+        assertEquals(123, ((JSONInteger)item).getValue());
         item = object.get("second");
         assertTrue(item instanceof JSONString);
-        assertEquals("abc", ((JSONString)item).get());
+        assertEquals("abc", ((JSONString)item).getValue());
         expected = "{\"first\":123,\"second\":\"abc\"}";
         assertEquals(expected, object.toJSON());
         assertEquals(expected, object.toString());
@@ -209,7 +209,7 @@ class TestObject {
         assertEquals(1, object.size());
         JSONValue item = object.get("first");
         assertTrue(item instanceof JSONInteger);
-        assertEquals(123, ((JSONInteger)item).get());
+        assertEquals(123, ((JSONInteger)item).getValue());
         String expected = "{\"first\":123}";
         assertEquals(expected, object.toJSON());
         assertEquals(expected, object.toString());
@@ -218,7 +218,7 @@ class TestObject {
         assertEquals(2, object.size());
         item = object.get("second");
         assertTrue(item instanceof JSONString);
-        assertEquals("abc", ((JSONString)item).get());
+        assertEquals("abc", ((JSONString)item).getValue());
         expected = "{\"first\":123,\"second\":\"abc\"}";
         assertEquals(expected, object.toJSON());
         assertEquals(expected, object.toString());
@@ -227,7 +227,7 @@ class TestObject {
         assertEquals(3, object.size());
         item = object.get("third");
         assertTrue(item instanceof JSONBoolean);
-        assertTrue(((JSONBoolean)item).get());
+        assertTrue(((JSONBoolean)item).getValue());
         expected = "{\"first\":123,\"second\":\"abc\",\"third\":true}";
         assertEquals(expected, object.toJSON());
         assertEquals(expected, object.toString());
@@ -236,7 +236,7 @@ class TestObject {
         assertEquals(4, object.size());
         item = object.get("fourth");
         assertTrue(item instanceof JSONLong);
-        assertEquals(-1000L, ((JSONLong)item).get());
+        assertEquals(-1000L, ((JSONLong)item).getValue());
         expected = "{\"first\":123,\"second\":\"abc\",\"third\":true,\"fourth\":-1000}";
         assertEquals(expected, object.toJSON());
         assertEquals(expected, object.toString());
@@ -245,7 +245,7 @@ class TestObject {
         assertEquals(5, object.size());
         item = object.get("fifth");
         assertTrue(item instanceof JSONDouble);
-        assertEquals(0.123, ((JSONDouble)item).get(), 1e-64);
+        assertEquals(0.123, ((JSONDouble)item).getValue(), 1e-64);
         expected = "{\"first\":123,\"second\":\"abc\",\"third\":true,\"fourth\":-1000," +
                 "\"fifth\":0.123}";
         assertEquals(expected, object.toJSON());
@@ -255,7 +255,7 @@ class TestObject {
         assertEquals(6, object.size());
         item = object.get("sixth");
         assertTrue(item instanceof JSONFloat);
-        assertEquals(55.55F, ((JSONFloat)item).get(), 1e-64);
+        assertEquals(55.55F, ((JSONFloat)item).getValue(), 1e-64);
         expected = "{\"first\":123,\"second\":\"abc\",\"third\":true,\"fourth\":-1000," +
                 "\"fifth\":0.123,\"sixth\":55.55}";
         assertEquals(expected, object.toJSON());
@@ -274,7 +274,7 @@ class TestObject {
         assertEquals(8, object.size());
         item = object.get("eighth");
         assertTrue(item instanceof JSONInteger);
-        assertEquals(123456789, ((JSONInteger)item).get());
+        assertEquals(123456789, ((JSONInteger)item).getValue());
         expected = "{\"first\":123,\"second\":\"abc\",\"third\":true,\"fourth\":-1000," +
                 "\"fifth\":0.123,\"sixth\":55.55,\"seventh\":null,\"eighth\":123456789}";
         assertEquals(expected, object.toJSON());

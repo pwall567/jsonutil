@@ -45,7 +45,7 @@ public class JSONString implements JSONValue, CharSequence {
         value = Objects.requireNonNull(cs).toString();
     }
 
-    public String get() {
+    public String getValue() {
         return value;
     }
 

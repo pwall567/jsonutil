@@ -50,7 +50,7 @@ public class JSONDouble extends JSONNumberValue {
         this.value = value;
     }
 
-    public double get() {
+    public double getValue() {
         return value;
     }
 
