@@ -77,4 +77,32 @@ class TestDecimal {
 
     }
 
+    @Test
+    void testValueOf() {
+        JSONDecimal value0 = JSONDecimal.ZERO;
+        JSONDecimal value123 = new JSONDecimal(new BigDecimal(123));
+        JSONDecimal value = JSONDecimal.valueOf(123);
+        assertEquals(value123, value);
+        value = JSONDecimal.valueOf("123");
+        assertEquals(value123, value);
+        value = JSONDecimal.valueOf(0);
+        assertSame(value0, value);
+        value = JSONDecimal.valueOf("0");
+        assertSame(value0, value);
+        value = JSONDecimal.valueOf("0.0");
+        assertSame(value0, value);
+        value = JSONDecimal.valueOf("0.0000");
+        assertSame(value0, value);
+        value = JSONDecimal.valueOf("00000000");
+        assertSame(value0, value);
+    }
+
+    @Test
+    void testHashCode() {
+        assertEquals(123, new JSONDecimal("123").hashCode());
+        assertEquals(1234, new JSONDecimal(new BigDecimal(1234)).hashCode());
+        assertEquals(12345, new JSONDecimal("12345.0").hashCode());
+        assertEquals(12345, new JSONDecimal("12345.678").hashCode());
+    }
+
 }

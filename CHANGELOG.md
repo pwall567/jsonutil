@@ -3,12 +3,16 @@ Added this change log after project was already under way.  Early changes are no
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
-## [Unreleased]
+## [5.0]
 ### Changed
 - `JSON`: modified error messages (removed "at root" when pointer is at root of JSON)
 - `JSON`: added `escape` and `unescape`
 - `JSONBoolean`, `JSONDecimal`, `JSONDouble`, `JSONFloat`, `JSONInteger`, `JSONLong`, `JSONString`, `JSONZero`: changed
 `get` to `getValue`
+- `JSONDecimal`: bug fix - `hashCode()` now returns value consistent with `equals()`
+- `JSONDecimal`: fixed bug in comparisons
+- `JSONDecimal`: optimisation in `valueOf()`
+- `JSONSequence`: improved `hashCode()` and `equals()`
 
 ## [4.2] - 2020-12-26
 ### Changed

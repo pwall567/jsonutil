@@ -104,7 +104,7 @@ or one of the two composite forms:
 * `JSONArray`
 * `JSONObject`
 
-All of the simple classes have a `get()` method to retrieve the value (this is not specified by
+All of the simple classes have a `getValue()` method to retrieve the value (this is not specified by
 the interface because the return type differs in each case).  Also, the numeric classes all
 extend the `Number` class, so the accessors `intValue()`, `doubleValue()` etc. may be used
 to retrieve the value in a particular form.  And the `toString()` methods on these classes all
@@ -199,27 +199,34 @@ methods to allow the value to be retrieved without intermediate conversion to bi
 From version 3.1 of this library, the `JSONDecimal` class is also used for integer values that are too large for the
 `Long` class.
 
+## Breaking Change - Version 5.0
+
+From version 5.0 onwards, the method `get()` on each of the `JSONValue` objects for the primitive types has been
+renamed `getValue()`.
+As well as being more idiomatically consistent with other forms of Java usage, this also allows Kotlin code to access
+values using the `value` property.
+
 ## Dependency Specification
 
-The latest version of the library is 4.2, and it may be obtained from the Maven Central repository.
+The latest version of the library is 5.0, and it may be obtained from the Maven Central repository.
 
 ### Maven
 ```xml
     <dependency>
       <groupId>net.pwall.json</groupId>
       <artifactId>jsonutil</artifactId>
-      <version>4.2</version>
+      <version>5.0</version>
     </dependency>
 ```
 ### Gradle
 ```groovy
-    implementation "net.pwall.json:jsonutil:4.2"
+    implementation "net.pwall.json:jsonutil:5.0"
 ```
 ### Gradle (kts)
 ```kotlin
-    implementation("net.pwall.json:jsonutil:4.2")
+    implementation("net.pwall.json:jsonutil:5.0")
 ```
 
 Peter Wall
 
-2020-12-26
+2021-04-19

@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A JSON sequence (the base for {@link JSONArray}, and possibly other similar collections).
@@ -427,15 +428,40 @@ public class JSONSequence<V extends JSONValue> extends ArrayList<V> implements J
     }
 
     /**
-     * Compare two {@code JSONSequence}s for equality.
+     * Get the hash code for this {@code JSONSequence}.
      *
-     * @param   other   the other {@code JSONSequence}
-     * @return  {@code true} if the other object is a {@code JSONSequence} and the contents are
-     *          equal
+     * @return  the hash code
+     * @see     Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        int result = 0;
+        for (int i = 0, n = size(); i < n; i++)
+            result ^= get(i).hashCode();
+        return result;
+    }
+
+    /**
+     * Compare this {@code JSONSequence} with another object for equality.
+     *
+     * @param   other   the other object
+     * @return  {@code true} if the other object is a {@code JSONSequence} and has identical contents to
+     *          this object
+     * @see     Object#equals(Object)
      */
     @Override
     public boolean equals(Object other) {
-        return other == this || other instanceof JSONSequence && super.equals(other);
+        if (other == this)
+            return true;
+        if (!(other instanceof JSONSequence<?>))
+            return false;
+        JSONSequence<?> otherSequence = (JSONSequence<?>)other;
+        if (size() != otherSequence.size())
+            return false;
+        for (int i = 0, n = size(); i < n; i++)
+            if (!Objects.equals(get(i), otherSequence.get(i)))
+                return false;
+        return true;
     }
 
     public abstract class BaseIterator<T> implements Iterator<T> {

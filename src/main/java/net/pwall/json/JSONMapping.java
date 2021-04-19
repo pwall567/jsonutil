@@ -274,7 +274,7 @@ public class JSONMapping<V extends JSONValue> extends ListMap<String, V>
      * Compare this {@code JSONMapping} with another object for equality.
      *
      * @param   other   the other object
-     * @return  {@code true} if the other object is a {@code JSONMapping} and is identical to
+     * @return  {@code true} if the other object is a {@code JSONMapping} and has identical contents to
      *          this object
      * @see     Object#equals(Object)
      */

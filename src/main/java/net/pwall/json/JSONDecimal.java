@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import net.pwall.util.Strings;
+
 /**
  * A JSON decimal (floating point) value.
  *
@@ -49,6 +51,8 @@ public class JSONDecimal extends JSONNumberValue {
     }
 
     public JSONDecimal(String string) {
+        if (string == null || string.length() == 0)
+            throw new IllegalArgumentException("Must not be null or empty");
         try {
             bigDecimal = new BigDecimal(string);
         }
@@ -114,7 +118,7 @@ public class JSONDecimal extends JSONNumberValue {
 
     @Override
     public int hashCode() {
-        return bigDecimal.hashCode();
+        return bigDecimal.intValue();
     }
 
     @Override
@@ -150,15 +154,20 @@ public class JSONDecimal extends JSONNumberValue {
 
     @Override
     public boolean valueEquals(BigDecimal other) {
-        return other.equals(bigDecimal);
+        return other.compareTo(bigDecimal) == 0;
     }
 
     public static JSONDecimal valueOf(BigDecimal bigDecimal) {
-        return bigDecimal.equals(BigDecimal.ZERO) ? ZERO : new JSONDecimal(bigDecimal);
+        return bigDecimal.compareTo(BigDecimal.ZERO) == 0 ? ZERO : new JSONDecimal(bigDecimal);
     }
 
     public static JSONDecimal valueOf(String s) {
-        return s.equals("0") || s.equals("0.0") ? ZERO : new JSONDecimal(s);
+        if (s == null || s.length() == 0)
+            throw new IllegalArgumentException("Must not be null or empty");
+        if (s.indexOf('.') >= 0)
+            return s.charAt(0) == '0' && s.charAt(s.length() - 1) == '0' &&
+                    Strings.trim(s, ch -> ch == '0').equals(".") ? ZERO : new JSONDecimal(s);
+        return Strings.trim(s, ch -> ch == '0').length() == 0 ? ZERO : new JSONDecimal(s);
     }
 
     public static JSONDecimal valueOf(double d) {
