@@ -66,11 +66,14 @@ public class JSON {
     public static final String NOT_A_BOOLEAN = "Not a JSON boolean";
     public static final String NOT_AN_ARRAY = "Not a JSON array";
     public static final String NOT_AN_OBJECT = "Not a JSON object";
+    public static final String MAX_DEPTH_EXCEEDED = "Maximum nesting depth exceeded";
 
     public static final String MAX_INTEGER_STRING = "2147483647";
     public static final String MIN_INTEGER_STRING = "-2147483648";
     public static final String MAX_LONG_STRING = "9223372036854775807";
     public static final String MIN_LONG_STRING = "-9223372036854775808";
+
+    private static int maxDepth = 1000;
 
     /**
      * A {@link CharMapper} for escaping JSON strings.
@@ -528,10 +531,13 @@ public class JSON {
      * @throws  JSONException if the text in the {@link ParseText} is not a valid JSON value
      */
     public static JSONValue parse(ParseText p) {
-        return parse(p, "");
+        return parse(p, "", 0);
     }
 
-    private static JSONValue parse(ParseText p, String pointer) {
+    private static JSONValue parse(ParseText p, String pointer, int depth) {
+        if (depth > maxDepth)
+            throw new JSONException(MAX_DEPTH_EXCEEDED);
+
         p.skipSpaces();
 
         // check for object
@@ -547,7 +553,7 @@ public class JSON {
                         throw new JSONException(pointerMessage(DUPLICATE_KEY + ": \"" + key + '"', pointer));
                     if (!p.skipSpaces().match(':'))
                         throw new JSONException(pointerMessage(MISSING_COLON, pointer));
-                    object.put(key, parse(p, pointer + '/' + key));
+                    object.put(key, parse(p, pointer + '/' + key, depth + 1));
                     if (!p.skipSpaces().match(','))
                         break;
                     p.skipSpaces();
@@ -564,7 +570,7 @@ public class JSON {
             JSONArray array = new JSONArray();
             if (!p.skipSpaces().match(']')) {
                 do {
-                    array.add(parse(p, pointer + '/' + array.size()));
+                    array.add(parse(p, pointer + '/' + array.size(), depth + 1));
                 } while (p.skipSpaces().match(','));
                 if (!p.match(']'))
                     throw new JSONException(pointerMessage(MISSING_CLOSING_BRACKET, pointer));
@@ -925,6 +931,26 @@ public class JSON {
      */
     public static String unescape(String string) {
         return Strings.unescape(string, charUnmapper);
+    }
+
+    /**
+     * Get the current maximum allowed nesting depth.
+     *
+     * @return      the maximum allowed nesting depth
+     */
+    public static int getMaxDepth() {
+        return maxDepth;
+    }
+
+    /**
+     * Set the maximum allowed nesting depth.
+     *
+     * @param   maxDepth    the new maximum allowed nesting depth
+     */
+    public static void setMaxDepth(int maxDepth) {
+        if (maxDepth < 1 || maxDepth > 1200)
+            throw new IllegalArgumentException("Maximum nesting depth must be 1..1200");
+        JSON.maxDepth = maxDepth;
     }
 
 }

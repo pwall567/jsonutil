@@ -178,17 +178,17 @@ for (JSONObject jsonObject : jsonArray.objects()) {
 
 This is just a taste of what is available; see the JavaDoc for more information.
 
-## New Decimal Handling - Version 3.0 (and above)
+## New Decimal Handling &ndash; Version 3.0 (and above)
 
 JSON uses base 10 to represent numbers.
-This works perfectly well for integer values, e.g. 12345, but it can cause problems when representing fractions.
+This works perfectly well for integer values, _e.g._ 12345, but it can cause problems when representing fractions.
 
 Most people are familiar with the fact that the value 1/3 (one third) can not be represented in a finite number of
-decimal places - the last digit is recurring.
+decimal places &ndash; the last digit is recurring.
 What is less well-known is that the value 1/10 (one tenth) can not be represented as a finite binary fraction, and this
 means that all binary representations of decimal fractions are potentially incorrect.
 As a result, Java `double` and `float` variables are potentially problematic as representations of parsed fractional
-numeric values.
+decimal values.
 
 To eliminate this problem the `JSONDecimal` class has been created, storing its value in the form of a `BigDecimal`.
 From version 3.0 of this library, all parsing operations will create `JSONDecimal` objects for non-integer number values
@@ -199,7 +199,7 @@ methods to allow the value to be retrieved without intermediate conversion to bi
 From version 3.1 of this library, the `JSONDecimal` class is also used for integer values that are too large for the
 `Long` class.
 
-## Breaking Change - Version 5.0
+## Breaking Change &ndash; Version 5.0
 
 From version 5.0 onwards, the method `get()` on each of the `JSONValue` objects for the primitive types has been
 renamed `getValue()`.
@@ -208,25 +208,25 @@ values using the `value` property.
 
 ## Dependency Specification
 
-The latest version of the library is 5.0, and it may be obtained from the Maven Central repository.
+The latest version of the library is 5.1, and it may be obtained from the Maven Central repository.
 
 ### Maven
 ```xml
     <dependency>
       <groupId>net.pwall.json</groupId>
       <artifactId>jsonutil</artifactId>
-      <version>5.0</version>
+      <version>5.1</version>
     </dependency>
 ```
 ### Gradle
 ```groovy
-    implementation "net.pwall.json:jsonutil:5.0"
+    implementation "net.pwall.json:jsonutil:5.1"
 ```
 ### Gradle (kts)
 ```kotlin
-    implementation("net.pwall.json:jsonutil:5.0")
+    implementation("net.pwall.json:jsonutil:5.1")
 ```
 
 Peter Wall
 
-2021-04-19
+2023-06-29

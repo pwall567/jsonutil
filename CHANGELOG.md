@@ -3,7 +3,12 @@ Added this change log after project was already under way.  Early changes are no
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
-## [5.0]
+## [5.1] - 2023-06-29
+### Changed
+- `JSON`: added check for excessive nesting
+- `pom.xml`: updated dependency versions
+
+## [5.0] - 2021-04-19
 ### Changed
 - `JSON`: modified error messages (removed "at root" when pointer is at root of JSON)
 - `JSON`: added `escape` and `unescape`
